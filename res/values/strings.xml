@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">S2TDroid</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+	<string name="output_folder">Output Folder</string>
+    <string name="input_file">Input File</string>
+    <string name="cancel">Cancel</string>
+    <string name="encoding_title">encode</string>
+    <string name="start">Start</string>
+    <string name="about"> Project：<a href="https://github.com/npes87184/">My GitHub</a></string>
+    <string name="about1">about</string>
+    <string name="exit">exit</string>
+    <string name="author">&#160;Author：NPES</string>
+    <string name="done">Done!</string>
+    
+</resources>

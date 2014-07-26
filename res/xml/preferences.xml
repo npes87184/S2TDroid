@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/app_name">
+    <Preference android:title="@string/input_file" android:key="input_file" android:icon="@drawable/ic_perm_group_user_dictionary"/>
+    <Preference android:title="@string/output_folder" android:key="output_folder" android:icon="@drawable/ic_menu_archive"/>
+    <ListPreference android:entries="@array/encoding_entry" android:entryValues="@array/encoding_value" android:negativeButtonText="@string/cancel" android:dialogTitle="@string/encoding_title" android:title="@string/encoding_title" android:key="encoding" android:icon="@drawable/ic_perm_group_user_dictionary_write"/>
+    <Preference android:title="@string/start" android:key="start" android:icon="@drawable/emo_im_laughing"/>
+    
+
+</PreferenceScreen>
