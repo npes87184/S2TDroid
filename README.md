@@ -8,15 +8,13 @@ Latest Version
 
 Changelog
 ========
-1.0
-<br>
-initial release
+###1.0
+* initial release
 
 Features
 ========
-1.light weight transformer
-<br>
-2.support GBK and UTF-8
+1. light weight transformer
+2. support GBK and UTF-8
 
 Picture
 ========
@@ -24,6 +22,5 @@ Picture
 
 Thanks
 ========
-ExFilePicker (bartwell)
-<br>
-JNovelDownloader (pupuliao)
+* ExFilePicker (bartwell)
+* JNovelDownloader (pupuliao)
