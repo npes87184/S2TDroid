@@ -7,12 +7,23 @@
 	<string name="output_folder">輸出目錄</string>
     <string name="input_file">輸入檔案</string>
     <string name="cancel">取消</string>
-    <string name="encoding_title">編碼格式</string>
+    <string name="encoding_title">輸入編碼</string>
     <string name="start">開始轉換</string>
-    <string name="about"> 項目網址：<a href="https://github.com/npes87184/">GitHub</a></string>
+    <string name="about"> 項目網址：<a href="https://github.com/npes87184/S2TDroid">GitHub</a></string>
     <string name="about1">關於</string>
     <string name="exit">離開</string>
     <string name="author">&#160;作者：NPES</string>
     <string name="done">轉換完成！</string>
+     <string name="ota">檢查更新</string>
+    <string name="no_network">沒有網路</string>
+    <string name="wait">請稍後幾秒...</string>
+    <string name="new_version">新版本</string>
+    <string name="version">&#160; 找到新版本拉！ \n</string>
+    <string name="app_website">&#160; <a href="http://home.gamer.com.tw/creationDetail.php?sn=2527256">更多資訊</a></string>
+    <string name="new_version_number">&#160;新版本號：</string>
+    <string name="no_new_version">&#160;您已經擁有最新版本！ \n</string>
+    <string name="problem"> 如果您在使用中遇到問題，可以到 <a href="http://home.gamer.com.tw/creationDetail.php?sn=2527256">此網頁</a> 聯繫我，感謝您的使用。</string>
+    <string name="no_version">沒有新版本</string>
+    <string name="output_encoding_title">輸出編碼</string>
     
 </resources>

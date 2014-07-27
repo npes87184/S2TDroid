@@ -10,4 +10,14 @@
         <item>GBK</item>
     </string-array>
     
+    <string-array name="output_encoding_entry">
+        <item>UTF-8</item>
+        <item>Unicode</item>
+    </string-array>
+    
+    <string-array name="output_encoding_value">
+        <item>UTF-8</item>
+        <item>Unicode</item>
+    </string-array>
+    
 </resources>

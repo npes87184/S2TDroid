@@ -13,6 +13,8 @@ public final class R {
         public static final int efp__sorting_types=0x7f080001;
         public static final int encoding_entry=0x7f080002;
         public static final int encoding_value=0x7f080003;
+        public static final int output_encoding_entry=0x7f080004;
+        public static final int output_encoding_value=0x7f080005;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -156,10 +158,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int emo_im_laughing=0x7f020050;
         public static final int ic_launcher2=0x7f020051;
         public static final int ic_menu_archive=0x7f020052;
-        public static final int ic_menu_info_details=0x7f020053;
-        public static final int ic_perm_group_user_dictionary=0x7f020054;
-        public static final int ic_perm_group_user_dictionary_write=0x7f020055;
-        public static final int ic_start=0x7f020056;
+        public static final int ic_menu_find_holo_light=0x7f020053;
+        public static final int ic_menu_info_details=0x7f020054;
+        public static final int ic_perm_group_user_dictionary=0x7f020055;
+        public static final int ic_perm_group_user_dictionary_write=0x7f020056;
+        public static final int ic_start=0x7f020057;
     }
     public static final class id {
         public static final int RelativeLayout1=0x7f0b0006;
@@ -203,6 +206,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int efp__main_activity=0x7f030005;
         public static final int efp__new_folder=0x7f030006;
         public static final int fragment_main=0x7f030007;
+        public static final int no_ota=0x7f030008;
+        public static final int ota=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
@@ -212,6 +217,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int about1=0x7f070016;
         public static final int action_settings=0x7f07000f;
         public static final int app_name=0x7f07000d;
+        public static final int app_website=0x7f07001f;
         public static final int author=0x7f070018;
         public static final int cancel=0x7f070012;
         public static final int done=0x7f070019;
@@ -232,8 +238,18 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int exit=0x7f070017;
         public static final int hello_world=0x7f07000e;
         public static final int input_file=0x7f070011;
+        public static final int new_version=0x7f07001d;
+        public static final int new_version_number=0x7f070020;
+        public static final int no_network=0x7f07001b;
+        public static final int no_new_version=0x7f070021;
+        public static final int no_version=0x7f070023;
+        public static final int ota=0x7f07001a;
+        public static final int output_encoding_title=0x7f070024;
         public static final int output_folder=0x7f070010;
+        public static final int problem=0x7f070022;
         public static final int start=0x7f070014;
+        public static final int version=0x7f07001e;
+        public static final int wait=0x7f07001c;
     }
     public static final class style {
         /** 

@@ -7,12 +7,23 @@
 	<string name="output_folder">Output Folder</string>
     <string name="input_file">Input File</string>
     <string name="cancel">Cancel</string>
-    <string name="encoding_title">encode</string>
+    <string name="encoding_title">input encode</string>
     <string name="start">Start</string>
-    <string name="about"> Project：<a href="https://github.com/npes87184/">My GitHub</a></string>
+    <string name="about"> Project：<a href="https://github.com/npes87184/S2TDroid">My GitHub</a></string>
     <string name="about1">about</string>
     <string name="exit">exit</string>
     <string name="author">&#160;Author：NPES</string>
     <string name="done">Done!</string>
+    <string name="ota">Check Update</string>
+    <string name="no_network">does not have network</string>
+    <string name="wait">wait for seconds...</string>
+    <string name="new_version">New Version</string>
+    <string name="version">&#160;Find new version! \n</string>
+    <string name="app_website"> <a href="http://home.gamer.com.tw/creationDetail.php?sn=2527256">More Information</a></string>
+    <string name="new_version_number">&#160;New version number：</string>
+    <string name="no_new_version">&#160;You have the latest version. \n</string>
+    <string name="problem"> If you get some problem you can go this <a href="http://home.gamer.com.tw/creationDetail.php?sn=2527256">web</a> to contact me.</string>
+    <string name="no_version">No New Version</string>
+    <string name="output_encoding_title">output encode</string>
     
 </resources>
