@@ -220,6 +220,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int app_website=0x7f07001f;
         public static final int author=0x7f070018;
         public static final int cancel=0x7f070012;
+        public static final int check_update=0x7f070025;
+        public static final int checking=0x7f070026;
         public static final int done=0x7f070019;
         public static final int efp__action_deselect=0x7f070005;
         public static final int efp__action_grid=0x7f070001;

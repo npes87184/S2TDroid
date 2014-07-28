@@ -156,6 +156,8 @@ int string app_name 0x7f07000d
 int string app_website 0x7f07001f
 int string author 0x7f070018
 int string cancel 0x7f070012
+int string check_update 0x7f070025
+int string checking 0x7f070026
 int string done 0x7f070019
 int string efp__action_deselect 0x7f070005
 int string efp__action_grid 0x7f070001

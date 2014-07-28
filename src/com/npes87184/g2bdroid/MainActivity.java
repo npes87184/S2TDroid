@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import ru.bartwell.exfilepicker.ExFilePicker;
 import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,6 +46,7 @@ public class MainActivity extends PreferenceActivity implements
 SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private static final String APP_NAME = "S2TDroid";
+	private static final String APP_ENTER_NUMBER = "enter_number";
 	private static final String KEY_ENCODING = "encoding";
 	private static final String KEY_OUTPUT_ENCODING = "output_encoding";
 	private static final String KEY_INPUT_FILE = "input_file";
@@ -53,7 +55,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.1;
+	private static final double version = 1.11;
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
 	
@@ -66,6 +68,8 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private Preference startPreference;
 	private Preference outEncodePreference;
 	private SharedPreferences prefs;
+	private ProgressDialog progressDialog;
+	private static int i;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,12 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 
 		prefs = getPreferenceManager().getSharedPreferences();
 		prefs.registerOnSharedPreferenceChangeListener(this);
-
+		
+		i = prefs.getInt(APP_ENTER_NUMBER, 0);
+		i++;
+		
+		if(i > 4) {
+			i = 0;
 			new Thread(new Runnable() {  //auto check version
 				
 				@Override
@@ -134,9 +143,9 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 					}
 				}
 			}).start();
+		}
 		
-
-		
+		prefs.edit().putInt(APP_ENTER_NUMBER, i).commit();
 		
 		encoding = findPreference(KEY_ENCODING);
 		encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
@@ -252,10 +261,10 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 							versionString = versionString + "\n ";
 							i++;
 						}
-						
 						break;
 					}
 				}
+				progressDialog.dismiss();
 				if(temp_version > version) {
 					Message msg = new Message();
 					msg.what = 3;
@@ -376,6 +385,8 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch(item.getItemId()) {
 		case 0:
+			progressDialog = ProgressDialog.show(MainActivity.this,getResources().getString(R.string.check_update), getResources().getString(R.string.checking));
+			progressDialog.setCancelable(true);
 			new Thread(new Runnable() {
 				
 				@Override
