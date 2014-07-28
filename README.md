@@ -4,10 +4,14 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.1
+1.11
 
 Changelog
 ========
+###1.11
+* add progressDialog
+* change auto check version frequency (100% -> 20%)
+
 ###1.1
 * add output encoding
 * online check version support
