@@ -25,5 +25,7 @@
     <string name="problem"> 如果您在使用中遇到問題，可以到 <a href="http://home.gamer.com.tw/creationDetail.php?sn=2527256">此網頁</a> 聯繫我，感謝您的使用。</string>
     <string name="no_version">沒有新版本</string>
     <string name="output_encoding_title">輸出編碼</string>
+    <string name="check_update">檢查更新</string>
+    <string name="checking">檢查中\u2026</string>
     
 </resources>
