@@ -4,10 +4,15 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.11
+1.12
 
 Changelog
 ========
+###1.12
+* fix input encode icon
+* add translation for ExFilePicker
+* fix "沒" transform error, thanks knight714 report
+
 ###1.11
 * add progressDialog
 * change auto check version frequency (100% -> 20%)
