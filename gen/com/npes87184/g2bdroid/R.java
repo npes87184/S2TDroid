@@ -165,37 +165,38 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_start=0x7f020057;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f0b0006;
-        public static final int action_settings=0x7f0b001e;
-        public static final int button1=0x7f0b0004;
-        public static final int button2=0x7f0b0005;
-        public static final int checkbox=0x7f0b0009;
-        public static final int container=0x7f0b0002;
-        public static final int filename=0x7f0b0008;
-        public static final int filesize=0x7f0b000a;
-        public static final int gridview=0x7f0b001c;
-        public static final int header1=0x7f0b000b;
-        public static final int header2=0x7f0b0012;
-        public static final int line=0x7f0b001a;
-        public static final int listview=0x7f0b001b;
-        public static final int menu_cancel=0x7f0b0013;
-        public static final int menu_change_view=0x7f0b000f;
-        public static final int menu_deselect=0x7f0b0017;
-        public static final int menu_invert=0x7f0b0016;
-        public static final int menu_new_folder=0x7f0b000e;
-        public static final int menu_ok1=0x7f0b0010;
-        public static final int menu_ok2=0x7f0b0014;
-        public static final int menu_select_all=0x7f0b0018;
-        public static final int menu_sort1=0x7f0b000d;
-        public static final int menu_sort2=0x7f0b0019;
-        public static final int name=0x7f0b001d;
-        public static final int ok1_delimiter=0x7f0b0011;
-        public static final int textView1=0x7f0b0003;
+        public static final int RelativeLayout1=0x7f0b0007;
+        public static final int action_settings=0x7f0b001f;
+        public static final int button1=0x7f0b0005;
+        public static final int button2=0x7f0b0006;
+        public static final int checkbox=0x7f0b000a;
+        public static final int container=0x7f0b0003;
+        public static final int filename=0x7f0b0009;
+        public static final int filesize=0x7f0b000b;
+        public static final int gridview=0x7f0b001d;
+        public static final int header1=0x7f0b000c;
+        public static final int header2=0x7f0b0013;
+        public static final int line=0x7f0b001b;
+        public static final int listview=0x7f0b001c;
+        public static final int menu_cancel=0x7f0b0014;
+        public static final int menu_change_view=0x7f0b0010;
+        public static final int menu_deselect=0x7f0b0018;
+        public static final int menu_invert=0x7f0b0017;
+        public static final int menu_new_folder=0x7f0b000f;
+        public static final int menu_ok1=0x7f0b0011;
+        public static final int menu_ok2=0x7f0b0015;
+        public static final int menu_select_all=0x7f0b0019;
+        public static final int menu_sort1=0x7f0b000e;
+        public static final int menu_sort2=0x7f0b001a;
+        public static final int name=0x7f0b001e;
+        public static final int ok1_delimiter=0x7f0b0012;
+        public static final int textView1=0x7f0b0004;
         public static final int textView2=0x7f0b0000;
         public static final int textView3=0x7f0b0001;
-        public static final int thumbnail=0x7f0b0007;
-        public static final int title=0x7f0b000c;
-        public static final int view1=0x7f0b0015;
+        public static final int textView4=0x7f0b0002;
+        public static final int thumbnail=0x7f0b0008;
+        public static final int title=0x7f0b000d;
+        public static final int view1=0x7f0b0016;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -251,6 +252,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int problem=0x7f070022;
         public static final int start=0x7f070014;
         public static final int version=0x7f07001e;
+        public static final int version_name=0x7f070027;
         public static final int wait=0x7f07001c;
     }
     public static final class style {

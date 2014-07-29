@@ -55,7 +55,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.12;
+	private static final double version = 1.13;
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
 	
@@ -94,7 +94,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 						ConnectivityManager CM = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 						NetworkInfo info = CM.getActiveNetworkInfo();
 						if((info != null) && info.isConnected()) {
-							BufferedReader reader = new BufferedReader(new InputStreamReader(getUrlData()));
+							BufferedReader reader = new BufferedReader(new InputStreamReader(getUrlData(),"BIG5"));
 							String line;
 							double temp_version = -1;
 							while((line = reader.readLine())!=null) {
@@ -113,7 +113,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 										}
 										if(second) {
 											versionString = versionString + getResources().getString(R.string.new_version_number) + aString;
-											versionString = versionString + "\n ";
+											versionString = versionString + "\n\n ";
 											second = false;
 											continue;
 										}
@@ -195,18 +195,19 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								InputStream is = new FileInputStream(inFile);
 								InputStreamReader isr = new InputStreamReader(is, prefs.getString(KEY_ENCODING, "UTF-8"));
 								BufferedReader bReader = new BufferedReader(isr);
-								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default") + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt");
+								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default.").split("\\.")[0] + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt");
 								OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
 								BufferedWriter bw = new BufferedWriter(osw); 
 								String line;
 								while((line = bReader.readLine()) != null) {
 								//	System.out.println(Analysis.StoT(line));
 									bw.write(Analysis.StoT(line));
-									bw.newLine();
+									bw.newLine();						
 								}
 								bReader.close();
 								bw.close();
-		        			 	MediaScannerConnection.scanFile(getApplicationContext(), new String[]{prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default") + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt"}, null, null);
+								//media rescan for correct show in pc
+		        			 	MediaScannerConnection.scanFile(getApplicationContext(), new String[]{prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default.").split("\\.")[0] + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt"}, null, null);
 		        		 } catch(Exception e){
 		        			 	System.out.println("error");
 		        		 }
@@ -234,7 +235,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 			ConnectivityManager CM = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo info = CM.getActiveNetworkInfo();
 			if((info != null) && info.isConnected()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(getUrlData()));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(getUrlData(),"BIG5"));
 				String line;
 				double temp_version = -1;
 				while((line = reader.readLine())!=null) {
@@ -253,7 +254,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 							}
 							if(second) {
 								versionString = versionString + getResources().getString(R.string.new_version_number) + aString;
-								versionString = versionString + "\n ";
+								versionString = versionString + "\n\n ";
 								second = false;
 								continue;
 							}
@@ -415,6 +416,4 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 }
