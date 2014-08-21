@@ -55,7 +55,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.13;
+	private static final double version = 1.14;
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
 	
@@ -200,8 +200,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								BufferedWriter bw = new BufferedWriter(osw); 
 								String line;
 								while((line = bReader.readLine()) != null) {
-								//	System.out.println(Analysis.StoT(line));
-									bw.write(Analysis.StoT(line));
+									bw.write(Analysis.StoT(line) + "\r");
 									bw.newLine();						
 								}
 								bReader.close();
