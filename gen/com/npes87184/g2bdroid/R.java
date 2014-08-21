@@ -220,6 +220,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int app_name=0x7f07000d;
         public static final int app_website=0x7f07001f;
         public static final int author=0x7f070018;
+        public static final int auto_detect=0x7f070028;
         public static final int cancel=0x7f070012;
         public static final int check_update=0x7f070025;
         public static final int checking=0x7f070026;

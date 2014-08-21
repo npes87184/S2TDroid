@@ -1,5 +1,6 @@
 package com.npes87184.g2bdroid;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,6 +12,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -56,6 +61,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
 	private static final double version = 1.14;
+	String[] charsetsToBeTested = {"UTF-8"};
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
 	
@@ -148,7 +154,12 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		prefs.edit().putInt(APP_ENTER_NUMBER, i).commit();
 		
 		encoding = findPreference(KEY_ENCODING);
-		encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
+		if(prefs.getString(KEY_ENCODING, "UTF-8").equals("0")) {
+			encoding.setSummary(getResources().getString(R.string.auto_detect));
+		} else {
+			encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
+		}
+		
 		outEncodePreference = findPreference(KEY_OUTPUT_ENCODING);
 		outEncodePreference.setSummary(prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
 		inputPreference = findPreference(KEY_INPUT_FILE);
@@ -193,7 +204,18 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 							try {
 								File inFile = new File(prefs.getString(KEY_INPUT_FILE, APP_DIR));
 								InputStream is = new FileInputStream(inFile);
-								InputStreamReader isr = new InputStreamReader(is, prefs.getString(KEY_ENCODING, "UTF-8"));
+								String encodeString = "UTF-8";
+								if(prefs.getString(KEY_ENCODING, "UTF-8").equals("0")) {  
+							        Charset charset = detectCharset(inFile, charsetsToBeTested);  
+									if (charset == null) {  //maybe GBK
+										encodeString = "GBK";
+									} else { //UTF-8
+										encodeString = "UTF-8";
+									}
+								} else {
+									encodeString = prefs.getString(KEY_ENCODING, "UTF-8");
+								}
+								InputStreamReader isr = new InputStreamReader(is, encodeString);
 								BufferedReader bReader = new BufferedReader(isr);
 								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default.").split("\\.")[0] + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt");
 								OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
@@ -357,7 +379,11 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if (key.equals(KEY_ENCODING)) {
-			encoding.setSummary(sharedPreferences.getString(KEY_ENCODING, "UTF-8"));
+			if(prefs.getString(KEY_ENCODING, "UTF-8").equals("0")) {
+				encoding.setSummary(getResources().getString(R.string.auto_detect));
+			} else {
+				encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
+			}
 		} else if (key.equals(KEY_INPUT_FILE)) {
 			inputPreference.setSummary(sharedPreferences.getString(KEY_INPUT_FILE, APP_DIR));
 		} else if (key.equals(KEY_OUTPUT_FOLDER)) {
@@ -415,4 +441,54 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public Charset detectCharset(File f, String[] charsets) {  
+		  
+	       Charset charset = null;  
+	  
+	       // charsets 是我們定義的 編碼 矩陣, 包括 UTF8, BIG5 etc.  
+	       for (String charsetName : charsets) {  
+	           charset = detectCharset(f, Charset.forName(charsetName));  
+	           if (charset != null) {  
+	               break;  
+	           }  
+	       }  
+	       System.out.printf("\t[Test] Using '%s' encoding!\n", charset);  
+	       return charset;  
+	   }  
+	  
+	   private Charset detectCharset(File f, Charset charset) {  
+	       try {  
+	           BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));  
+	  
+	           CharsetDecoder decoder = charset.newDecoder();  
+	           decoder.reset();  
+	  
+	           byte[] buffer = new byte[512];  
+	           boolean identified = false;  
+	           while ((input.read(buffer) != -1) && (!identified)) {  
+	               identified = identify(buffer, decoder);  
+	           }  
+	  
+	           input.close();  
+	  
+	           if (identified) {  
+	               return charset;  
+	           } else {  
+	               return null;  
+	           }  
+	  
+	       } catch (Exception e) {  
+	           return null;  
+	       }  
+	   }  
+	    private boolean identify(byte[] bytes, CharsetDecoder decoder) {  
+	        try {  
+	            decoder.decode(ByteBuffer.wrap(bytes));  
+	        } catch (CharacterCodingException e) {  
+	            return false;  
+	        }  
+	        return true;  
+	    }  
+	
 }

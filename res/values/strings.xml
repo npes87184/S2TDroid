@@ -28,5 +28,6 @@
     <string name="check_update">Check Update</string>
     <string name="checking">Checking\u2026</string>
     <string name="version_name">&#160;Version Name：1.14</string>
-    
+    <string name="auto_detect">Auto Detect</string>
+     
 </resources>

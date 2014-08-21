@@ -156,6 +156,7 @@ int string action_settings 0x7f07000f
 int string app_name 0x7f07000d
 int string app_website 0x7f07001f
 int string author 0x7f070018
+int string auto_detect 0x7f070028
 int string cancel 0x7f070012
 int string check_update 0x7f070025
 int string checking 0x7f070026
