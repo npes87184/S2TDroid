@@ -4,10 +4,15 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.12
+1.13
 
 Changelog
 ========
+###1.13
+* fix output file name will have (.txt) error
+* add version name in about dialog
+* now changelog can be chinese
+
 ###1.12
 * fix input encode icon
 * add translation for ExFilePicker
