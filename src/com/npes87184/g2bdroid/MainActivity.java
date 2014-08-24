@@ -60,7 +60,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.14;
+	private static final double version = 1.13;
 	String[] charsetsToBeTested = {"UTF-8"};
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
@@ -154,7 +154,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		prefs.edit().putInt(APP_ENTER_NUMBER, i).commit();
 		
 		encoding = findPreference(KEY_ENCODING);
-		if(prefs.getString(KEY_ENCODING, "UTF-8").equals("0")) {
+		if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
 			encoding.setSummary(getResources().getString(R.string.auto_detect));
 		} else {
 			encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
@@ -205,7 +205,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								File inFile = new File(prefs.getString(KEY_INPUT_FILE, APP_DIR));
 								InputStream is = new FileInputStream(inFile);
 								String encodeString = "UTF-8";
-								if(prefs.getString(KEY_ENCODING, "UTF-8").equals("0")) {  
+								if(prefs.getString(KEY_ENCODING, "0").equals("0")) {  
 							        Charset charset = detectCharset(inFile, charsetsToBeTested);  
 									if (charset == null) {  //maybe GBK
 										encodeString = "GBK";
@@ -379,7 +379,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if (key.equals(KEY_ENCODING)) {
-			if(prefs.getString(KEY_ENCODING, "UTF-8").equals("0")) {
+			if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
 				encoding.setSummary(getResources().getString(R.string.auto_detect));
 			} else {
 				encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
