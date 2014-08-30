@@ -60,7 +60,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.13;
+	private static final double version = 1.15;
 	String[] charsetsToBeTested = {"UTF-8"};
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;

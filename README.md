@@ -4,18 +4,17 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.14
+1.15
 
 Changelog
 ========
+###1.15
+* let defaule encode be auto detect
+* fix [別] transform error
+
 ###1.14
 * let output txt file more readable in Windows
 * add auto detect encode support
-
-###1.13
-* fix output file name will have (.txt) error
-* add version name in about dialog
-* now changelog can be chinese
 
 Features
 ========
