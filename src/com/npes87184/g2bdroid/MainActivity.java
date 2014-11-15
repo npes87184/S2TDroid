@@ -221,6 +221,9 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								BufferedReader bReader = new BufferedReader(isr);
 								String booknameString = Analysis.StoT(bReader.readLine()) + "\r";
 								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt");
+								if(outFile.exists()) {
+									outFile.delete();
+								}
 								OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
 								BufferedWriter bw = new BufferedWriter(osw); 
 								String line;
