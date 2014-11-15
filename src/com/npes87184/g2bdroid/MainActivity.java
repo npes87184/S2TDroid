@@ -33,6 +33,7 @@ import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -61,7 +62,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.14;
+	private static final double version = 1.16;
 	String[] charsetsToBeTested = {"UTF-8"};
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
@@ -90,7 +91,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		i = prefs.getInt(APP_ENTER_NUMBER, 0);
 		i++;
 		
-		if(i > 4) {
+		if(i > 2) {
 			i = 0;
 			new Thread(new Runnable() {  //auto check version
 				
@@ -329,36 +330,51 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
 				break;
 			case 3: //have ota
-				View view = View.inflate(MainActivity.this, R.layout.ota, null);
-				TextView versionChange = (TextView) view.findViewById(R.id.textView1);
-				versionChange.setText(versionString);
-				versionString = " ";
-				TextView textView = (TextView) view.findViewById(R.id.textView3);
-				textView.setMovementMethod(LinkMovementMethod.getInstance());
-			/*
-				AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-				dialog.setTitle(getResources().getString(R.string.new_version)).setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub		
-					}
-				}).show();*/
 				SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MainActivity.this);
-			    sweetAlertDialog.setTitleText(getResources().getString(R.string.new_version));
+			    sweetAlertDialog.setTitleText(getResources().getString(R.string.new_version)).setContentText(versionString)
+			    .setCancelText("No!")
+			    .setConfirmText("Check it!")
+			    .showCancelButton(true)
+			    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			    		@Override
+			    		public void onClick(SweetAlertDialog sDialog) {
+			    			sDialog.dismiss();
+			    			Uri uri = Uri.parse("http://home.gamer.com.tw/creationDetail.php?sn=2527256");
+			    			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			    			startActivity(intent);
+			    		}
+			    })
+			    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			    		@Override
+			    		public void onClick(SweetAlertDialog sDialog) {
+			    			sDialog.dismiss();
+			    		}
+			    });
    			    sweetAlertDialog.show();
+   			    versionString = " ";
 				break;
 			case 4: // do not have ota
-				View view1 = View.inflate(MainActivity.this, R.layout.no_ota, null);
-				TextView textview = (TextView) view1.findViewById(R.id.textView3);
-				textview.setMovementMethod(LinkMovementMethod.getInstance());
-			
-				AlertDialog.Builder dialog1 = new AlertDialog.Builder(MainActivity.this);
-				dialog1.setTitle(getResources().getString(R.string.no_version)).setView(view1).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub		
-					}
-				}).show();
+				SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(MainActivity.this);
+			    sweetAlertDialog1.setTitleText(getResources().getString(R.string.no_version)).setContentText(getResources().getString(R.string.problem))
+			    .setCancelText("No!")
+			    .setConfirmText("Contact me!")
+			    .showCancelButton(true)
+			    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			    		@Override
+			    		public void onClick(SweetAlertDialog sDialog) {
+			    			sDialog.dismiss();
+			    			Uri uri = Uri.parse("http://home.gamer.com.tw/creationDetail.php?sn=2527256");
+			    			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			    			startActivity(intent);
+			    		}
+			    })
+			    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+			    		@Override
+			    		public void onClick(SweetAlertDialog sDialog) {
+			    			sDialog.dismiss();
+			    		}
+			    });
+   			    sweetAlertDialog1.show();
 				break;
             }
           super.handleMessage(msg);
