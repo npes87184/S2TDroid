@@ -46,6 +46,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends PreferenceActivity implements
 SharedPreferences.OnSharedPreferenceChangeListener {
@@ -60,7 +61,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
-	private static final double version = 1.15;
+	private static final double version = 1.14;
 	String[] charsetsToBeTested = {"UTF-8"};
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
@@ -217,18 +218,24 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								}
 								InputStreamReader isr = new InputStreamReader(is, encodeString);
 								BufferedReader bReader = new BufferedReader(isr);
-								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default.").split("\\.")[0] + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt");
+								String booknameString = Analysis.StoT(bReader.readLine()) + "\r";
+								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt");
 								OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
 								BufferedWriter bw = new BufferedWriter(osw); 
 								String line;
+								boolean first_write = true;
 								while((line = bReader.readLine()) != null) {
+									if(first_write) {
+										first_write = false;
+										bw.write(booknameString + "\r");
+									}
 									bw.write(Analysis.StoT(line) + "\r");
 									bw.newLine();						
 								}
 								bReader.close();
 								bw.close();
 								//media rescan for correct show in pc
-		        			 	MediaScannerConnection.scanFile(getApplicationContext(), new String[]{prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + prefs.getString(KEY_FILE_NAME, "default.").split("\\.")[0] + "__" + prefs.getString(KEY_OUTPUT_ENCODING, "Unicode") + ".txt"}, null, null);
+		        			 	MediaScannerConnection.scanFile(getApplicationContext(), new String[]{prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt"}, null, null);
 		        		 } catch(Exception e){
 		        			 	System.out.println("error");
 		        		 }
@@ -314,7 +321,9 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.done), Toast.LENGTH_SHORT).show();
+				new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+			    .setTitleText(getResources().getString(R.string.done))
+			    .show();
 				break;
 			case 2:
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_network), Toast.LENGTH_SHORT).show();
@@ -326,14 +335,17 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 				versionString = " ";
 				TextView textView = (TextView) view.findViewById(R.id.textView3);
 				textView.setMovementMethod(LinkMovementMethod.getInstance());
-			
+			/*
 				AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
 				dialog.setTitle(getResources().getString(R.string.new_version)).setView(view).setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						// TODO Auto-generated method stub		
 					}
-				}).show();
+				}).show();*/
+				SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(MainActivity.this);
+			    sweetAlertDialog.setTitleText(getResources().getString(R.string.new_version));
+   			    sweetAlertDialog.show();
 				break;
 			case 4: // do not have ota
 				View view1 = View.inflate(MainActivity.this, R.layout.no_ota, null);
