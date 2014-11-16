@@ -61,7 +61,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_FILE_NAME = "file_name";
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
-	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/G2BDroid/";
+	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
 	private static final double version = 1.16;
 	String[] charsetsToBeTested = {"UTF-8"};
 	
@@ -219,7 +219,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								}
 								InputStreamReader isr = new InputStreamReader(is, encodeString);
 								BufferedReader bReader = new BufferedReader(isr);
-								String booknameString = Analysis.StoT(bReader.readLine()) + "\r";
+								String booknameString = Analysis.StoT(bReader.readLine());
 								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt");
 								if(outFile.exists()) {
 									outFile.delete();
