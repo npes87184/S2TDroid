@@ -303,8 +303,6 @@ containing a value of this type.
         public static final int efp__main_activity=0x7f030006;
         public static final int efp__new_folder=0x7f030007;
         public static final int fragment_main=0x7f030008;
-        public static final int no_ota=0x7f030009;
-        public static final int ota=0x7f03000a;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -341,6 +339,7 @@ containing a value of this type.
         public static final int exit=0x7f08001a;
         public static final int hello_world=0x7f080011;
         public static final int input_file=0x7f080014;
+        public static final int mail_body=0x7f08002d;
         public static final int new_version=0x7f080020;
         public static final int new_version_number=0x7f080023;
         public static final int no_network=0x7f08001e;
@@ -351,6 +350,7 @@ containing a value of this type.
         public static final int output_folder=0x7f080013;
         public static final int problem=0x7f080025;
         public static final int start=0x7f080017;
+        public static final int subject=0x7f08002c;
         public static final int version=0x7f080021;
         public static final int version_name=0x7f08002a;
         public static final int wait=0x7f08001f;

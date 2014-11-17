@@ -198,8 +198,6 @@ int layout efp__list_item 0x7f030005
 int layout efp__main_activity 0x7f030006
 int layout efp__new_folder 0x7f030007
 int layout fragment_main 0x7f030008
-int layout no_ota 0x7f030009
-int layout ota 0x7f03000a
 int menu main 0x7f0c0000
 int string about 0x7f080018
 int string about1 0x7f080019
@@ -232,6 +230,7 @@ int string encoding_title 0x7f080016
 int string exit 0x7f08001a
 int string hello_world 0x7f080011
 int string input_file 0x7f080014
+int string mail_body 0x7f08002d
 int string new_version 0x7f080020
 int string new_version_number 0x7f080023
 int string no_network 0x7f08001e
@@ -242,6 +241,7 @@ int string output_encoding_title 0x7f080027
 int string output_folder 0x7f080013
 int string problem 0x7f080025
 int string start 0x7f080017
+int string subject 0x7f08002c
 int string version 0x7f080021
 int string version_name 0x7f08002a
 int string wait 0x7f08001f

@@ -366,9 +366,11 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 			    		@Override
 			    		public void onClick(SweetAlertDialog sDialog) {
 			    			sDialog.dismiss();
-			    			Uri uri = Uri.parse("http://home.gamer.com.tw/creationDetail.php?sn=2527256");
-			    			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-			    			startActivity(intent);
+			    			Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+			    		            "mailto","npes87184@gmail.com", null));
+			    			emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.subject));
+			    			emailIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.mail_body));
+			    			startActivity(emailIntent);
 			    		}
 			    })
 			    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
