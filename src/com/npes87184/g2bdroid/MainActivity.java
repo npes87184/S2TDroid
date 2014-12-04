@@ -45,6 +45,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -62,7 +63,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String KEY_START = "start";
 	private static final String KEY_PATH = "path";
 	private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
-	private static final double version = 1.16;
+	private static final double version = 1.17;
 	String[] charsetsToBeTested = {"UTF-8"};
 	
 	private static final int EX_FILE_PICKER_RESULT = 0;
@@ -78,6 +79,10 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	private SharedPreferences prefs;
 	private ProgressDialog progressDialog;
 	private static int i;
+	
+	String booknameString = "default";
+	
+	Object syncToken = new Object();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +204,6 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 		startPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
-				Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
 				new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -219,7 +223,14 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								}
 								InputStreamReader isr = new InputStreamReader(is, encodeString);
 								BufferedReader bReader = new BufferedReader(isr);
-								String booknameString = Analysis.StoT(bReader.readLine());
+								booknameString = Analysis.StoT(bReader.readLine());
+								String firstLine = booknameString;
+								Message msg = new Message();
+								msg.what = 5;
+								mHandler.sendMessage(msg);
+								synchronized (syncToken) {
+									syncToken.wait();
+							    }
 								File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt");
 								if(outFile.exists()) {
 									outFile.delete();
@@ -231,7 +242,7 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 								while((line = bReader.readLine()) != null) {
 									if(first_write) {
 										first_write = false;
-										bw.write(booknameString + "\r");
+										bw.write(firstLine + "\r");
 									}
 									bw.write(Analysis.StoT(line) + "\r");
 									bw.newLine();						
@@ -381,6 +392,25 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 			    });
    			    sweetAlertDialog1.show();
 				break;
+			case 5: 
+				 AlertDialog.Builder editDialog = new AlertDialog.Builder(MainActivity.this);
+				 editDialog.setTitle(getResources().getString(R.string.bookname));
+				    
+				 final EditText editText = new EditText(MainActivity.this);
+				 editText.setText(booknameString);
+				 editDialog.setView(editText);
+				 editDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					 // do something when the button is clicked
+					 public void onClick(DialogInterface arg0, int arg1) {
+						 booknameString = editText.getText().toString();
+						 Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
+						 synchronized(syncToken) {
+							 syncToken.notify();
+						 }
+					 }
+				 });
+				 editDialog.show();
+				break;
             }
           super.handleMessage(msg);
 		}
@@ -523,5 +553,4 @@ SharedPreferences.OnSharedPreferenceChangeListener {
 	        }  
 	        return true;  
 	    }  
-	
 }

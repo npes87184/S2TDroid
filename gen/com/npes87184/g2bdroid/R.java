@@ -315,6 +315,7 @@ containing a value of this type.
         public static final int app_website=0x7f080022;
         public static final int author=0x7f08001b;
         public static final int auto_detect=0x7f08002b;
+        public static final int bookname=0x7f08002e;
         public static final int cancel=0x7f080015;
         public static final int check_update=0x7f080028;
         public static final int checking=0x7f080029;

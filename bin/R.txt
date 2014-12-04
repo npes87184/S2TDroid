@@ -206,6 +206,7 @@ int string app_name 0x7f08000d
 int string app_website 0x7f080022
 int string author 0x7f08001b
 int string auto_detect 0x7f08002b
+int string bookname 0x7f08002e
 int string cancel 0x7f080015
 int string check_update 0x7f080028
 int string checking 0x7f080029
