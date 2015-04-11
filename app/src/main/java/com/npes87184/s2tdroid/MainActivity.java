@@ -150,6 +150,10 @@ public class MainActivity extends PreferenceActivity implements
                             synchronized (syncToken) {
                                 syncToken.wait();
                             }
+                            File file = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR));
+                            if(!file.exists() || !file.isDirectory()) {
+                                file.mkdir();
+                            }
                             File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt");
                             if(outFile.exists()) {
                                 outFile.delete();
