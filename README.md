@@ -4,20 +4,22 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.17
+1.2
 
 Changelog
 ========
+###1.2
+* Material Color
+* Update library
+* Remove some unuse fuction
+* More Stable
+* Google Play
+
 ###1.17
 * let bookname can be amended
 * now contact me can start e-mail app
 * fix the bug that output file name will have \r
 
-###1.16
-* check whether output file exist or not
-* add sweet_alert_dialog thanks pedant
-* add auto detect book name for output file name
-* fix [作] transform error
 
 Features
 ========
@@ -29,7 +31,9 @@ Features
 
 Picture
 ========
-<img src="http://truth.bahamut.com.tw/s01/201408/c23d78e7e59f8d051d08ebec7a33ce25.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201504/34f062d4d9952d5e86b078398aabf54b.PNG">
+
+<img src="http://truth.bahamut.com.tw/s01/201504/a8b995555987328c8c5c36c66bd2402e.PNG">
 
 Thanks
 ========
