@@ -2,6 +2,8 @@ S2TDroid
 ========
 An opem source android app for transforming Simplified Chinese to Traditional Chinese
 
+[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid)
+
 Latest Version
 ========
 1.2
@@ -27,7 +29,6 @@ Features
 2. support GBK and UTF-8 input encode
 3. auto detect encode
 4. support choose UTF-8 or Unicode to output file
-5. online check version support
 
 Picture
 ========
