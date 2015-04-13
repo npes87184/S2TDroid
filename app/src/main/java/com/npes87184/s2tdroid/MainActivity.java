@@ -96,6 +96,7 @@ public class MainActivity extends PreferenceActivity implements
                 isIn = true;
                 Intent intent = new Intent(getApplicationContext(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
+                intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
                 intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt" });
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KEY_PATH, APP_DIR));
@@ -112,6 +113,7 @@ public class MainActivity extends PreferenceActivity implements
                 isIn = false;
                 Intent intent = new Intent(getApplicationContext(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR));
+                intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_DIRECTORIES);
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
                 startActivityForResult(intent, EX_FILE_PICKER_RESULT);
