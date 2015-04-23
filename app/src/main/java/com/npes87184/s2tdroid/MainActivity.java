@@ -40,7 +40,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import ru.bartwell.exfilepicker.ExFilePicker;
 import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 
-
 public class MainActivity extends PreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -75,7 +74,6 @@ public class MainActivity extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-
         prefs = getPreferenceManager().getSharedPreferences();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
@@ -98,7 +96,7 @@ public class MainActivity extends PreferenceActivity implements
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
-                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt" });
+                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc" });
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KEY_PATH, APP_DIR));
                 startActivityForResult(intent, EX_FILE_PICKER_RESULT);
                 return true;
@@ -130,6 +128,11 @@ public class MainActivity extends PreferenceActivity implements
                     public void run() {
                         try {
                             File inFile = new File(prefs.getString(KEY_INPUT_FILE, APP_DIR));
+                            //file extension, ex .txt, .lrc
+                            int startIndex = inFile.getName().lastIndexOf(46) + 1;
+                            int endIndex = inFile.getName().length();
+                            String file_extension = inFile.getName().substring(startIndex, endIndex);
+
                             InputStream is = new FileInputStream(inFile);
                             String encodeString = "UTF-8";
                             if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
@@ -156,7 +159,7 @@ public class MainActivity extends PreferenceActivity implements
                             if(!file.exists() || !file.isDirectory()) {
                                 file.mkdir();
                             }
-                            File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + ".txt");
+                            File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + "." + file_extension);
                             if(outFile.exists()) {
                                 outFile.delete();
                             }

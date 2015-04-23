@@ -6,22 +6,19 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.2
+1.21
 
 Changelog
 ========
+###1.21
+* Support lrc file
+
 ###1.2
 * Material Color
 * Update library
 * Remove some unuse fuction
 * More Stable
 * Google Play
-
-###1.17
-* let bookname can be amended
-* now contact me can start e-mail app
-* fix the bug that output file name will have \r
-
 
 Features
 ========
