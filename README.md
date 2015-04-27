@@ -31,10 +31,15 @@ Features
 2. support GBK and UTF-8 input encode
 3. auto detect encode
 4. support choose UTF-8 or Unicode to output file
+5. very fast, 1m txt only need some seconds
+6. auto detect bookname
+7. don't need internet
+8. support txt, trc and lrc
+9. add a checkbox that can determine the output file name
 
 Picture
 ========
-<img src="http://truth.bahamut.com.tw/s01/201504/34f062d4d9952d5e86b078398aabf54b.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201504/04c9768080308bd9f74ba9824f4b5ecb.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201504/a8b995555987328c8c5c36c66bd2402e.PNG">
 
