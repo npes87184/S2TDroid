@@ -50,12 +50,11 @@ public class MainActivity extends PreferenceActivity implements
     private static final String KEY_FILE_NAME = "file_name";
     private static final String KEY_START = "start";
     private static final String KEY_PATH = "path";
+    private static final String KEY_SAME_FILENAME = "same_filename";
     private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
     String[] charsetsToBeTested = {"UTF-8"};
 
     private static final int EX_FILE_PICKER_RESULT = 0;
-
-    private String versionString = " ";
 
     boolean isIn = false;
     private Preference encoding;
@@ -96,7 +95,7 @@ public class MainActivity extends PreferenceActivity implements
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
-                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc" });
+                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc", "trc" });
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KEY_PATH, APP_DIR));
                 startActivityForResult(intent, EX_FILE_PICKER_RESULT);
                 return true;
@@ -133,6 +132,13 @@ public class MainActivity extends PreferenceActivity implements
                             int endIndex = inFile.getName().length();
                             String file_extension = inFile.getName().substring(startIndex, endIndex);
 
+                            //file name
+                            String name = inFile.getName();
+                            int pos = name.lastIndexOf(".");
+                            if (pos > 0) {
+                                name = name.substring(0, pos);
+                            }
+
                             InputStream is = new FileInputStream(inFile);
                             String encodeString = "UTF-8";
                             if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
@@ -149,17 +155,25 @@ public class MainActivity extends PreferenceActivity implements
                             BufferedReader bReader = new BufferedReader(isr);
                             booknameString = Analysis.StoT(bReader.readLine());
                             String firstLine = booknameString;
-                            Message msg = new Message();
-                            msg.what = 5;
-                            mHandler.sendMessage(msg);
-                            synchronized (syncToken) {
-                                syncToken.wait();
+                            if(prefs.getBoolean(KEY_SAME_FILENAME,false)) {
+                                booknameString = name;
+                                Message msg = new Message();
+                                msg.what = 2;
+                                mHandler.sendMessage(msg);
+                            } else {
+                                Message msg = new Message();
+                                msg.what = 5;
+                                mHandler.sendMessage(msg);
+                                synchronized (syncToken) {
+                                    syncToken.wait();
+                                }
+                                booknameString = booknameString.split(" ")[0];
                             }
                             File file = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR));
                             if(!file.exists() || !file.isDirectory()) {
                                 file.mkdir();
                             }
-                            File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString.split(" ")[0]  + "." + file_extension);
+                            File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
                             if(outFile.exists()) {
                                 outFile.delete();
                             }
@@ -200,6 +214,9 @@ public class MainActivity extends PreferenceActivity implements
                     new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE)
                             .setTitleText(getResources().getString(R.string.done))
                             .show();
+                    break;
+                case 2:
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
                     break;
                 case 5:
                     AlertDialog.Builder editDialog = new AlertDialog.Builder(MainActivity.this);
@@ -246,7 +263,6 @@ public class MainActivity extends PreferenceActivity implements
             }
         }
     }
-
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

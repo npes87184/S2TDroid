@@ -6,10 +6,15 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.21
+1.22
 
 Changelog
 ========
+###1.22
+* Support trc file
+* Add a checkbox that can determine the output file name
+* Add Licence in about
+
 ###1.21
 * Support lrc file
 

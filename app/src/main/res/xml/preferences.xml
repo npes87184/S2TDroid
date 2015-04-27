@@ -5,6 +5,11 @@
     <Preference android:title="@string/output_folder" android:key="output_folder" android:icon="@drawable/ic_menu_archive"/>
     <ListPreference android:entries="@array/encoding_entry" android:entryValues="@array/encoding_value" android:negativeButtonText="@string/cancel" android:dialogTitle="@string/encoding_title" android:title="@string/encoding_title" android:key="encoding" android:icon="@drawable/ic_menu_find_holo_light"/>
     <ListPreference android:entries="@array/output_encoding_entry" android:entryValues="@array/output_encoding_value" android:dialogTitle="@string/output_encoding_title" android:negativeButtonText="@string/cancel" android:key="output_encoding" android:icon="@drawable/ic_perm_group_user_dictionary_write" android:title="@string/output_encoding_title"/>
+    <CheckBoxPreference android:key="same_filename"
+        android:icon="@drawable/ic_menu_save"
+        android:summary="@string/filename_detail"
+        android:title="@string/filename" android:defaultValue="false">
+    </CheckBoxPreference>
     <Preference android:title="@string/start" android:key="start" android:icon="@drawable/emo_im_laughing"/>
 
 </PreferenceScreen>

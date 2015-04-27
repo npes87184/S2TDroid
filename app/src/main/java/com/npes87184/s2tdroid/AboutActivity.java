@@ -1,11 +1,15 @@
 package com.npes87184.s2tdroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.dexafree.materialList.cards.SmallImageCard;
 import com.dexafree.materialList.controller.OnDismissCallback;
@@ -56,6 +60,29 @@ public class AboutActivity extends Activity {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
+                } else if (view.getTag().toString().equals("library")) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AboutActivity.this);
+                    alert.setTitle("Licence");
+
+                    WebView wv = new WebView(AboutActivity.this);
+                    wv.loadUrl("file:///android_asset/licence.html");
+                    wv.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            view.loadUrl(url);
+
+                            return true;
+                        }
+                    });
+
+                    alert.setView(wv);
+                    alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.show();
                 }
             }
 

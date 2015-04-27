@@ -19,4 +19,7 @@
     <string name="code_detail">This project is open source, you can click this card to see more information.</string>
     <string name="code">GitHub</string>
 
+    <string name="filename_detail">Output file name will be the same as input file. If translate novel recommended not checked. If you choose the sane directory, it maybe error.</string>
+    <string name="filename">Output File Name</string>
+
 </resources>
