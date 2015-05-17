@@ -6,24 +6,13 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.22
+1.30
 
 Changelog
 ========
-###1.22
-* Support trc file
-* Add a checkbox that can determine the output file name
-* Add Licence in about
-
-###1.21
-* Support lrc file
-
-###1.2
-* Material Color
-* Update library
-* Remove some unuse fuction
-* More Stable
-* Google Play
+###1.30
+* Material Design
+* Add transform mode 
 
 Features
 ========
@@ -36,12 +25,19 @@ Features
 7. don't need internet
 8. support txt, trc and lrc
 9. add a checkbox that can determine the output file name
+10. Material Design
 
 Picture
 ========
-<img src="http://truth.bahamut.com.tw/s01/201504/04c9768080308bd9f74ba9824f4b5ecb.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201505/161edda668b0d8bd1f0ca45808944f44.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201504/a8b995555987328c8c5c36c66bd2402e.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201505/f107a5908d917083a9fe0ecb1302ddff.PNG">
+
+<img src="http://truth.bahamut.com.tw/s01/201505/8dd23fdb4aa62d21b34c767f6d3f4182.PNG">
+
+<img src="http://truth.bahamut.com.tw/s01/201505/999dc8b4a816f8480b20c13fea1a33e2.PNG">
+
+<img src="http://truth.bahamut.com.tw/s01/201505/367355b101026a9d92e44c2c0ce165ef.PNG">
 
 Thanks
 ========
