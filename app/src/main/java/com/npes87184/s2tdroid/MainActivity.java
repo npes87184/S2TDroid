@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
                     case 1:
                         // setting
                         fragmentManager.beginTransaction()
-                                .replace(R.id.container, HomeFragment.newInstance(0))
+                                .replace(R.id.container, SettingFragment.newInstance(0))
                                 .commit();
                         mDrawerLayout.closeDrawers();
                         break;

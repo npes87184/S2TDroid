@@ -22,4 +22,9 @@
     <string name="filename_detail">輸出檔名將會跟輸入一樣，轉小說的話不建議勾選。如果輸出目錄跟輸入一樣，可能導致錯誤。</string>
     <string name="filename">輸出檔名</string>
 
+    <string name="s2t">簡轉繁</string>
+    <string name="t2s">繁轉簡</string>
+
+    <string name="mode">轉換模式</string>
+
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference android:entries="@array/mode_entry"
+        android:entryValues="@array/mode_value"
+        android:dialogTitle="@string/mode"
+        android:negativeButtonText="@string/cancel"
+        android:key="mode"
+        android:icon="@drawable/ic_menu_attachment"
+        android:title="@string/mode"/>
+
+    <ListPreference android:entries="@array/encoding_entry" android:entryValues="@array/encoding_value" android:negativeButtonText="@string/cancel" android:dialogTitle="@string/encoding_title" android:title="@string/encoding_title" android:key="encoding" android:icon="@drawable/ic_menu_find_holo_light"/>
+    <ListPreference android:entries="@array/output_encoding_entry" android:entryValues="@array/output_encoding_value" android:dialogTitle="@string/output_encoding_title" android:negativeButtonText="@string/cancel" android:key="output_encoding" android:icon="@drawable/ic_perm_group_user_dictionary_write" android:title="@string/output_encoding_title"/>
+
+    <CheckBoxPreference android:key="same_filename"
+        android:icon="@drawable/ic_menu_save"
+        android:summary="@string/filename_detail"
+        android:title="@string/filename" android:defaultValue="false">
+    </CheckBoxPreference>
+
+
+</PreferenceScreen>

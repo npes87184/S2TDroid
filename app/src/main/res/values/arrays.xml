@@ -23,4 +23,14 @@
         <item>Unicode</item>
     </string-array>
 
+    <string-array name="mode_entry">
+        <item>@string/t2s</item>
+        <item>@string/s2t</item>
+    </string-array>
+
+    <string-array name="mode_value">
+        <item>t2s</item>
+        <item>s2t</item>
+    </string-array>
+
 </resources>

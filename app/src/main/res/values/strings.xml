@@ -27,4 +27,9 @@
     <string name="open">open</string>
     <string name="close">close</string>
 
+    <string name="s2t">Simple to Traditional</string>
+    <string name="t2s">Traditional to Simple</string>
+
+    <string name="mode">Mode</string>
+
 </resources>

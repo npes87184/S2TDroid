@@ -41,6 +41,7 @@ public class HomeFragment extends PreferenceFragment implements
 
 
     private static final String KEY_ENCODING = "encoding";
+    private static final String KEY_MODE = "mode";
     private static final String KEY_OUTPUT_ENCODING = "output_encoding";
     private static final String KEY_INPUT_FILE = "input_file";
     private static final String KEY_OUTPUT_FOLDER = "output_folder";
@@ -55,11 +56,10 @@ public class HomeFragment extends PreferenceFragment implements
     private static final int EX_FILE_PICKER_RESULT = 0;
 
     boolean isIn = false;
-    private Preference encoding;
+
     private Preference inputPreference;
     private Preference outputPreference;
     private Preference startPreference;
-    private Preference outEncodePreference;
     private SharedPreferences prefs;
 
     String booknameString = "default";
@@ -82,15 +82,7 @@ public class HomeFragment extends PreferenceFragment implements
         prefs = getPreferenceManager().getSharedPreferences();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        encoding = findPreference(KEY_ENCODING);
-        if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
-            encoding.setSummary(getResources().getString(R.string.auto_detect));
-        } else {
-            encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
-        }
 
-        outEncodePreference = findPreference(KEY_OUTPUT_ENCODING);
-        outEncodePreference.setSummary(prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
         inputPreference = findPreference(KEY_INPUT_FILE);
         inputPreference.setSummary(prefs.getString(KEY_INPUT_FILE, APP_DIR));
         inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -148,20 +140,33 @@ public class HomeFragment extends PreferenceFragment implements
                             InputStream is = new FileInputStream(inFile);
                             String encodeString = "UTF-8";
                             if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
-                                Charset charset = detectCharset(inFile, charsetsToBeTested);
-                                if (charset == null) {  //maybe GBK
-                                    encodeString = "GBK";
-                                } else { //UTF-8
-                                    encodeString = "UTF-8";
+                                if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
+                                    Charset charset = detectCharset(inFile, charsetsToBeTested);
+                                    if (charset == null) {  //maybe GBK
+                                        encodeString = "GBK";
+                                    } else { //UTF-8
+                                        encodeString = "UTF-8";
+                                    }
+                                } else {
+                                    Charset charset = detectCharset(inFile, charsetsToBeTested);
+                                    if (charset == null) {  //maybe Unicode
+                                        encodeString = "Unicode";
+                                    } else { //UTF-8
+                                        encodeString = "UTF-8";
+                                    }
                                 }
                             } else {
                                 encodeString = prefs.getString(KEY_ENCODING, "UTF-8");
                             }
                             InputStreamReader isr = new InputStreamReader(is, encodeString);
                             BufferedReader bReader = new BufferedReader(isr);
-                            booknameString = Analysis.StoT(bReader.readLine());
+                            if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
+                                booknameString = Analysis.StoT(bReader.readLine());
+                            } else {
+                                booknameString = Analysis.TtoS(bReader.readLine());
+                            }
                             String firstLine = booknameString;
-                            if(prefs.getBoolean(KEY_SAME_FILENAME,false)) {
+                            if(prefs.getBoolean(KEY_SAME_FILENAME, false)) {
                                 booknameString = name;
                                 Message msg = new Message();
                                 msg.what = 2;
@@ -192,7 +197,11 @@ public class HomeFragment extends PreferenceFragment implements
                                     first_write = false;
                                     bw.write(firstLine + "\r");
                                 }
-                                bw.write(Analysis.StoT(line) + "\r");
+                                if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
+                                    bw.write(Analysis.StoT(line) + "\r");
+                                } else {
+                                    bw.write(Analysis.TtoS(line) + "\r");
+                                }
                                 bw.newLine();
                             }
                             bReader.close();
@@ -268,22 +277,17 @@ public class HomeFragment extends PreferenceFragment implements
                 }
             }
         }
+        getActivity().finish();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(KEY_ENCODING)) {
-            if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
-                encoding.setSummary(getResources().getString(R.string.auto_detect));
-            } else {
-                encoding.setSummary(prefs.getString(KEY_ENCODING, "UTF-8"));
-            }
-        } else if (key.equals(KEY_INPUT_FILE)) {
+        if (key.equals(KEY_INPUT_FILE)) {
             inputPreference.setSummary(sharedPreferences.getString(KEY_INPUT_FILE, APP_DIR));
         } else if (key.equals(KEY_OUTPUT_FOLDER)) {
             outputPreference.setSummary(sharedPreferences.getString(KEY_OUTPUT_FOLDER, APP_DIR));
-        } else if (key.equals(KEY_OUTPUT_ENCODING)) {
-            outEncodePreference.setSummary(sharedPreferences.getString(KEY_OUTPUT_ENCODING, "Unicode"));
         }
     }
 
