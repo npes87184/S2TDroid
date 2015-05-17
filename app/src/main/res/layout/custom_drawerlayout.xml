@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
+        android:orientation="vertical"
         android:layout_gravity="start">
+
         <ListView
             android:id="@+id/lv_left_menu"
             android:layout_width="match_parent"

@@ -1,9 +1,7 @@
 package com.npes87184.s2tdroid;
 
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.widget.DrawerLayout;
@@ -15,20 +13,28 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.npes87184.s2tdroid.model.ListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView lvLeftMenu;
-
-    private ArrayAdapter arrayAdapter;
+    private ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
-        String[] lvs = {getString(R.string.home), getString(R.string.setting), getString(R.string.about1)};
+        List<String> lvs = new ArrayList<String>(3);
+
+        lvs.add(getString(R.string.home));
+        lvs.add(getString(R.string.setting));
+        lvs.add(getString(R.string.about1));
 
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
@@ -50,8 +56,8 @@ public class MainActivity extends ActionBarActivity {
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         //設置菜單列表
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
-        lvLeftMenu.setAdapter(arrayAdapter);
+        adapter = new ListAdapter(this, lvs);
+        lvLeftMenu.setAdapter(adapter);
         lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
