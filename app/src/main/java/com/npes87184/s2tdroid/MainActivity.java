@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -94,6 +95,18 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.container, HomeFragment.newInstance(0))
                 .commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.tl_custom);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
