@@ -26,8 +26,6 @@
             android:name="ru.bartwell.exfilepicker.ExFilePickerActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/ExFilePickerThemeLight" />
-        <activity
-            android:name=".AboutActivity" />
     </application>
 
 </manifest>

@@ -1,54 +1,19 @@
 package com.npes87184.s2tdroid;
 
-import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaScannerConnection;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-import ru.bartwell.exfilepicker.ExFilePicker;
-import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 
 public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
@@ -87,7 +52,37 @@ public class MainActivity extends ActionBarActivity {
         //設置菜單列表
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
         lvLeftMenu.setAdapter(arrayAdapter);
+        lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
+                FragmentManager fragmentManager = getFragmentManager();
+                switch (arg2) {
+                    case 0:
+                        // home
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, HomeFragment.newInstance(0))
+                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 1:
+                        // setting
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, HomeFragment.newInstance(0))
+                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 2:
+                        // about
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, AboutFragment.newInstance(0))
+                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                }
+            }
+        });
 
+        // init
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, HomeFragment.newInstance(0))
