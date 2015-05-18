@@ -52,7 +52,8 @@ public class HomeFragment extends PreferenceFragment implements
     private static final String KEY_SAME_FILENAME = "same_filename";
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
-    String[] charsetsToBeTested = {"UTF-8"};
+    String[] charsetsToBeTestedCN = {"UTF-8", "GBK"};
+    String[] charsetsToBeTestedTW = {"UTF-8", "BIG5"};
 
     private static final int EX_FILE_PICKER_RESULT = 0;
 
@@ -142,18 +143,22 @@ public class HomeFragment extends PreferenceFragment implements
                             String encodeString = "UTF-8";
                             if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
                                 if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
-                                    Charset charset = detectCharset(inFile, charsetsToBeTested);
-                                    if (charset == null) {  //maybe GBK
-                                        encodeString = "GBK";
-                                    } else { //UTF-8
-                                        encodeString = "UTF-8";
-                                    }
-                                } else {
-                                    Charset charset = detectCharset(inFile, charsetsToBeTested);
+                                    Charset charset = detectCharset(inFile, charsetsToBeTestedCN);
                                     if (charset == null) {  //maybe Unicode
                                         encodeString = "Unicode";
-                                    } else { //UTF-8
+                                    } else if(charset.name().equals("UTF-8")) { //UTF-8
                                         encodeString = "UTF-8";
+                                    } else {
+                                        encodeString = "GBK";
+                                    }
+                                } else {
+                                    Charset charset = detectCharset(inFile, charsetsToBeTestedTW);
+                                    if (charset == null) {  //maybe Unicode
+                                        encodeString = "Unicode";
+                                    } else if(charset.name().equals("UTF-8")) { //UTF-8
+                                        encodeString = "UTF-8";
+                                    } else {
+                                        encodeString = "BIG5";
                                     }
                                 }
                             } else {

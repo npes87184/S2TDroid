@@ -4,12 +4,16 @@
     <string-array name="encoding_entry">
         <item>UTF-8</item>
         <item>GBK</item>
+        <item>BIG5</item>
+        <item>Unicode</item>
         <item>@string/auto_detect</item>
     </string-array>
 
     <string-array name="encoding_value">
         <item>UTF-8</item>
         <item>GBK</item>
+        <item>BIG5</item>
+        <item>Unicode</item>
         <item>0</item>
     </string-array>
 
