@@ -6,10 +6,14 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.30
+1.31
 
 Changelog
 ========
+###1.31
+* Fix if txt has only one line error
+* Add Unicode, BIG5 support
+
 ###1.30
 * Material Design
 * Add transform mode 
