@@ -12,6 +12,7 @@ import android.os.Message;
 import android.preference.Preference;
 
 import android.preference.PreferenceFragment;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -191,15 +192,13 @@ public class HomeFragment extends PreferenceFragment implements
                             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
                             BufferedWriter bw = new BufferedWriter(osw);
                             String line;
-                            boolean first_write = true;
+                            bw.write(firstLine + "\r");
+                            bw.newLine();
                             while((line = bReader.readLine()) != null) {
-                                if(first_write) {
-                                    first_write = false;
-                                    bw.write(firstLine + "\r");
-                                }
                                 if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
                                     bw.write(Analysis.StoT(line) + "\r");
                                 } else {
+                                    Log.i("info", "look");
                                     bw.write(Analysis.TtoS(line) + "\r");
                                 }
                                 bw.newLine();
