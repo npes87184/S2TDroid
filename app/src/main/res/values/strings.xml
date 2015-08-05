@@ -21,7 +21,7 @@
     <string name="code_detail">This project is open source, you can click this card to see more information.</string>
     <string name="code">GitHub</string>
 
-    <string name="filename_detail">Output file name will be the same as input file. If translate novel recommended not checked. If you choose the sane directory, it maybe error.</string>
+    <string name="filename_detail">Output file name will be the same as input file. If translate novel, we recommended not checked. If you choose the sane directory, it maybe error.</string>
     <string name="filename">Output File Name</string>
 
     <string name="open">open</string>
@@ -31,5 +31,12 @@
     <string name="t2s">Traditional to Simple</string>
 
     <string name="mode">Mode</string>
-
+    <string name="encode">Encode</string>
+    <string name="normal">Normal</string>
+    <string name="custom">Custom</string>
+    <string name="custom_rule">Custom Rule</string>
+    <string name="directions">Directions</string>
+    <string name="directions_detail">Let the traditional correspond to simple. For example, tradition is "龍靈" then simple should be "龙灵".</string>
+    <string name="tradition">Tradition</string>
+    <string name="simple">Simple</string>
 </resources>
