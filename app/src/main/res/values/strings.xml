@@ -20,6 +20,9 @@
     <string name="contact">Contact Me</string>
     <string name="code_detail">This project is open source, you can click this card to see more information.</string>
     <string name="code">GitHub</string>
+    <string name="rate_detail">If this app help you, please rate 5 star in google play. Thanks!</string>
+    <string name="rate">Rate</string>
+
 
     <string name="filename_detail">Output file name will be the same as input file. If translate novel, we recommended not checked. If you choose the sane directory, it maybe error.</string>
     <string name="filename">Output File Name</string>

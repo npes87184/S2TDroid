@@ -9,7 +9,7 @@
     <string name="home">主畫面</string>
     <string name="setting">設定</string>
     <string name="about1">關於</string>
-    <string name="done">Done!</string>
+    <string name="done">完成！</string>
     <string name="wait">請稍後數秒...</string>
     <string name="output_encoding_title">輸出編碼</string>
     <string name="auto_detect">自動偵測</string>
@@ -20,8 +20,10 @@
     <string name="contact">聯繫我</string>
     <string name="code_detail">這是一個開源軟體，可以點此卡片得到更多資訊。</string>
     <string name="code">GitHub</string>
+    <string name="rate_detail">如果這個 APP 對您有幫助且不麻煩的話，幫我在 Google Play 評個 5 星，謝謝。</string>
+    <string name="rate">評分</string>
 
-    <string name="filename_detail">輸出檔名將會跟輸入一樣，轉小說的話不建議勾選。如果輸出目錄跟輸入一樣，可能導致錯誤。</string>
+    <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，可能導致錯誤。</string>
     <string name="filename">輸出檔名</string>
 
     <string name="open">open</string>
@@ -31,5 +33,7 @@
     <string name="t2s">繁轉簡</string>
 
     <string name="mode">轉換模式</string>
+    <string name="encode">編碼</string>
+    <string name="normal">一般</string>
 
 </resources>

@@ -70,6 +70,11 @@ public class AboutFragment extends Fragment {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
+                } else if (view.getTag().toString().equals("rate")) {
+                    String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
                 } else if (view.getTag().toString().equals("library")) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                     alert.setTitle("Licence");
@@ -108,8 +113,14 @@ public class AboutFragment extends Fragment {
         code.setTag("code");
         mListView.add(code);
 
+        SmallImageCard rate = new SmallImageCard(getActivity());
+        rate.setDescription(R.string.rate_detail);
+        rate.setTitle(R.string.rate);
+        rate.setTag("rate");
+        mListView.add(rate);
+
         SmallImageCard library = new SmallImageCard(getActivity());
-        library.setDescription("ExFilePicker, JNovelDownloader and Materiallist");
+        library.setDescription("sweet-alert-dialog, ExFilePicker, JNovelDownloader and Materiallist");
         library.setTitle("Library");
         library.setTag("library");
         mListView.add(library);

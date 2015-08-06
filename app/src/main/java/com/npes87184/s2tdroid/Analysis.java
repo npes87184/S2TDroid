@@ -30,7 +30,7 @@ public class Analysis {
                 .toCharArray();
         ;
 
-        for (int i = 0, n = Math.min(UTF8T.length, UTF8S.length); i < n; i++) {
+        for (int i = 0, n = Math.min(UTF8T.length, UTF8S.length); i < n; ++i) {
             final Character cT = Character.valueOf(UTF8T[i]);
             final Character cS = Character.valueOf(UTF8S[i]);
             T2S.put(cT, cS);
@@ -41,7 +41,7 @@ public class Analysis {
     private static String translate(String text,
                                     Map<Character, Character> dictionary) {
         final char[] chars = text.toCharArray();
-        for (int i = 0, n = chars.length; i < n; i++) {
+        for (int i = 0, n = chars.length; i < n; ++i) {
             final Character found = dictionary.get(chars[i]);
             if (null != found)
                 chars[i] = found;
