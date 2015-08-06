@@ -26,19 +26,4 @@
         <ListPreference android:entries="@array/output_encoding_entry" android:entryValues="@array/output_encoding_value" android:dialogTitle="@string/output_encoding_title" android:negativeButtonText="@string/cancel" android:key="output_encoding" android:icon="@drawable/ic_perm_group_user_dictionary_write" android:title="@string/output_encoding_title"/>
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/custom"
-        android:key="custom">
-        <Preference android:title="@string/directions" android:key="directions" android:summary="@string/directions_detail"/>
-        <EditTextPreference
-            android:key="tradition"
-            android:title="@string/tradition"
-            android:dialogTitle="@string/custom_rule" />
-        <EditTextPreference
-            android:key="simple"
-            android:title="@string/simple"
-            android:dialogTitle="@string/custom_rule" />
-    </PreferenceCategory>
-
-
 </PreferenceScreen>

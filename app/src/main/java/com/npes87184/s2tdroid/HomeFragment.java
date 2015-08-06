@@ -299,7 +299,7 @@ public class HomeFragment extends PreferenceFragment implements
 
         Charset charset = null;
 
-        // charsets ¬O§Ú­Ì©w¸qªº ½s½X ¯x°}, ¥]¬A UTF8, BIG5 etc.
+        // charsets ï¿½Oï¿½Ú­Ì©wï¿½qï¿½ï¿½ ï¿½sï¿½X ï¿½xï¿½}, ï¿½]ï¿½A UTF8, BIG5 etc.
         for (String charsetName : charsets) {
             charset = detectCharset(f, Charset.forName(charsetName));
             if (charset != null) {
