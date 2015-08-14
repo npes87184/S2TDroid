@@ -33,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
         List<String> lvs = new ArrayList<String>(3);
 
         lvs.add(getString(R.string.home));
+        lvs.add(getString(R.string.home));
         lvs.add(getString(R.string.setting));
         lvs.add(getString(R.string.about1));
 
@@ -71,13 +72,20 @@ public class MainActivity extends ActionBarActivity {
                         mDrawerLayout.closeDrawers();
                         break;
                     case 1:
+                        // bubble
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.container, BubbleFragment.newInstance(0))
+                                .commit();
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 2:
                         // setting
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, SettingFragment.newInstance(0))
                                 .commit();
                         mDrawerLayout.closeDrawers();
                         break;
-                    case 2:
+                    case 3:
                         // about
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, AboutFragment.newInstance(0))
