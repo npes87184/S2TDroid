@@ -1,6 +1,6 @@
 package com.npes87184.s2tdroid;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v7.internal.view.ContextThemeWrapper;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,9 +38,15 @@ public class BubbleService extends Service implements IconCallback {
     @Override
     public void onCreate() {
         super.onCreate();
+        final float scale = getResources().getDisplayMetrics().density;
+        int size = (int)(60 * scale);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         ImageView iconView = new ImageView(this);
-        iconView.setImageResource(R.drawable.ic_launcher);
+        iconView.setImageResource(R.drawable.telegram);
+        iconView.setAdjustViewBounds(true);
+        iconView.setMaxHeight(size);
+        iconView.setMaxWidth(size);
+        iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         mMagnet = new Magnet.Builder(this)
                 .setIconView(iconView)
                 .setIconCallback(this)
@@ -65,7 +73,7 @@ public class BubbleService extends Service implements IconCallback {
     public void onIconClick(View icon, float iconXPose, float iconYPose) {
         Log.i(TAG, "onIconClick(..)");
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
         builder.setTitle("S2TDroid");
 
         // Set up the input
