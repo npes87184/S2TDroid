@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by npes87184 on 2015/8/14.
@@ -46,6 +47,10 @@ public class BubbleFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        TextView textView = (TextView) v.findViewById(R.id.textView2);
+        final float scale = getResources().getDisplayMetrics().density;
+        int size = (int)(7 * scale);
+        textView.setTextSize(size);
 
         return v;
     }
