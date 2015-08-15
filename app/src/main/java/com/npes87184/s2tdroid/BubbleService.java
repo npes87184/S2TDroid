@@ -1,5 +1,6 @@
 package com.npes87184.s2tdroid;
 
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -9,8 +10,6 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.internal.view.ContextThemeWrapper;
-import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,6 +28,7 @@ public class BubbleService extends Service implements IconCallback {
     private Magnet mMagnet;
     private static final String KEY_MODE = "mode";
     private SharedPreferences prefs;
+    float scale;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -38,7 +38,7 @@ public class BubbleService extends Service implements IconCallback {
     @Override
     public void onCreate() {
         super.onCreate();
-        final float scale = getResources().getDisplayMetrics().density;
+        scale = getResources().getDisplayMetrics().density;
         int size = (int)(60 * scale);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         ImageView iconView = new ImageView(this);
@@ -74,15 +74,18 @@ public class BubbleService extends Service implements IconCallback {
         Log.i(TAG, "onIconClick(..)");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
-        builder.setTitle("S2TDroid");
+        builder.setTitle("S2TDroid"+'-'+
+                (prefs.getString(KEY_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s)));
 
         // Set up the input
         final EditText input = new EditText(this);
+        input.setHint(getString(R.string.dialogHint));
+        input.setHintTextColor(Color.parseColor("#757575"));
+        input.setTextColor(Color.parseColor("#000000"));
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         builder.setView(input);
-
         // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.copy), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String out = input.getText().toString();
@@ -91,6 +94,9 @@ public class BubbleService extends Service implements IconCallback {
             }
         });
         AlertDialog alert = builder.create();
+        // in Lollipop the dialog will be covered by input...
+        int size = (int)(150 * scale);
+        alert.getWindow().getAttributes().y = -1*size;
         alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         alert.show();
     }

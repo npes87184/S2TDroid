@@ -23,6 +23,8 @@
     <string name="code">GitHub</string>
     <string name="rate_detail">如果這個 APP 對您有幫助且不麻煩的話，幫我在 Google Play 評個 5 星，謝謝。</string>
     <string name="rate">評分</string>
+    <string name="dialogHint">可以在設定中更改轉換模式。</string>
+    <string name="copy">複製</string>
 
     <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，可能導致錯誤。</string>
     <string name="filename">輸出檔名</string>

@@ -1,6 +1,6 @@
 package com.npes87184.s2tdroid;
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,7 @@ import android.os.Message;
 import android.preference.Preference;
 
 import android.preference.PreferenceFragment;
+import android.support.v7.internal.view.ContextThemeWrapper;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -238,7 +239,7 @@ public class HomeFragment extends PreferenceFragment implements
                     Toast.makeText(getActivity(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
                     break;
                 case 5:
-                    AlertDialog.Builder editDialog = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder editDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppCompatAlertDialogStyle));
                     editDialog.setTitle(getResources().getString(R.string.bookname));
 
                     final EditText editText = new EditText(getActivity());
