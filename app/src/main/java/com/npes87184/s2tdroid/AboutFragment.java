@@ -120,7 +120,7 @@ public class AboutFragment extends Fragment {
         mListView.add(rate);
 
         SmallImageCard library = new SmallImageCard(getActivity());
-        library.setDescription("sweet-alert-dialog, ExFilePicker, JNovelDownloader and Materiallist");
+        library.setDescription("sweet-alert-dialog, ExFilePicker, JNovelDownloader, Materiallist and Magnet");
         library.setTitle("Library");
         library.setTag("library");
         mListView.add(library);
