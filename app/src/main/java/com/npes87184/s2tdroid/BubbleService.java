@@ -46,7 +46,7 @@ public class BubbleService extends Service implements IconCallback {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification)
-                        .setContentTitle(getString(R.string.notification))
+                        .setContentTitle(getString(R.string.app_name))
                         .setContentText(getString(R.string.notification));
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
