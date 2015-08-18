@@ -6,10 +6,15 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.32
+1.40
 
 Changelog
 ========
+###1.40
+* Add bubble fragment
+* Add bubble transform
+* More material
+
 ###1.32
 * Adjust setting layout
 * Adjust about layout
@@ -19,10 +24,6 @@ Changelog
 ###1.31
 * Fix if txt has only one line error
 * Add Unicode, BIG5 support
-
-###1.30
-* Material Design
-* Add transform mode 
 
 Features
 ========
@@ -41,7 +42,11 @@ Picture
 ========
 <img src="http://truth.bahamut.com.tw/s01/201505/161edda668b0d8bd1f0ca45808944f44.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201505/f107a5908d917083a9fe0ecb1302ddff.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201508/b03c37d6ca6d2b7ddb058149f7bc7182.PNG">
+
+<img src="http://truth.bahamut.com.tw/s01/201508/c25f40b8d870e3c74f116d1a4935762a.PNG">
+
+<img src="http://truth.bahamut.com.tw/s01/201508/5e5f75926c11df8a03f940b26f794d51.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/fbbb6a7a5329934085b6ca657ec8d909.PNG">
 
