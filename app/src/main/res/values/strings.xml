@@ -31,6 +31,9 @@
     <string name="filename_detail">Output file name will be the same as input file. If translate novel, we recommended not checked. If you choose the sane directory, it maybe error.</string>
     <string name="filename">Output File Name</string>
 
+    <string name="notification">S2TDroid transform bubble is acting.</string>
+
+
     <string name="open">open</string>
     <string name="close">close</string>
 
