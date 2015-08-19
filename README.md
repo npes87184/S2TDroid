@@ -6,10 +6,14 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.40
+1.41
 
 Changelog
 ========
+###1.41
+* setForegroundService
+* when file does not exist, add error
+
 ###1.40
 * Add bubble fragment
 * Add bubble transform
