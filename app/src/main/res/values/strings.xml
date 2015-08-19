@@ -33,6 +33,8 @@
 
     <string name="notification">S2TDroid transform bubble is acting.</string>
 
+    <string name="oops">Oops...</string>
+    <string name="oops_detail">Input file doesn\'t exist.</string>
 
     <string name="open">open</string>
     <string name="close">close</string>

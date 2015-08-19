@@ -128,6 +128,13 @@ public class HomeFragment extends PreferenceFragment implements
                     public void run() {
                         try {
                             File inFile = new File(prefs.getString(KEY_INPUT_FILE, APP_DIR));
+                            if(!inFile.exists()) {
+                                Message msg = new Message();
+                                msg.what = 2;
+                                mHandler.sendMessage(msg);
+                                Thread.currentThread().interrupt();
+                                return;
+                            }
                             //file extension, ex .txt, .lrc
                             int startIndex = inFile.getName().lastIndexOf(46) + 1;
                             int endIndex = inFile.getName().length();
@@ -176,7 +183,7 @@ public class HomeFragment extends PreferenceFragment implements
                             if(prefs.getBoolean(KEY_SAME_FILENAME, false)) {
                                 booknameString = name;
                                 Message msg = new Message();
-                                msg.what = 2;
+                                msg.what = 3;
                                 mHandler.sendMessage(msg);
                             } else {
                                 Message msg = new Message();
@@ -236,6 +243,12 @@ public class HomeFragment extends PreferenceFragment implements
                             .show();
                     break;
                 case 2:
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.oops))
+                            .setContentText(getString(R.string.oops_detail))
+                            .show();
+                    break;
+                case 3:
                     Toast.makeText(getActivity(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
                     break;
                 case 5:

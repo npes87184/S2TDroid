@@ -32,6 +32,9 @@
     <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，可能導致錯誤。</string>
     <string name="filename">輸出檔名</string>
 
+    <string name="oops">錯誤</string>
+    <string name="oops_detail">輸入檔案不存在！</string>
+
     <string name="open">open</string>
     <string name="close">close</string>
 
