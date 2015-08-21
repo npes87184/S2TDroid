@@ -13,7 +13,6 @@ import android.preference.Preference;
 
 import android.preference.PreferenceFragment;
 import android.support.v7.internal.view.ContextThemeWrapper;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -200,7 +199,6 @@ public class HomeFragment extends PreferenceFragment implements
                                 if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                     bw.write(Analysis.StoT(line) + "\r");
                                 } else {
-                                    Log.i("info", "look");
                                     bw.write(Analysis.TtoS(line) + "\r");
                                 }
                                 bw.newLine();
@@ -210,7 +208,7 @@ public class HomeFragment extends PreferenceFragment implements
                             //media rescan for correct show in pc
                             MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString.split(" ")[0] + file_extension}, null, null);
                         } catch(Exception e){
-                            System.out.println("error");
+
                         }
                         Message msg = new Message();
                         msg.what = 1;
@@ -278,8 +276,6 @@ public class HomeFragment extends PreferenceFragment implements
                     }
                     else {
                         outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, object.path + object.names.get(0) + "/").commit();
-                        System.out.println(object.path);
-
                     }
                 }
             }
@@ -309,7 +305,6 @@ public class HomeFragment extends PreferenceFragment implements
                 break;
             }
         }
-        System.out.printf("\t[Test] Using '%s' encoding!\n", charset);
         return charset;
     }
 
