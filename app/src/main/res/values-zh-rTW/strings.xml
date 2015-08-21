@@ -35,9 +35,6 @@
     <string name="oops">錯誤</string>
     <string name="oops_detail">輸入檔案不存在！</string>
 
-    <string name="open">open</string>
-    <string name="close">close</string>
-
     <string name="s2t">簡轉繁</string>
     <string name="t2s">繁轉簡</string>
 
