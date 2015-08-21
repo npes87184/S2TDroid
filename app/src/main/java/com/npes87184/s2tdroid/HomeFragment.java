@@ -175,7 +175,7 @@ public class HomeFragment extends PreferenceFragment implements
                                 mHandler.sendMessage(msg);
                             } else {
                                 Message msg = new Message();
-                                msg.what = 5;
+                                msg.what = 4;
                                 mHandler.sendMessage(msg);
                                 synchronized (syncToken) {
                                     syncToken.wait();
@@ -238,7 +238,7 @@ public class HomeFragment extends PreferenceFragment implements
                 case 3:
                     Toast.makeText(getActivity(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
                     break;
-                case 5:
+                case 4:
                     AlertDialog.Builder editDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppCompatAlertDialogStyle));
                     editDialog.setTitle(getResources().getString(R.string.bookname));
 
