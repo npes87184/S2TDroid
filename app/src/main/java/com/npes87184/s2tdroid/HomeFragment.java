@@ -167,11 +167,7 @@ public class HomeFragment extends PreferenceFragment implements
                             }
                             InputStreamReader isr = new InputStreamReader(is, encodeString);
                             BufferedReader bReader = new BufferedReader(isr);
-                            if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                booknameString = Analysis.StoT(bReader.readLine());
-                            } else {
-                                booknameString = Analysis.TtoS(bReader.readLine());
-                            }
+                            booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
                             String firstLine = booknameString;
                             if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                 booknameString = name;
@@ -212,7 +208,7 @@ public class HomeFragment extends PreferenceFragment implements
                             bReader.close();
                             bw.close();
                             //media rescan for correct show in pc
-                            MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString.split(" ")[0] + ".txt"}, null, null);
+                            MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString.split(" ")[0] + file_extension}, null, null);
                         } catch(Exception e){
                             System.out.println("error");
                         }
@@ -306,7 +302,7 @@ public class HomeFragment extends PreferenceFragment implements
 
         Charset charset = null;
 
-        // charsets �O�ڭ̩w�q�� �s�X �x�}, �]�A UTF8, BIG5 etc.
+        // charsets UTF8, BIG5 etc.
         for (String charsetName : charsets) {
             charset = detectCharset(f, Charset.forName(charsetName));
             if (charset != null) {
