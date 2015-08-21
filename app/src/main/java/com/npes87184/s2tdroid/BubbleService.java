@@ -1,6 +1,5 @@
 package com.npes87184.s2tdroid;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -15,12 +14,13 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 
 import android.support.v7.internal.view.ContextThemeWrapper;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.npes87184.s2tdroid.model.Analysis;
+import com.npes87184.s2tdroid.model.KeyCollection;
 import com.premnirmal.Magnet.IconCallback;
 import com.premnirmal.Magnet.Magnet;
 
@@ -29,9 +29,7 @@ import com.premnirmal.Magnet.Magnet;
  */
 public class BubbleService extends Service implements IconCallback {
 
-    private static final String TAG = "Magnet";
     private Magnet mMagnet;
-    private static final String KEY_MODE = "mode";
     private SharedPreferences prefs;
     float scale;
 
@@ -91,7 +89,7 @@ public class BubbleService extends Service implements IconCallback {
 
     @Override
     public void onFlingAway() {
-        Log.i(TAG, "onFlingAway");
+
     }
 
     @Override
@@ -101,11 +99,10 @@ public class BubbleService extends Service implements IconCallback {
 
     @Override
     public void onIconClick(View icon, float iconXPose, float iconYPose) {
-        Log.i(TAG, "onIconClick(..)");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
         builder.setTitle("S2TDroid"+'-'+
-                (prefs.getString(KEY_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s)));
+                (prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s)));
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -119,7 +116,7 @@ public class BubbleService extends Service implements IconCallback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String out = input.getText().toString();
-                out = prefs.getString(KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
+                out = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
                 copyToClipboard(out);
             }
         });
@@ -133,7 +130,6 @@ public class BubbleService extends Service implements IconCallback {
 
     @Override
     public void onIconDestroyed() {
-        Log.i(TAG, "onIconDestroyed()");
         stopSelf();
     }
     private void copyToClipboard(String str) {

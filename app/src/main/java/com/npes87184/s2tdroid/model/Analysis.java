@@ -1,4 +1,4 @@
-package com.npes87184.s2tdroid;
+package com.npes87184.s2tdroid.model;
 
 import java.util.HashMap;
 import java.util.Map;

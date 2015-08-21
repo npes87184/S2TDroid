@@ -17,6 +17,9 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.npes87184.s2tdroid.model.Analysis;
+import com.npes87184.s2tdroid.model.KeyCollection;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,18 +44,8 @@ import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 public class HomeFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-
-    private static final String KEY_ENCODING = "encoding";
-    private static final String KEY_MODE = "mode";
-    private static final String KEY_OUTPUT_ENCODING = "output_encoding";
-    private static final String KEY_INPUT_FILE = "input_file";
-    private static final String KEY_OUTPUT_FOLDER = "output_folder";
-    private static final String KEY_FILE_NAME = "file_name";
-    private static final String KEY_START = "start";
-    private static final String KEY_PATH = "path";
-    private static final String KEY_SAME_FILENAME = "same_filename";
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
+    private final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
     String[] charsetsToBeTestedCN = {"UTF-8", "GBK"};
     String[] charsetsToBeTestedTW = {"UTF-8", "BIG5"};
 
@@ -86,8 +79,8 @@ public class HomeFragment extends PreferenceFragment implements
         prefs.registerOnSharedPreferenceChangeListener(this);
 
 
-        inputPreference = findPreference(KEY_INPUT_FILE);
-        inputPreference.setSummary(prefs.getString(KEY_INPUT_FILE, APP_DIR));
+        inputPreference = findPreference(KeyCollection.KEY_INPUT_FILE);
+        inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
         inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -97,20 +90,20 @@ public class HomeFragment extends PreferenceFragment implements
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
                 intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc", "trc" });
-                intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KEY_PATH, APP_DIR));
+                intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_PATH, APP_DIR));
                 startActivityForResult(intent, EX_FILE_PICKER_RESULT);
                 return true;
             }
         });
 
-        outputPreference = findPreference(KEY_OUTPUT_FOLDER);
-        outputPreference.setSummary(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR));
+        outputPreference = findPreference(KeyCollection.KEY_OUTPUT_FOLDER);
+        outputPreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         outputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 isIn = false;
                 Intent intent = new Intent(getActivity(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
-                intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR));
+                intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_DIRECTORIES);
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
@@ -119,7 +112,7 @@ public class HomeFragment extends PreferenceFragment implements
             }
         });
 
-        startPreference = findPreference(KEY_START);
+        startPreference = findPreference(KeyCollection.KEY_START);
         startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -127,7 +120,7 @@ public class HomeFragment extends PreferenceFragment implements
                     @Override
                     public void run() {
                         try {
-                            File inFile = new File(prefs.getString(KEY_INPUT_FILE, APP_DIR));
+                            File inFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
                             if(!inFile.exists()) {
                                 Message msg = new Message();
                                 msg.what = 2;
@@ -149,8 +142,8 @@ public class HomeFragment extends PreferenceFragment implements
 
                             InputStream is = new FileInputStream(inFile);
                             String encodeString = "UTF-8";
-                            if(prefs.getString(KEY_ENCODING, "0").equals("0")) {
-                                if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
+                            if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
+                                if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                     Charset charset = detectCharset(inFile, charsetsToBeTestedCN);
                                     if (charset == null) {  //maybe Unicode
                                         encodeString = "Unicode";
@@ -170,17 +163,17 @@ public class HomeFragment extends PreferenceFragment implements
                                     }
                                 }
                             } else {
-                                encodeString = prefs.getString(KEY_ENCODING, "UTF-8");
+                                encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
                             }
                             InputStreamReader isr = new InputStreamReader(is, encodeString);
                             BufferedReader bReader = new BufferedReader(isr);
-                            if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
+                            if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                 booknameString = Analysis.StoT(bReader.readLine());
                             } else {
                                 booknameString = Analysis.TtoS(bReader.readLine());
                             }
                             String firstLine = booknameString;
-                            if(prefs.getBoolean(KEY_SAME_FILENAME, false)) {
+                            if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                 booknameString = name;
                                 Message msg = new Message();
                                 msg.what = 3;
@@ -194,21 +187,21 @@ public class HomeFragment extends PreferenceFragment implements
                                 }
                                 booknameString = booknameString.split(" ")[0];
                             }
-                            File file = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR));
+                            File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
                             if(!file.exists() || !file.isDirectory()) {
                                 file.mkdir();
                             }
-                            File outFile = new File(prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
+                            File outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
                             if(outFile.exists()) {
                                 outFile.delete();
                             }
-                            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KEY_OUTPUT_ENCODING, "Unicode"));
+                            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
                             BufferedWriter bw = new BufferedWriter(osw);
                             String line;
                             bw.write(firstLine + "\r");
                             bw.newLine();
                             while((line = bReader.readLine()) != null) {
-                                if(prefs.getString(KEY_MODE, "s2t").equals("s2t")) {
+                                if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                     bw.write(Analysis.StoT(line) + "\r");
                                 } else {
                                     Log.i("info", "look");
@@ -219,7 +212,7 @@ public class HomeFragment extends PreferenceFragment implements
                             bReader.close();
                             bw.close();
                             //media rescan for correct show in pc
-                            MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KEY_OUTPUT_FOLDER, APP_DIR) + booknameString.split(" ")[0] + ".txt"}, null, null);
+                            MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString.split(" ")[0] + ".txt"}, null, null);
                         } catch(Exception e){
                             System.out.println("error");
                         }
@@ -283,12 +276,12 @@ public class HomeFragment extends PreferenceFragment implements
                 if (object.count > 0) {
                     // Here is object contains selected files names and path
                     if(isIn) {
-                        inputPreference.getEditor().putString(KEY_INPUT_FILE, object.path + object.names.get(0) + "/").commit();
-                        prefs.edit().putString(KEY_PATH, object.path).commit();
-                        prefs.edit().putString(KEY_FILE_NAME, object.names.get(0)).commit();
+                        inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, object.path + object.names.get(0) + "/").commit();
+                        prefs.edit().putString(KeyCollection.KEY_PATH, object.path).commit();
+                        prefs.edit().putString(KeyCollection.KEY_FILE_NAME, object.names.get(0)).commit();
                     }
                     else {
-                        outputPreference.getEditor().putString(KEY_OUTPUT_FOLDER, object.path + object.names.get(0) + "/").commit();
+                        outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, object.path + object.names.get(0) + "/").commit();
                         System.out.println(object.path);
 
                     }
@@ -302,10 +295,10 @@ public class HomeFragment extends PreferenceFragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(KEY_INPUT_FILE)) {
-            inputPreference.setSummary(sharedPreferences.getString(KEY_INPUT_FILE, APP_DIR));
-        } else if (key.equals(KEY_OUTPUT_FOLDER)) {
-            outputPreference.setSummary(sharedPreferences.getString(KEY_OUTPUT_FOLDER, APP_DIR));
+        if (key.equals(KeyCollection.KEY_INPUT_FILE)) {
+            inputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+        } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
+            outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         }
     }
 
