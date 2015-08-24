@@ -36,40 +36,29 @@ public class SettingFragment extends PreferenceFragment implements
         prefs.registerOnSharedPreferenceChangeListener(this);
 
         mode = findPreference(KeyCollection.KEY_MODE);
-        if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")) {
-            mode.setSummary(getString(R.string.t2s));
-        } else {
-            mode.setSummary(getString(R.string.s2t));
-        }
+        mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
+                getString(R.string.t2s):getString(R.string.s2t));
+
 
         encoding = findPreference(KeyCollection.KEY_ENCODING);
-        if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-            encoding.setSummary(getResources().getString(R.string.auto_detect));
-        } else {
-            encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
-        }
+        encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")?
+                getResources().getString(R.string.auto_detect):prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
 
         outEncodePreference = findPreference(KeyCollection.KEY_OUTPUT_ENCODING);
         outEncodePreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(KeyCollection.KEY_ENCODING)) {
-            if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-                encoding.setSummary(getResources().getString(R.string.auto_detect));
-            } else {
-                encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
-            }
+            encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")?
+                    getResources().getString(R.string.auto_detect):prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
         } else if (key.equals(KeyCollection.KEY_OUTPUT_ENCODING)) {
             outEncodePreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
         } else if (key.equals(KeyCollection.KEY_MODE)) {
-            if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")) {
-                mode.setSummary(getActivity().getString(R.string.t2s));
-            } else {
-                mode.setSummary(getActivity().getString(R.string.s2t));
-            }
+            mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
+                    getActivity().getString(R.string.t2s):getActivity().getString(R.string.s2t));
+
         }
     }
 
