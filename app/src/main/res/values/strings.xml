@@ -19,16 +19,16 @@
     <string name="bookname">filename</string>
     <string name="contact_detail">If you find any problem, welcome to contact me! Note: You can click this card to send me a e-mail.</string>
     <string name="contact">Contact Me</string>
-    <string name="code_detail">This project is open source, you can click this card to see more information.</string>
+    <string name="code_detail">This is an open source project, you can click this card to see more information.</string>
     <string name="code">GitHub</string>
-    <string name="rate_detail">If this app help you, please rate 5 star in google play. Thanks!</string>
+    <string name="rate_detail">If this app helps you, please rate 5 star in google play. Thanks!</string>
     <string name="rate">Rate</string>
     <string name="dialogHint">You can change mode in setting.</string>
     <string name="copy">Copy</string>
     <string name="startBubble">Start Bubble</string>
     <string name="bubbleDetail">Transform bubble is a very special function.\n It can transform anywhere.</string>
 
-    <string name="filename_detail">Output file name will be the same as input file. If translate novel, we recommended not checked. If you choose the sane directory, it maybe error.</string>
+    <string name="filename_detail">Output file name will be the same as input file. If you choose the sane directory, it maybe error.</string>
     <string name="filename">Output File Name</string>
 
     <string name="notification">S2TDroid transform bubble is acting.</string>

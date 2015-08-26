@@ -39,7 +39,6 @@ public class SettingFragment extends PreferenceFragment implements
         mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
                 getString(R.string.t2s):getString(R.string.s2t));
 
-
         encoding = findPreference(KeyCollection.KEY_ENCODING);
         encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")?
                 getResources().getString(R.string.auto_detect):prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
@@ -58,7 +57,6 @@ public class SettingFragment extends PreferenceFragment implements
         } else if (key.equals(KeyCollection.KEY_MODE)) {
             mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
                     getActivity().getString(R.string.t2s):getActivity().getString(R.string.s2t));
-
         }
     }
 
