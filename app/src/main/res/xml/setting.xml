@@ -12,6 +12,14 @@
             android:icon="@drawable/ic_menu_attachment"
             android:title="@string/mode"/>
 
+        <ListPreference android:entries="@array/mode_entry"
+            android:entryValues="@array/mode_value"
+            android:dialogTitle="@string/bubble_mode"
+            android:negativeButtonText="@string/cancel"
+            android:key="bubble_mode"
+            android:icon="@drawable/ic_menu_attachment"
+            android:title="@string/bubble_mode"/>
+
         <CheckBoxPreference android:key="same_filename"
             android:icon="@drawable/ic_menu_save"
             android:summary="@string/filename_detail"

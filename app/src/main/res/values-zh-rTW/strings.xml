@@ -39,6 +39,7 @@
     <string name="t2s">繁轉簡</string>
 
     <string name="mode">轉換模式</string>
+    <string name="bubble_mode">泡泡轉換模式</string>
     <string name="encode">編碼</string>
     <string name="normal">一般</string>
 

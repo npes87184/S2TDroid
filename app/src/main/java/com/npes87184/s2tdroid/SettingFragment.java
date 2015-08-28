@@ -15,6 +15,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private Preference mode;
+    private Preference bubble_mode;
     private SharedPreferences prefs;
     private Preference outEncodePreference;
     private Preference encoding;
@@ -36,7 +37,11 @@ public class SettingFragment extends PreferenceFragment implements
         prefs.registerOnSharedPreferenceChangeListener(this);
 
         mode = findPreference(KeyCollection.KEY_MODE);
-        mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
+        mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s") ?
+                getString(R.string.t2s) : getString(R.string.s2t));
+
+        bubble_mode = findPreference(KeyCollection.KEY_BUBBLE_MODE);
+        bubble_mode.setSummary(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("t2s")?
                 getString(R.string.t2s):getString(R.string.s2t));
 
         encoding = findPreference(KeyCollection.KEY_ENCODING);
@@ -56,6 +61,9 @@ public class SettingFragment extends PreferenceFragment implements
             outEncodePreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
         } else if (key.equals(KeyCollection.KEY_MODE)) {
             mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
+                    getActivity().getString(R.string.t2s):getActivity().getString(R.string.s2t));
+        } else if(key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
+            bubble_mode.setSummary(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("t2s")?
                     getActivity().getString(R.string.t2s):getActivity().getString(R.string.s2t));
         }
     }

@@ -103,7 +103,7 @@ public class BubbleService extends Service implements IconCallback {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
         builder.setTitle("S2TDroid"+'-'+
-                (prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s)));
+                (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s)));
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -117,7 +117,7 @@ public class BubbleService extends Service implements IconCallback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String out = input.getText().toString();
-                out = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
+                out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
                 copyToClipboard(out);
             }
         });
