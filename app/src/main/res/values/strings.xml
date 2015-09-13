@@ -11,7 +11,7 @@
     <string name="setting">Setting</string>
     <string name="about1">About</string>
     <string name="done">Done!</string>
-    <string name="wait">Wait for seconds...</string>
+    <string name="wait">Transforming...</string>
     <string name="output_encoding_title">Output encode</string>
     <string name="auto_detect">Auto Detect</string>
     <string name="subject">S2TDroid</string>

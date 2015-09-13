@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
 
 
         findViews();
-        List<String> lvs = new ArrayList<String>(3);
+        List<String> lvs = new ArrayList<String>(4);
 
         lvs.add(getString(R.string.home));
         lvs.add(getString(R.string.transformBubble));

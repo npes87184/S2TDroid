@@ -31,7 +31,7 @@ public class BubbleService extends Service implements IconCallback {
 
     private Magnet mMagnet;
     private SharedPreferences prefs;
-    float scale;
+    private float scale;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -133,6 +133,7 @@ public class BubbleService extends Service implements IconCallback {
     public void onIconDestroyed() {
         stopSelf();
     }
+
     private void copyToClipboard(String str) {
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("text label", str);

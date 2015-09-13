@@ -11,7 +11,7 @@
     <string name="setting">設定</string>
     <string name="about1">關於</string>
     <string name="done">完成！</string>
-    <string name="wait">請稍後數秒...</string>
+    <string name="wait">轉換中...</string>
     <string name="output_encoding_title">輸出編碼</string>
     <string name="auto_detect">自動偵測</string>
     <string name="subject">S2TDroid</string>

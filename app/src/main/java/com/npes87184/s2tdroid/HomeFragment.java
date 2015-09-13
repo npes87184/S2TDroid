@@ -1,6 +1,5 @@
 package com.npes87184.s2tdroid;
 
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,11 +9,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
-
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.internal.view.ContextThemeWrapper;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.npes87184.s2tdroid.model.Analysis;
 import com.npes87184.s2tdroid.model.KeyCollection;
@@ -55,6 +53,7 @@ public class HomeFragment extends PreferenceFragment implements
     private Preference outputPreference;
     private Preference startPreference;
     private SharedPreferences prefs;
+    private SweetAlertDialog pDialog;
 
     String booknameString = "default";
 
@@ -73,6 +72,8 @@ public class HomeFragment extends PreferenceFragment implements
         prefs = getPreferenceManager().getSharedPreferences();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
+        pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
+                .setTitleText(getString(R.string.wait));
 
         inputPreference = findPreference(KeyCollection.KEY_INPUT_FILE);
         inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
@@ -123,12 +124,12 @@ public class HomeFragment extends PreferenceFragment implements
                                 Thread.currentThread().interrupt();
                                 return;
                             }
-                            //file extension, ex .txt, .lrc
+                            // file extension, ex: .txt, .lrc
                             int startIndex = inFile.getName().lastIndexOf(46) + 1;
                             int endIndex = inFile.getName().length();
                             String file_extension = inFile.getName().substring(startIndex, endIndex);
 
-                            //file name
+                            // file name
                             String name = inFile.getName();
                             int pos = name.lastIndexOf(".");
                             if (pos > 0) {
@@ -140,18 +141,18 @@ public class HomeFragment extends PreferenceFragment implements
                             if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
                                 if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                     Charset charset = detectCharset(inFile, charsetsToBeTestedCN);
-                                    if (charset == null) {  //maybe Unicode
+                                    if (charset == null) {  // maybe Unicode
                                         encodeString = "Unicode";
-                                    } else if(charset.name().equals("UTF-8")) { //UTF-8
+                                    } else if(charset.name().equals("UTF-8")) { // UTF-8
                                         encodeString = "UTF-8";
                                     } else {
                                         encodeString = "GBK";
                                     }
                                 } else {
                                     Charset charset = detectCharset(inFile, charsetsToBeTestedTW);
-                                    if (charset == null) {  //maybe Unicode
+                                    if (charset == null) {  // maybe Unicode
                                         encodeString = "Unicode";
-                                    } else if(charset.name().equals("UTF-8")) { //UTF-8
+                                    } else if(charset.name().equals("UTF-8")) { // UTF-8
                                         encodeString = "UTF-8";
                                     } else {
                                         encodeString = "BIG5";
@@ -221,9 +222,9 @@ public class HomeFragment extends PreferenceFragment implements
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText(getResources().getString(R.string.done))
-                            .show();
+                    pDialog.setTitleText(getResources().getString(R.string.done))
+                            .setConfirmText("OK")
+                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                     break;
                 case 2:
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
@@ -232,7 +233,8 @@ public class HomeFragment extends PreferenceFragment implements
                             .show();
                     break;
                 case 3:
-                    Toast.makeText(getActivity(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
+                    pDialog.show();
+                    pDialog.setCancelable(false);
                     break;
                 case 4:
                     AlertDialog.Builder editDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppCompatAlertDialogStyle));
@@ -245,7 +247,8 @@ public class HomeFragment extends PreferenceFragment implements
                         // do something when the button is clicked
                         public void onClick(DialogInterface arg0, int arg1) {
                             booknameString = editText.getText().toString();
-                            Toast.makeText(getActivity(), getResources().getString(R.string.wait), Toast.LENGTH_SHORT).show();
+                            pDialog.show();
+                            pDialog.setCancelable(false);
                             synchronized(syncToken) {
                                 syncToken.notify();
                             }
