@@ -6,10 +6,17 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.41
+1.42
 
 Changelog
 ========
+###1.42
+* set Notification priority Min
+* fix crash in setting
+* add progressDialog
+* optimize code
+* split transform mode
+
 ###1.41
 * setForegroundService
 * when file does not exist, add error
@@ -24,10 +31,6 @@ Changelog
 * Adjust about layout
 * Speed up transform
 * String change
-
-###1.31
-* Fix if txt has only one line error
-* Add Unicode, BIG5 support
 
 Features
 ========
@@ -52,7 +55,7 @@ Picture
 
 <img src="http://truth.bahamut.com.tw/s01/201508/5e5f75926c11df8a03f940b26f794d51.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201508/fbbb6a7a5329934085b6ca657ec8d909.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201509/be4d5a98a3079584c38aeeb3474c9d47.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/b546b8b6237461be8a23b66bcde5cf18.PNG">
 
@@ -63,6 +66,8 @@ Thanks
 * ExFilePicker (bartwell)
 * JNovelDownloader (pupuliao)
 * sweet-alert-dialog (pedant)
+* Magnet (premnirmal)
+* MaterialList (dexafree)
 
 License
 ========

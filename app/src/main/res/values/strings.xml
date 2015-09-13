@@ -36,8 +36,8 @@
     <string name="oops">Oops...</string>
     <string name="oops_detail">Input file doesn\'t exist.</string>
 
-    <string name="open">open</string>
-    <string name="close">close</string>
+    <string name="open" translatable="false">open</string>
+    <string name="close" translatable="false">close</string>
 
     <string name="s2t">Simple to Traditional</string>
     <string name="t2s">Traditional to Simple</string>
