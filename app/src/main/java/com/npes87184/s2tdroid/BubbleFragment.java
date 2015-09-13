@@ -16,14 +16,8 @@ public class BubbleFragment extends Fragment {
 
     private View v;
 
-    public static BubbleFragment newInstance(int index) {
+    public static BubbleFragment newInstance() {
         BubbleFragment bubbleFragment = new BubbleFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("home", index);
-        bubbleFragment.setArguments(args);
-
         return bubbleFragment;
     }
 

@@ -82,28 +82,28 @@ public class MainActivity extends Activity implements AppCompatCallback {
                     case 0:
                         // home
                         fragmentManager.beginTransaction()
-                                .replace(R.id.container, HomeFragment.newInstance(0))
+                                .replace(R.id.container, HomeFragment.newInstance())
                                 .commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 1:
                         // bubble
                         fragmentManager.beginTransaction()
-                                .replace(R.id.container, BubbleFragment.newInstance(0))
+                                .replace(R.id.container, BubbleFragment.newInstance())
                                 .commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 2:
                         // setting
                         fragmentManager.beginTransaction()
-                                .replace(R.id.container, SettingFragment.newInstance(0))
+                                .replace(R.id.container, SettingFragment.newInstance())
                                 .commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 3:
                         // about
                         fragmentManager.beginTransaction()
-                                .replace(R.id.container, AboutFragment.newInstance(0))
+                                .replace(R.id.container, AboutFragment.newInstance())
                                 .commit();
                         mDrawerLayout.closeDrawers();
                         break;
@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
         // init
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, HomeFragment.newInstance(0))
+                .replace(R.id.container, HomeFragment.newInstance())
                 .commit();
     }
 

@@ -13,18 +13,17 @@ import com.npes87184.s2tdroid.model.KeyCollection;
 public class SettingFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private Preference mode;
     private Preference bubble_mode;
     private SharedPreferences prefs;
     private Preference outEncodePreference;
     private Preference encoding;
+    private static SettingFragment fragment;
 
-    public static SettingFragment newInstance(int sectionNumber) {
-        SettingFragment fragment = new SettingFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
+    public static SettingFragment newInstance() {
+        if(fragment==null) {
+            fragment = new SettingFragment();
+        }
         return fragment;
     }
 

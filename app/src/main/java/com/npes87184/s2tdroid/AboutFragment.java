@@ -26,14 +26,8 @@ import com.dexafree.materialList.view.MaterialListView;
 public class AboutFragment extends Fragment {
 
     private View v;
-    public static AboutFragment newInstance(int index) {
+    public static AboutFragment newInstance() {
         AboutFragment aboutFragment = new AboutFragment();
-
-        // Supply index input as an argument.
-        Bundle args = new Bundle();
-        args.putInt("home", index);
-        aboutFragment.setArguments(args);
-
         return aboutFragment;
     }
 

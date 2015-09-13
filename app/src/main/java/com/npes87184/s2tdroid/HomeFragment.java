@@ -43,7 +43,6 @@ import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 public class HomeFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
     String[] charsetsToBeTestedCN = {"UTF-8", "GBK"};
     String[] charsetsToBeTestedTW = {"UTF-8", "BIG5"};
@@ -61,11 +60,8 @@ public class HomeFragment extends PreferenceFragment implements
 
     Object syncToken = new Object();
 
-    public static HomeFragment newInstance(int sectionNumber) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
         return fragment;
     }
 

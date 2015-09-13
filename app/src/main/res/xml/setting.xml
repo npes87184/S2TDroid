@@ -17,7 +17,7 @@
             android:dialogTitle="@string/bubble_mode"
             android:negativeButtonText="@string/cancel"
             android:key="bubble_mode"
-            android:icon="@drawable/ic_menu_attachment"
+            android:icon="@drawable/ic_menu_copy_holo_light"
             android:title="@string/bubble_mode"/>
 
         <CheckBoxPreference android:key="same_filename"
