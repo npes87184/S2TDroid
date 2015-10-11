@@ -29,7 +29,7 @@
     <string name="bubbleDetail">轉換泡泡是一個非常特別的功能，\n可以在任何地方繁簡轉換。</string>
     <string name="notification">正在使用轉換泡泡中。</string>
 
-    <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，可能導致錯誤。</string>
+    <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，會在檔名結尾加入-1。</string>
     <string name="filename">輸出檔名</string>
 
     <string name="oops">錯誤</string>

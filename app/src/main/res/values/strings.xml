@@ -28,7 +28,7 @@
     <string name="startBubble">Start Bubble</string>
     <string name="bubbleDetail">Transform bubble is a very special function.\n It can transform anywhere.</string>
 
-    <string name="filename_detail">Output file name will be the same as input file. If you choose the sane directory, it maybe error.</string>
+    <string name="filename_detail">Output file name will be the same as input file. If you choose the sane directory, it will add -1 in the last.</string>
     <string name="filename">Output File Name</string>
 
     <string name="notification">S2TDroid transform bubble is acting.</string>
