@@ -85,7 +85,7 @@ public class HomeFragment extends PreferenceFragment implements
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
-                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc", "trc" });
+                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa" });
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_PATH, APP_DIR));
                 startActivityForResult(intent, EX_FILE_PICKER_RESULT);
                 return true;
@@ -139,6 +139,7 @@ public class HomeFragment extends PreferenceFragment implements
                             InputStream is = new FileInputStream(inFile);
                             String encodeString = "UTF-8";
                             if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
+                                // auto detect encode
                                 if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                     Charset charset = detectCharset(inFile, charsetsToBeTestedCN);
                                     if (charset == null) {  // maybe Unicode
@@ -183,10 +184,17 @@ public class HomeFragment extends PreferenceFragment implements
                             if(!file.exists() || !file.isDirectory()) {
                                 file.mkdir();
                             }
-                            File outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
-                            if(outFile.exists()) {
-                                outFile.delete();
+
+                            // if file exists add -1 in the last
+                            File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
+                            File outFile;
+                            if(testFile.exists()) {
+                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString + "-1." + file_extension);
+                            } else {
+                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
                             }
+
+                            // doing transform
                             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
                             BufferedWriter bw = new BufferedWriter(osw);
                             String line;
@@ -202,8 +210,13 @@ public class HomeFragment extends PreferenceFragment implements
                             }
                             bReader.close();
                             bw.close();
-                            //media rescan for correct show in pc
-                            MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString.split(" ")[0] + file_extension}, null, null);
+
+                            //media rescan for correctly show in pc
+                            if(testFile.exists()) {
+                                MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
+                            } else {
+                                MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
+                            }
                         } catch(Exception e){
 
                         }
