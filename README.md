@@ -6,10 +6,15 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.42
+1.43
 
 Changelog
 ========
+###1.43
+* add more file support: srt, ssa, ass, saa
+* fix showing in pc
+* if file exists add -1 in the last
+
 ###1.42
 * set Notification priority Min
 * fix crash in setting
@@ -25,12 +30,6 @@ Changelog
 * Add bubble fragment
 * Add bubble transform
 * More material
-
-###1.32
-* Adjust setting layout
-* Adjust about layout
-* Speed up transform
-* String change
 
 Features
 ========
