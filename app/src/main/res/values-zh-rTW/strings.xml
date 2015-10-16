@@ -42,5 +42,7 @@
     <string name="bubble_mode">泡泡轉換模式</string>
     <string name="encode">編碼</string>
     <string name="normal">一般</string>
+    <string name="donate">捐贈</string>
+    <string name="donate_detail">1.基本上捐贈版跟免費版功能是一樣的\n2.免除了ＡＰＰ中關於捐贈的東西\n3.之後有新功能會優先放在捐贈版中，過段時間再放入免費版\n4.請作者喝杯飲料，更有動力開發更多免費好用且無廣告的ＡＰＰ！：Ｄ</string>
 
 </resources>

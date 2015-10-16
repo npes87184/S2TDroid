@@ -2,7 +2,9 @@ package com.npes87184.s2tdroid;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +21,8 @@ import com.npes87184.s2tdroid.model.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends Activity implements AppCompatCallback {
 
@@ -50,6 +54,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
         lvs.add(getString(R.string.home));
         lvs.add(getString(R.string.transformBubble));
         lvs.add(getString(R.string.setting));
+        lvs.add(getString(R.string.donate));
         lvs.add(getString(R.string.about1));
 
         toolbar.setTitle(getString(R.string.app_name));
@@ -101,6 +106,22 @@ public class MainActivity extends Activity implements AppCompatCallback {
                         mDrawerLayout.closeDrawers();
                         break;
                     case 3:
+                        new SweetAlertDialog(MainActivity.this)
+                                .setTitleText(getString(R.string.donate))
+                                .setContentText(getString(R.string.donate_detail))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        // reuse previous dialog instance
+                                        String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
+                                        Intent i = new Intent(Intent.ACTION_VIEW);
+                                        i.setData(Uri.parse(url));
+                                        startActivity(i);
+                                    }
+                                })
+                                .show();
+                        break;
+                    case 4:
                         // about
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, AboutFragment.newInstance())

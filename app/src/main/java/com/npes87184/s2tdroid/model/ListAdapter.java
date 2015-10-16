@@ -75,6 +75,9 @@ public class ListAdapter extends BaseAdapter {
                 holder.icon.setImageResource(R.drawable.perm_group_system_tools);
                 break;
             case 3:
+                holder.icon.setImageResource(R.drawable.money);
+                break;
+            case 4:
                 holder.icon.setImageResource(R.drawable.ic_menu_info_details);
                 break;
         }
