@@ -39,6 +39,8 @@
     <string name="open" translatable="false">open</string>
     <string name="close" translatable="false">close</string>
 
+    <string name="word_count">Word Count:</string>
+
     <string name="s2t">Simple to Traditional</string>
     <string name="t2s">Traditional to Simple</string>
 

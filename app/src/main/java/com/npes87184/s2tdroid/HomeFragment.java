@@ -30,6 +30,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.text.NumberFormat;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ru.bartwell.exfilepicker.ExFilePicker;
@@ -48,6 +49,7 @@ public class HomeFragment extends PreferenceFragment implements
     private static final int EX_FILE_PICKER_RESULT = 0;
 
     boolean isIn = false;
+    int wordNumber = 0;
 
     private Preference inputPreference;
     private Preference outputPreference;
@@ -201,6 +203,7 @@ public class HomeFragment extends PreferenceFragment implements
                             bw.write(firstLine + "\r");
                             bw.newLine();
                             while((line = bReader.readLine()) != null) {
+                                wordNumber += line.length();
                                 if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                     bw.write(Analysis.StoT(line) + "\r");
                                 } else {
@@ -235,7 +238,8 @@ public class HomeFragment extends PreferenceFragment implements
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    pDialog.setTitleText(getResources().getString(R.string.done))
+                    NumberFormat nf = NumberFormat.getInstance();
+                    pDialog.setTitleText(getString(R.string.word_count) + nf.format(wordNumber))
                             .setConfirmText("OK")
                             .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                     break;

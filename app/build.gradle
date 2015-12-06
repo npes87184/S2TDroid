@@ -8,8 +8,8 @@ android {
         applicationId "com.npes87184.s2tdroid"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 12
-        versionName "1.44"
+        versionCode 13
+        versionName "1.45"
     }
     buildTypes {
         release {
