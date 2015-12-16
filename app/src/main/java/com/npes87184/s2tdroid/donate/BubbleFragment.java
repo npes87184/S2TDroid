@@ -45,15 +45,21 @@ public class BubbleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                // Marshmallow+
-                if (Build.VERSION.SDK_INT <23 || !Settings.canDrawOverlays(getActivity())) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:" + getActivity().getPackageName()));
-                    startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                if(Build.VERSION.SDK_INT >= 23) {
+                    // Marshmallow+
+                    if (!Settings.canDrawOverlays(getActivity())) {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:" + getActivity().getPackageName()));
+                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                    } else {
+                        getActivity().startService(new Intent(getActivity(), BubbleService.class));
+                        getActivity().finish();
+                    }
                 } else {
                     getActivity().startService(new Intent(getActivity(), BubbleService.class));
                     getActivity().finish();
                 }
+
             }
         });
         TextView textView = (TextView) v.findViewById(R.id.textView2);
