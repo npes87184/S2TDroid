@@ -1,11 +1,12 @@
-package com.npes87184.s2tdroid;
+package com.npes87184.s2tdroid.donate;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
-import com.npes87184.s2tdroid.model.KeyCollection;
+import com.npes87184.s2tdroid.R;
+import com.npes87184.s2tdroid.donate.model.KeyCollection;
 
 /**
  * Created by npes87184 on 2015/5/17.

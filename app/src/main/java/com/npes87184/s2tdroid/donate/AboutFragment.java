@@ -1,4 +1,4 @@
-package com.npes87184.s2tdroid;
+package com.npes87184.s2tdroid.donate;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -19,6 +19,7 @@ import com.dexafree.materialList.controller.RecyclerItemClickListener;
 import com.dexafree.materialList.model.Card;
 import com.dexafree.materialList.model.CardItemView;
 import com.dexafree.materialList.view.MaterialListView;
+import com.npes87184.s2tdroid.R;
 
 /**
  * Created by npes87184 on 2015/5/17.
@@ -65,7 +66,7 @@ public class AboutFragment extends Fragment {
                     i.setData(Uri.parse(url));
                     startActivity(i);
                 } else if (view.getTag().toString().equals("rate")) {
-                    String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid";
+                    String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);

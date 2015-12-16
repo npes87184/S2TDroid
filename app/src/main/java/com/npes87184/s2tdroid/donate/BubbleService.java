@@ -1,4 +1,4 @@
-package com.npes87184.s2tdroid;
+package com.npes87184.s2tdroid.donate;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -19,8 +19,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.npes87184.s2tdroid.model.Analysis;
-import com.npes87184.s2tdroid.model.KeyCollection;
+import com.npes87184.s2tdroid.R;
+import com.npes87184.s2tdroid.donate.model.Analysis;
+import com.npes87184.s2tdroid.donate.model.KeyCollection;
 import com.premnirmal.Magnet.IconCallback;
 import com.premnirmal.Magnet.Magnet;
 

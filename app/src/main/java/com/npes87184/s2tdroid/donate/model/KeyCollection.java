@@ -1,4 +1,4 @@
-package com.npes87184.s2tdroid.model;
+package com.npes87184.s2tdroid.donate.model;
 
 /**
  * Created by npes87184 on 2015/8/21.

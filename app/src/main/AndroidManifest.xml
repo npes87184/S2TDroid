@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".donate.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             android:name="ru.bartwell.exfilepicker.ExFilePickerActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/ExFilePickerThemeLight" />
-        <service android:name="com.npes87184.s2tdroid.BubbleService" />
+        <service android:name=".donate.BubbleService" />
     </application>
 
 </manifest>

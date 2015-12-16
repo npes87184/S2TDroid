@@ -10,7 +10,6 @@
     <string name="transformBubble">轉換泡泡</string>
     <string name="setting">設定</string>
     <string name="about1">關於</string>
-    <string name="done">完成！</string>
     <string name="wait">轉換中...</string>
     <string name="output_encoding_title">輸出編碼</string>
     <string name="auto_detect">自動偵測</string>
@@ -29,11 +28,16 @@
     <string name="bubbleDetail">轉換泡泡是一個非常特別的功能，\n可以在任何地方繁簡轉換。</string>
     <string name="notification">正在使用轉換泡泡中。</string>
 
+    <string name="floatingPermission">如要使用轉換泡泡，我們需要顯示浮動視窗的權限。</string>
+    <string name="filePermission">為了完成檔案繁簡轉換，我們需要檔案讀寫的權限。</string>
+
     <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，會在檔名結尾加入-1。</string>
     <string name="filename">輸出檔名</string>
 
     <string name="oops">錯誤</string>
     <string name="oops_detail">輸入檔案不存在！</string>
+
+    <string name="word_count">轉換字數：</string>
 
     <string name="s2t">簡轉繁</string>
     <string name="t2s">繁轉簡</string>

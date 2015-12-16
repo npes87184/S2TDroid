@@ -10,7 +10,6 @@
     <string name="transformBubble">Transform Bubble</string>
     <string name="setting">Setting</string>
     <string name="about1">About</string>
-    <string name="done">Done!</string>
     <string name="wait">Transforming...</string>
     <string name="output_encoding_title">Output encode</string>
     <string name="auto_detect">Auto Detect</string>
@@ -28,6 +27,9 @@
     <string name="startBubble">Start Bubble</string>
     <string name="bubbleDetail">Transform bubble is a very special function.\n It can transform anywhere.</string>
 
+    <string name="floatingPermission">We need floating window permission to use bubble.</string>
+    <string name="filePermission">We need the permission of file access to work perfectly.</string>
+
     <string name="filename_detail">Output file name will be the same as input file. If you choose the sane directory, it will add -1 in the last.</string>
     <string name="filename">Output File Name</string>
 
@@ -35,6 +37,8 @@
 
     <string name="oops">Oops...</string>
     <string name="oops_detail">Input file doesn\'t exist.</string>
+
+    <string name="word_count">Word Count:</string>
 
     <string name="open" translatable="false">open</string>
     <string name="close" translatable="false">close</string>

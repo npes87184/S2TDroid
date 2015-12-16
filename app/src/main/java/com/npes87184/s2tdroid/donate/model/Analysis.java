@@ -1,4 +1,4 @@
-package com.npes87184.s2tdroid.model;
+package com.npes87184.s2tdroid.donate.model;
 
 import java.util.HashMap;
 import java.util.Map;

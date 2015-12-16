@@ -1,4 +1,4 @@
-package com.npes87184.s2tdroid;
+package com.npes87184.s2tdroid.donate;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
