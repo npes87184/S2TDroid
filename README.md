@@ -6,10 +6,15 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.45
+1.50
 
 Changelog
 ========
+###1.50
+* Support android 6.0 permission
+* Adjust UI
+* Add simplified chinese layout
+
 ###1.45
 * Add word count
 
@@ -30,7 +35,7 @@ Picture
 ========
 <img src="http://truth.bahamut.com.tw/s01/201505/161edda668b0d8bd1f0ca45808944f44.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201508/b03c37d6ca6d2b7ddb058149f7bc7182.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201512/3b6922ee762023f9c12d1f082541eeeb.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/c25f40b8d870e3c74f116d1a4935762a.PNG">
 
