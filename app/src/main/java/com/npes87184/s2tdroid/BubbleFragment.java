@@ -2,12 +2,17 @@ package com.npes87184.s2tdroid;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by npes87184 on 2015/8/14.
@@ -15,6 +20,7 @@ import android.widget.TextView;
 public class BubbleFragment extends Fragment {
 
     private View v;
+    public static int OVERLAY_PERMISSION_REQ_CODE = 1234;
 
     public static BubbleFragment newInstance() {
         BubbleFragment bubbleFragment = new BubbleFragment();
@@ -37,8 +43,32 @@ public class BubbleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                getActivity().startService(new Intent(getActivity(), BubbleService.class));
-                getActivity().finish();
+                if(Build.VERSION.SDK_INT >= 23) {
+                    // Marshmallow+
+                    if (!Settings.canDrawOverlays(getActivity())) {
+                        new SweetAlertDialog(getActivity())
+                                .setTitleText(getString(R.string.app_name))
+                                .setContentText(getString(R.string.floatingPermission))
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                                Uri.parse("package:" + getActivity().getPackageName()));
+                                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                                        sDialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    } else {
+                        getActivity().startService(new Intent(getActivity(), BubbleService.class));
+                        getActivity().finish();
+                    }
+                } else {
+                    getActivity().startService(new Intent(getActivity(), BubbleService.class));
+                    getActivity().finish();
+                }
+
             }
         });
         TextView textView = (TextView) v.findViewById(R.id.textView2);
@@ -49,4 +79,20 @@ public class BubbleFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
+            if(Build.VERSION.SDK_INT >= 23) {
+                if (!Settings.canDrawOverlays(getActivity())) {
+                    // SYSTEM_ALERT_WINDOW permission not granted...
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.oops))
+                            .setContentText(getString(R.string.floatingPermission))
+                            .show();
+                } else {
+                    getActivity().startService(new Intent(getActivity(), BubbleService.class));
+                }
+            }
+        }
+    }
 }
