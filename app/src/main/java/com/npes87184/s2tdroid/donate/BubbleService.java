@@ -12,14 +12,12 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
-
 import android.support.v7.internal.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.npes87184.s2tdroid.R;
 import com.npes87184.s2tdroid.donate.model.Analysis;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 import com.premnirmal.Magnet.IconCallback;
@@ -42,6 +40,7 @@ public class BubbleService extends Service implements IconCallback {
     @Override
     public void onCreate() {
         super.onCreate();
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification)

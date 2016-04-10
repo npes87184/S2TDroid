@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
-import com.npes87184.s2tdroid.R;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 
 /**

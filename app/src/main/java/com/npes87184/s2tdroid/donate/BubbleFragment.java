@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.npes87184.s2tdroid.R;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -48,9 +46,20 @@ public class BubbleFragment extends Fragment {
                 if(Build.VERSION.SDK_INT >= 23) {
                     // Marshmallow+
                     if (!Settings.canDrawOverlays(getActivity())) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:" + getActivity().getPackageName()));
-                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                        new SweetAlertDialog(getActivity())
+                                .setTitleText(getString(R.string.app_name))
+                                .setContentText(getString(R.string.floatingPermission))
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                                Uri.parse("package:" + getActivity().getPackageName()));
+                                        startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
+                                        sDialog.dismiss();
+                                    }
+                                })
+                                .show();
                     } else {
                         getActivity().startService(new Intent(getActivity(), BubbleService.class));
                         getActivity().finish();

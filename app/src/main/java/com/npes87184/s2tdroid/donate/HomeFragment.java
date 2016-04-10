@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.internal.view.ContextThemeWrapper;
 import android.widget.EditText;
 
-import com.npes87184.s2tdroid.R;
 import com.npes87184.s2tdroid.donate.model.Analysis;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 

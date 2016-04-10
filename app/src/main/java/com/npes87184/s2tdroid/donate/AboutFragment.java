@@ -19,7 +19,7 @@ import com.dexafree.materialList.controller.RecyclerItemClickListener;
 import com.dexafree.materialList.model.Card;
 import com.dexafree.materialList.model.CardItemView;
 import com.dexafree.materialList.view.MaterialListView;
-import com.npes87184.s2tdroid.R;
+
 
 /**
  * Created by npes87184 on 2015/5/17.

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.npes87184.s2tdroid.R;
+import com.npes87184.s2tdroid.donate.R;
 
 import java.util.List;
 

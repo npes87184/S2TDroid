@@ -15,6 +15,13 @@
         android:orientation="vertical"
         android:layout_gravity="start">
 
+        <ImageView
+            android:id="@+id/imageView_left_menu"
+            android:layout_width="fill_parent"
+            android:layout_height="140dp"
+            android:src="@drawable/navdrawerimage"
+            android:layout_marginBottom="10dp"/>
+
         <ListView
             android:id="@+id/lv_left_menu"
             android:layout_width="match_parent"

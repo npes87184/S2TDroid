@@ -19,10 +19,9 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.npes87184.s2tdroid.R;
 import com.npes87184.s2tdroid.donate.model.ListAdapter;
 
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private ListView lvLeftMenu;
+    private ImageView imageViewMenu;
     private ListAdapter adapter;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     final List<String> permissionsList = new ArrayList<String>();
@@ -221,6 +221,8 @@ public class MainActivity extends Activity implements AppCompatCallback {
         toolbar = (Toolbar) findViewById(R.id.tl_custom);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
         lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
+        imageViewMenu = (ImageView) findViewById(R.id.imageView_left_menu);
+        imageViewMenu.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
