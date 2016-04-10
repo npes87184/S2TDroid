@@ -20,6 +20,21 @@ public class Analysis {
         return translate(data, T2S);
     }
 
+    public static boolean isTraditional(String data) {
+        final char[] chars = data.toCharArray();
+        int count = 0;
+        for (int i = 0, n = chars.length; i < n; ++i) {
+            final Character s2t_found = S2T.get(chars[i]);
+            final Character t2s_found = T2S.get(chars[i]);
+            if (null != s2t_found) {
+                --count;
+            } else if(null != t2s_found) {
+                ++count;
+            }
+        }
+        return count>=0;
+    }
+
     private static final Map<Character, Character> T2S = new HashMap();
     private static final Map<Character, Character> S2T = new HashMap();
     static {

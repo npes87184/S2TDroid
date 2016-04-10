@@ -37,4 +37,16 @@
         <item>s2t</item>
     </string-array>
 
+    <string-array name="bubble_mode_entry">
+        <item>@string/t2s</item>
+        <item>@string/s2t</item>
+        <item>@string/auto_detect</item>
+    </string-array>
+
+    <string-array name="bubble_mode_value">
+        <item>t2s</item>
+        <item>s2t</item>
+        <item>0</item>
+    </string-array>
+
 </resources>

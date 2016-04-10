@@ -12,8 +12,8 @@
             android:icon="@drawable/ic_menu_attachment"
             android:title="@string/mode"/>
 
-        <ListPreference android:entries="@array/mode_entry"
-            android:entryValues="@array/mode_value"
+        <ListPreference android:entries="@array/bubble_mode_entry"
+            android:entryValues="@array/bubble_mode_value"
             android:dialogTitle="@string/bubble_mode"
             android:negativeButtonText="@string/cancel"
             android:key="bubble_mode"

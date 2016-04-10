@@ -3,6 +3,6 @@
 
     <Preference android:title="@string/input_file" android:key="input_file" android:icon="@drawable/ic_perm_group_user_dictionary"/>
     <Preference android:title="@string/output_folder" android:key="output_folder" android:icon="@drawable/ic_menu_archive"/>
-     <Preference android:title="@string/start" android:key="start" android:icon="@drawable/emo_im_laughing"/>
+    <Preference android:title="@string/start" android:key="start" android:icon="@drawable/emo_im_laughing"/>
 
 </PreferenceScreen>
