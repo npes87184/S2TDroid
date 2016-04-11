@@ -17,6 +17,8 @@ import android.widget.EditText;
 import com.npes87184.s2tdroid.donate.model.Analysis;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 
+import org.mozilla.universalchardet.UniversalDetector;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -118,6 +120,28 @@ public class HomeFragment extends PreferenceFragment implements
                     @Override
                     public void run() {
                         try {
+                            // detect encode
+                            String encodeString;
+                            if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
+                                FileInputStream fis = new FileInputStream(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+                                byte[] buf = new byte[4096];
+                                UniversalDetector detector = new UniversalDetector(null);
+                                int nread;
+                                while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+                                    detector.handleData(buf, 0, nread);
+                                }
+                                detector.dataEnd();
+
+                                encodeString = detector.getDetectedCharset();
+                                if (encodeString == null) {
+                                    encodeString = "Unicode";
+                                }
+                                detector.reset();
+                                fis.close();
+                            }  else {
+                                encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
+                            }
+
                             File inFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
                             if(!inFile.exists()) {
                                 Message msg = new Message();
@@ -137,33 +161,7 @@ public class HomeFragment extends PreferenceFragment implements
                             if (pos > 0) {
                                 name = name.substring(0, pos);
                             }
-
                             InputStream is = new FileInputStream(inFile);
-                            String encodeString = "UTF-8";
-                            if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-                                // auto detect encode
-                                if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                    Charset charset = detectCharset(inFile, charsetsToBeTestedCN);
-                                    if (charset == null) {  // maybe Unicode
-                                        encodeString = "Unicode";
-                                    } else if(charset.name().equals("UTF-8")) { // UTF-8
-                                        encodeString = "UTF-8";
-                                    } else {
-                                        encodeString = "GBK";
-                                    }
-                                } else {
-                                    Charset charset = detectCharset(inFile, charsetsToBeTestedTW);
-                                    if (charset == null) {  // maybe Unicode
-                                        encodeString = "Unicode";
-                                    } else if(charset.name().equals("UTF-8")) { // UTF-8
-                                        encodeString = "UTF-8";
-                                    } else {
-                                        encodeString = "BIG5";
-                                    }
-                                }
-                            } else {
-                                encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
-                            }
                             InputStreamReader isr = new InputStreamReader(is, encodeString);
                             BufferedReader bReader = new BufferedReader(isr);
                             String line;
@@ -201,14 +199,16 @@ public class HomeFragment extends PreferenceFragment implements
                             }
 
                             // if file exists add -1 in the last
-                            File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
+                            File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                             File outFile;
+                            String scan;
                             if(testFile.exists()) {
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString + "-1." + file_extension);
+                                scan = "-1.";
+                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
                             } else {
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
+                                scan = ".";
+                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                             }
-
                             // doing transform
                             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
                             BufferedWriter bw = new BufferedWriter(osw);
@@ -251,7 +251,7 @@ public class HomeFragment extends PreferenceFragment implements
                             bw.close();
 
                             //media rescan for correctly show in pc
-                            if(testFile.exists()) {
+                            if(scan.equals("-1.")) {
                                 MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
                             } else {
                                 MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
