@@ -113,6 +113,16 @@ public class HomeFragment extends PreferenceFragment implements
                     @Override
                     public void run() {
                         try {
+                            File inFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+                            // detect file exist
+                            if(!inFile.exists()) {
+                                Message msg = new Message();
+                                msg.what = 2;
+                                mHandler.sendMessage(msg);
+                                Thread.currentThread().interrupt();
+                                return;
+                            }
+
                             // detect encode
                             String encodeString;
                             if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
@@ -142,14 +152,6 @@ public class HomeFragment extends PreferenceFragment implements
                                 TorS = 100;
                             }
 
-                            File inFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
-                            if(!inFile.exists()) {
-                                Message msg = new Message();
-                                msg.what = 2;
-                                mHandler.sendMessage(msg);
-                                Thread.currentThread().interrupt();
-                                return;
-                            }
                             // file extension, ex: .txt, .lrc
                             int startIndex = inFile.getName().lastIndexOf(46) + 1;
                             int endIndex = inFile.getName().length();
