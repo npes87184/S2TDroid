@@ -123,7 +123,7 @@ public class BubbleService extends Service implements IconCallback {
             public void onClick(DialogInterface dialog, int which) {
                 String out = input.getText().toString();
                 if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
-                    out = Analysis.isTraditional(out) ? Analysis.TtoS(out):Analysis.StoT(out);
+                    out = Analysis.isTraditional(out)>=0 ? Analysis.TtoS(out):Analysis.StoT(out);
                 } else {
                     out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
                 }

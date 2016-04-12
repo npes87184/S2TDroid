@@ -142,6 +142,13 @@ public class HomeFragment extends PreferenceFragment implements
                                 encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
                             }
 
+                            int TorS = 0; // >0 means t2s
+                            if(encodeString.equals("GBK")) {
+                                TorS = -100;
+                            } else if(encodeString.equals("BIG5")) {
+                                TorS = 100;
+                            }
+
                             File inFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
                             if(!inFile.exists()) {
                                 Message msg = new Message();
@@ -165,15 +172,12 @@ public class HomeFragment extends PreferenceFragment implements
                             InputStreamReader isr = new InputStreamReader(is, encodeString);
                             BufferedReader bReader = new BufferedReader(isr);
                             String line;
-                            int TorS = 0; // >0 means t2s
                             if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
                                 line = bReader.readLine();
-                                if(Analysis.isTraditional(line)) {
+                                if(Analysis.isTraditional(line)>=0) {
                                     booknameString = Analysis.TtoS(line);
-                                    ++TorS;
                                 } else {
                                     booknameString = Analysis.StoT(line);
-                                    --TorS;
                                 }
                             } else {
                                 booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
@@ -222,14 +226,13 @@ public class HomeFragment extends PreferenceFragment implements
                                 }
                                 wordNumber += line.length();
                                 if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                    if(TorS<10 && TorS>-10) {
+                                    if(TorS<100 && TorS>-100) {
                                         // detect step
-                                        if(Analysis.isTraditional(line)) {
+                                        TorS += Analysis.isTraditional(line);
+                                        if(TorS>=0) {
                                             bw.write(Analysis.TtoS(line) + "\r");
-                                            ++TorS;
                                         } else {
                                             bw.write(Analysis.StoT(line) + "\r");
-                                            --TorS;
                                         }
                                     } else {
                                         if(TorS>0) {

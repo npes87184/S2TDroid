@@ -20,7 +20,8 @@ public class Analysis {
         return translate(data, T2S);
     }
 
-    public static boolean isTraditional(String data) {
+    // > 0 means T
+    public static int isTraditional(String data) {
         final char[] chars = data.toCharArray();
         int count = 0;
         for (int i = 0, n = chars.length; i < n; ++i) {
@@ -32,7 +33,7 @@ public class Analysis {
                 ++count;
             }
         }
-        return count>=0;
+        return count;
     }
 
     private static final Map<Character, Character> T2S = new HashMap();
