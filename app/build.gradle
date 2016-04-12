@@ -29,7 +29,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'cn.pedant.sweetalert:library:1.3'
-    compile(name:'ExFilePicker-1.8', ext:'aar')
+    compile(name: 'ExFilePicker-1.8', ext: 'aar')
     compile 'com.github.dexafree:materiallist:2.4.0'
-    compile(name:'Magnet-1.1.1', ext:'aar')
+    compile(name: 'Magnet-1.1.1', ext: 'aar')
+    compile files('libs/juniversalchardet-1.0.3.jar')
 }
