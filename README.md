@@ -6,10 +6,16 @@ An opem source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.50
+1.61
 
 Changelog
 ========
+###1.61
+* auto detect language
+* speed up transform
+* Update encoding function
+* fix media scan
+
 ###1.50
 * Support android 6.0 permission
 * Adjust UI
@@ -21,15 +27,17 @@ Changelog
 Features
 ========
 1. light weight and no AD transformer
-2. support GBK and UTF-8 input encode
-3. auto detect encode
-4. support choose UTF-8 or Unicode to output file
-5. very fast, 1m txt only need some seconds
-6. auto detect bookname
-7. don't need internet
-8. support txt, trc and lrc
-9. add a checkbox that can determine the output file name
-10. Material Design
+2. auto detect input languate, auto determine S to T or T to S
+3. support GBK, UTF-8, BIG5 and Unicode input encode
+4. auto detect encode
+5. support choose UTF-8 or Unicode to output file
+6. very fast, 1m txt only need some seconds
+7. auto detect bookname
+8. don't need internet
+9. support txt, trc, srt, ssa, ass, saa and lrc
+10. add a checkbox that can determine the output file name
+11. Material Design
+12, transform bubble, you can transform anywhere!
 
 Picture
 ========
@@ -54,6 +62,7 @@ Thanks
 * sweet-alert-dialog (pedant)
 * Magnet (premnirmal)
 * MaterialList (dexafree)
+* Juniversalchardet (takscape)
 
 License
 ========
