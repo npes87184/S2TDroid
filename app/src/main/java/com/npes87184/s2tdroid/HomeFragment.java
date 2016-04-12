@@ -219,6 +219,11 @@ public class HomeFragment extends PreferenceFragment implements
                             bw.write(firstLine + "\r");
                             bw.newLine();
                             while((line = bReader.readLine()) != null) {
+                                if(line.length()==0) {
+                                    bw.write("\r");
+                                    bw.newLine();
+                                    continue;
+                                }
                                 wordNumber += line.length();
                                 if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
                                     if(TorS<100 && TorS>-100) {
