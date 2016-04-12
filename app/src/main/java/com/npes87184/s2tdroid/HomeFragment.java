@@ -207,10 +207,13 @@ public class HomeFragment extends PreferenceFragment implements
                             // if file exists add -1 in the last
                             File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
                             File outFile;
+                            String scan;
                             if(testFile.exists()) {
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString + "-1." + file_extension);
+                                scan = "-1.";
+                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
                             } else {
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
+                                scan = ".";
+                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                             }
 
                             // doing transform
@@ -254,7 +257,7 @@ public class HomeFragment extends PreferenceFragment implements
                             bw.close();
 
                             //media rescan for correctly show in pc
-                            if(testFile.exists()) {
+                            if(scan.equals("-1.")) {
                                 MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
                             } else {
                                 MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
