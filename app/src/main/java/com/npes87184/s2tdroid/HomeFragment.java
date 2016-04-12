@@ -19,7 +19,6 @@ import com.npes87184.s2tdroid.model.KeyCollection;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,10 +27,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.text.NumberFormat;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -45,8 +40,6 @@ public class HomeFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
-    String[] charsetsToBeTestedCN = {"UTF-8", "GBK"};
-    String[] charsetsToBeTestedTW = {"UTF-8", "BIG5"};
 
     private static final int EX_FILE_PICKER_RESULT = 0;
 
@@ -350,54 +343,5 @@ public class HomeFragment extends PreferenceFragment implements
         } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
             outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         }
-    }
-
-    public Charset detectCharset(File f, String[] charsets) {
-
-        Charset charset = null;
-
-        // charsets UTF8, BIG5 etc.
-        for (String charsetName : charsets) {
-            charset = detectCharset(f, Charset.forName(charsetName));
-            if (charset != null) {
-                break;
-            }
-        }
-        return charset;
-    }
-
-    private Charset detectCharset(File f, Charset charset) {
-        try {
-            BufferedInputStream input = new BufferedInputStream(new FileInputStream(f));
-
-            CharsetDecoder decoder = charset.newDecoder();
-            decoder.reset();
-
-            byte[] buffer = new byte[512];
-            boolean identified = false;
-            while ((input.read(buffer) != -1) && (!identified)) {
-                identified = identify(buffer, decoder);
-            }
-
-            input.close();
-
-            if (identified) {
-                return charset;
-            } else {
-                return null;
-            }
-
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private boolean identify(byte[] bytes, CharsetDecoder decoder) {
-        try {
-            decoder.decode(ByteBuffer.wrap(bytes));
-        } catch (CharacterCodingException e) {
-            return false;
-        }
-        return true;
     }
 }
