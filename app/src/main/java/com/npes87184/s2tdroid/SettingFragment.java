@@ -36,12 +36,22 @@ public class SettingFragment extends PreferenceFragment implements
         prefs.registerOnSharedPreferenceChangeListener(this);
 
         mode = findPreference(KeyCollection.KEY_MODE);
-        mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s") ?
-                getString(R.string.t2s) : getString(R.string.s2t));
+        if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("t2s")) {
+            mode.setSummary(getActivity().getString(R.string.t2s));
+        } else if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("s2t")) {
+            mode.setSummary(getActivity().getString(R.string.s2t));
+        } else {
+            mode.setSummary(getActivity().getString(R.string.auto_detect));
+        }
 
         bubble_mode = findPreference(KeyCollection.KEY_BUBBLE_MODE);
-        bubble_mode.setSummary(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("t2s")?
-                getString(R.string.t2s):getString(R.string.s2t));
+        if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
+            bubble_mode.setSummary(getActivity().getString(R.string.t2s));
+        } else if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
+            bubble_mode.setSummary(getActivity().getString(R.string.s2t));
+        } else {
+            bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+        }
 
         encoding = findPreference(KeyCollection.KEY_ENCODING);
         encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")?
@@ -59,11 +69,21 @@ public class SettingFragment extends PreferenceFragment implements
         } else if (key.equals(KeyCollection.KEY_OUTPUT_ENCODING)) {
             outEncodePreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
         } else if (key.equals(KeyCollection.KEY_MODE)) {
-            mode.setSummary(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("t2s")?
-                    getActivity().getString(R.string.t2s):getActivity().getString(R.string.s2t));
+            if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("t2s")) {
+                mode.setSummary(getActivity().getString(R.string.t2s));
+            } else if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("s2t")) {
+                mode.setSummary(getActivity().getString(R.string.s2t));
+            } else {
+                mode.setSummary(getActivity().getString(R.string.auto_detect));
+            }
         } else if(key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
-            bubble_mode.setSummary(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("t2s")?
-                    getActivity().getString(R.string.t2s):getActivity().getString(R.string.s2t));
+            if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
+                bubble_mode.setSummary(getActivity().getString(R.string.t2s));
+            } else if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
+                bubble_mode.setSummary(getActivity().getString(R.string.s2t));
+            } else {
+                bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+            }
         }
     }
 

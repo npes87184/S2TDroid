@@ -102,8 +102,13 @@ public class BubbleService extends Service implements IconCallback {
     public void onIconClick(View icon, float iconXPose, float iconYPose) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
-        builder.setTitle("S2TDroid"+'-'+
-                (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s)));
+        String mode;
+        if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
+            mode = getString(R.string.auto_detect);
+        } else {
+            mode = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s);
+        }
+        builder.setTitle("S2TDroid"+'-'+ mode);
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -117,7 +122,11 @@ public class BubbleService extends Service implements IconCallback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String out = input.getText().toString();
-                out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
+                if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
+                    out = Analysis.isTraditional(out)>=0 ? Analysis.TtoS(out):Analysis.StoT(out);
+                } else {
+                    out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
+                }
                 copyToClipboard(out);
             }
         });
