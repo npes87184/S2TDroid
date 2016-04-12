@@ -151,6 +151,13 @@ public class HomeFragment extends PreferenceFragment implements
                                 encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
                             }
 
+                            int TorS = 0; // >0 means t2s
+                            if(encodeString.equals("GBK")) {
+                                TorS = -100;
+                            } else if(encodeString.equals("BIG5")) {
+                                TorS = 100;
+                            }
+
                             // file extension, ex: .txt, .lrc
                             int startIndex = inFile.getName().lastIndexOf(46) + 1;
                             int endIndex = inFile.getName().length();
@@ -166,7 +173,17 @@ public class HomeFragment extends PreferenceFragment implements
                             InputStream is = new FileInputStream(inFile);
                             InputStreamReader isr = new InputStreamReader(is, encodeString);
                             BufferedReader bReader = new BufferedReader(isr);
-                            booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
+                            String line;
+                            if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                line = bReader.readLine();
+                                if(Analysis.isTraditional(line)>=0) {
+                                    booknameString = Analysis.TtoS(line);
+                                } else {
+                                    booknameString = Analysis.StoT(line);
+                                }
+                            } else {
+                                booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
+                            }
                             String firstLine = booknameString;
                             if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                 booknameString = name;
@@ -199,15 +216,32 @@ public class HomeFragment extends PreferenceFragment implements
                             // doing transform
                             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
                             BufferedWriter bw = new BufferedWriter(osw);
-                            String line;
                             bw.write(firstLine + "\r");
                             bw.newLine();
                             while((line = bReader.readLine()) != null) {
                                 wordNumber += line.length();
-                                if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                    bw.write(Analysis.StoT(line) + "\r");
+                                if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                    if(TorS<100 && TorS>-100) {
+                                        // detect step
+                                        TorS += Analysis.isTraditional(line);
+                                        if(TorS>=0) {
+                                            bw.write(Analysis.TtoS(line) + "\r");
+                                        } else {
+                                            bw.write(Analysis.StoT(line) + "\r");
+                                        }
+                                    } else {
+                                        if(TorS>0) {
+                                            bw.write(Analysis.TtoS(line) + "\r");
+                                        } else {
+                                            bw.write(Analysis.StoT(line) + "\r");
+                                        }
+                                    }
                                 } else {
-                                    bw.write(Analysis.TtoS(line) + "\r");
+                                    if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
+                                        bw.write(Analysis.StoT(line) + "\r");
+                                    } else {
+                                        bw.write(Analysis.TtoS(line) + "\r");
+                                    }
                                 }
                                 bw.newLine();
                             }
