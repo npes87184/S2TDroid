@@ -1,6 +1,6 @@
 S2TDroid
 ========
-An opem source android app for transforming Simplified Chinese to Traditional Chinese
+An open source android app for transforming Simplified Chinese to Traditional Chinese
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid)
 
@@ -37,7 +37,7 @@ Features
 9. support txt, trc, srt, ssa, ass, saa and lrc
 10. add a checkbox that can determine the output file name
 11. Material Design
-12, transform bubble, you can transform anywhere!
+12. transform bubble, you can transform anywhere!
 
 Picture
 ========
