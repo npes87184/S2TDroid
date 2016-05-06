@@ -68,12 +68,6 @@ public class DonationFragment extends Fragment {
                 view.loadUrl(url);
                 return true;
             }
-            @Override
-            public void onReceivedSslError(WebView view,
-                                           SslErrorHandler handler, android.net.http.SslError error) {
-                //設置webview處理https請求
-                handler.proceed();
-            }
         });
 
         mWebView.loadUrl("file:///android_asset/donate.html");
