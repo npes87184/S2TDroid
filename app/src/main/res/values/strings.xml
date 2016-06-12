@@ -50,5 +50,6 @@
     <string name="bubble_mode">Bubble Mode</string>
     <string name="encode">Encode</string>
     <string name="normal">Normal</string>
+    <string name="choose_tip">Now, it can choose a directory to transfom each file in that directory.</string>
 
 </resources>

@@ -13,6 +13,7 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.internal.view.ContextThemeWrapper;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.npes87184.s2tdroid.donate.model.Analysis;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ru.bartwell.exfilepicker.ExFilePicker;
@@ -51,6 +53,7 @@ public class HomeFragment extends PreferenceFragment implements
     private Preference startPreference;
     private SharedPreferences prefs;
     private SweetAlertDialog pDialog;
+    private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa" };
 
     String booknameString = "default";
 
@@ -59,6 +62,15 @@ public class HomeFragment extends PreferenceFragment implements
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
+    }
+
+    private boolean contain(String[] strings, String s) {
+        for(int i=0;i< strings.length;++i) {
+            if(strings[i].equals(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -77,12 +89,13 @@ public class HomeFragment extends PreferenceFragment implements
         inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                Toast.makeText(getActivity(), getString(R.string.choose_tip), Toast.LENGTH_LONG).show();
                 isIn = true;
                 Intent intent = new Intent(getActivity(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
-                intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
-                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa" });
+                intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_ALL);
+                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, filter);
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_PATH, APP_DIR));
                 startActivityForResult(intent, EX_FILE_PICKER_RESULT);
                 return true;
@@ -109,13 +122,14 @@ public class HomeFragment extends PreferenceFragment implements
         startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            File inFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+                            File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
                             // detect file exist
-                            if(!inFile.exists()) {
+                            if(!testDirFile.exists()) {
                                 Message msg = new Message();
                                 msg.what = 2;
                                 mHandler.sendMessage(msg);
@@ -123,136 +137,155 @@ public class HomeFragment extends PreferenceFragment implements
                                 return;
                             }
 
-                            // detect encode
-                            String encodeString;
-                            if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-                                FileInputStream fis = new FileInputStream(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
-                                byte[] buf = new byte[4096];
-                                UniversalDetector detector = new UniversalDetector(null);
-                                int nread;
-                                while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-                                    detector.handleData(buf, 0, nread);
-                                }
-                                detector.dataEnd();
-
-                                encodeString = detector.getDetectedCharset();
-                                if (encodeString == null) {
-                                    encodeString = "Unicode";
-                                }
-                                detector.reset();
-                                fis.close();
-                            }  else {
-                                encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
-                            }
-
-                            int TorS = 0; // >0 means t2s
-                            if(encodeString.equals("GBK")) {
-                                TorS = -100;
-                            } else if(encodeString.equals("BIG5")) {
-                                TorS = 100;
-                            }
-
-                            // file extension, ex: .txt, .lrc
-                            int startIndex = inFile.getName().lastIndexOf(46) + 1;
-                            int endIndex = inFile.getName().length();
-                            String file_extension = inFile.getName().substring(startIndex, endIndex);
-
-                            // file name
-                            String name = inFile.getName();
-                            int pos = name.lastIndexOf(".");
-                            if (pos > 0) {
-                                name = name.substring(0, pos);
-                            }
-                            InputStream is = new FileInputStream(inFile);
-                            InputStreamReader isr = new InputStreamReader(is, encodeString);
-                            BufferedReader bReader = new BufferedReader(isr);
-                            String line;
-                            if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                line = bReader.readLine();
-                                if(Analysis.isTraditional(line)>=0) {
-                                    booknameString = Analysis.TtoS(line);
-                                } else {
-                                    booknameString = Analysis.StoT(line);
+                            ArrayList<String> fileList = new ArrayList<String>();
+                            if(testDirFile.isDirectory()) {
+                                String[] filenames = testDirFile.list();
+                                for (int i = 0 ; i < filenames.length ; ++i){
+                                    File tempFile = new File(testDirFile.getAbsolutePath() + "/" + filenames[i]);
+                                    int startIndex = tempFile.getName().lastIndexOf(46) + 1;
+                                    int endIndex = tempFile.getName().length();
+                                    String file_extension = tempFile.getName().substring(startIndex, endIndex);
+                                    if(!tempFile.isDirectory() && contain(filter, file_extension)){
+                                        fileList.add(tempFile.getAbsolutePath());
+                                    }
                                 }
                             } else {
-                                booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
-                            }
-                            String firstLine = booknameString;
-                            if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
-                                booknameString = name;
-                                Message msg = new Message();
-                                msg.what = 3;
-                                mHandler.sendMessage(msg);
-                            } else {
-                                Message msg = new Message();
-                                msg.what = 4;
-                                mHandler.sendMessage(msg);
-                                synchronized (syncToken) {
-                                    syncToken.wait();
-                                }
-                                booknameString = booknameString.split(" ")[0];
-                            }
-                            File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
-                            if(!file.exists() || !file.isDirectory()) {
-                                file.mkdir();
+                                fileList.add(testDirFile.getAbsolutePath());
                             }
 
-                            // if file exists add -1 in the last
-                            File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
-                            File outFile;
-                            String scan;
-                            if(testFile.exists()) {
-                                scan = "-1.";
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
-                            } else {
-                                scan = ".";
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
-                            }
-                            // doing transform
-                            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-                            BufferedWriter bw = new BufferedWriter(osw);
-                            bw.write(firstLine + "\r");
-                            bw.newLine();
-                            while((line = bReader.readLine()) != null) {
-                                if(line.length()==0) {
-                                    bw.write("\r");
-                                    bw.newLine();
-                                    continue;
+                            for(int i=0;i<fileList.size();++i) {
+                                File inFile = new File(fileList.get(i));
+                                // detect encode
+                                String encodeString;
+                                if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
+                                    FileInputStream fis = new FileInputStream(fileList.get(i));
+                                    byte[] buf = new byte[4096];
+                                    UniversalDetector detector = new UniversalDetector(null);
+                                    int nread;
+                                    while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+                                        detector.handleData(buf, 0, nread);
+                                    }
+                                    detector.dataEnd();
+
+                                    encodeString = detector.getDetectedCharset();
+                                    if (encodeString == null) {
+                                        encodeString = "Unicode";
+                                    }
+                                    detector.reset();
+                                    fis.close();
+                                }  else {
+                                    encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
                                 }
-                                wordNumber += line.length();
+
+                                int TorS = 0; // >0 means t2s
+                                if(encodeString.equals("GBK")) {
+                                    TorS = -100;
+                                } else if(encodeString.equals("BIG5")) {
+                                    TorS = 100;
+                                }
+
+                                // file extension, ex: .txt, .lrc
+                                int startIndex = inFile.getName().lastIndexOf(46) + 1;
+                                int endIndex = inFile.getName().length();
+                                String file_extension = inFile.getName().substring(startIndex, endIndex);
+
+                                // file name
+                                String name = inFile.getName();
+                                int pos = name.lastIndexOf(".");
+                                if (pos > 0) {
+                                    name = name.substring(0, pos);
+                                }
+                                InputStream is = new FileInputStream(inFile);
+                                InputStreamReader isr = new InputStreamReader(is, encodeString);
+                                BufferedReader bReader = new BufferedReader(isr);
+                                String line;
                                 if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                    if(TorS<100 && TorS>-100) {
-                                        // detect step
-                                        TorS += Analysis.isTraditional(line);
-                                        if(TorS>=0) {
-                                            bw.write(Analysis.TtoS(line) + "\r");
-                                        } else {
-                                            bw.write(Analysis.StoT(line) + "\r");
-                                        }
+                                    line = bReader.readLine();
+                                    if(Analysis.isTraditional(line)>=0) {
+                                        booknameString = Analysis.TtoS(line);
                                     } else {
-                                        if(TorS>0) {
-                                            bw.write(Analysis.TtoS(line) + "\r");
-                                        } else {
-                                            bw.write(Analysis.StoT(line) + "\r");
-                                        }
+                                        booknameString = Analysis.StoT(line);
                                     }
                                 } else {
-                                    if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                        bw.write(Analysis.StoT(line) + "\r");
-                                    } else {
-                                        bw.write(Analysis.TtoS(line) + "\r");
-                                    }
+                                    booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
                                 }
-                                bw.newLine();
-                            }
-                            bReader.close();
-                            bw.close();
+                                String firstLine = booknameString;
+                                if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
+                                    booknameString = name;
+                                    Message msg = new Message();
+                                    msg.what = 3;
+                                    mHandler.sendMessage(msg);
+                                } else {
+                                    Message msg = new Message();
+                                    msg.what = 4;
+                                    mHandler.sendMessage(msg);
+                                    synchronized (syncToken) {
+                                        syncToken.wait();
+                                    }
+                                    booknameString = booknameString.split(" ")[0];
+                                }
+                                File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+                                if(!file.exists() || !file.isDirectory()) {
+                                    file.mkdir();
+                                }
 
-                            //media rescan for correctly show in pc
-                            if(scan.equals("-1.")) {
-                                MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
-                            } else {
-                                MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
+                                // if file exists add -1 in the last
+                                File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
+                                File outFile;
+                                String scan;
+                                if(testFile.exists()) {
+                                    scan = "-1.";
+                                    outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
+                                } else {
+                                    scan = ".";
+                                    outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
+                                }
+                                // doing transform
+                                OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+                                BufferedWriter bw = new BufferedWriter(osw);
+                                bw.write(firstLine + "\r");
+                                bw.newLine();
+                                while((line = bReader.readLine()) != null) {
+                                    if(line.length()==0) {
+                                        bw.write("\r");
+                                        bw.newLine();
+                                        continue;
+                                    }
+                                    wordNumber += line.length();
+                                    if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                        if(TorS<100 && TorS>-100) {
+                                            // detect step
+                                            TorS += Analysis.isTraditional(line);
+                                            if(TorS>=0) {
+                                                bw.write(Analysis.TtoS(line) + "\r");
+                                            } else {
+                                                bw.write(Analysis.StoT(line) + "\r");
+                                            }
+                                        } else {
+                                            if(TorS>0) {
+                                                bw.write(Analysis.TtoS(line) + "\r");
+                                            } else {
+                                                bw.write(Analysis.StoT(line) + "\r");
+                                            }
+                                        }
+                                    } else {
+                                        if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
+                                            bw.write(Analysis.StoT(line) + "\r");
+                                        } else {
+                                            bw.write(Analysis.TtoS(line) + "\r");
+                                        }
+                                    }
+                                    bw.newLine();
+                                }
+                                bReader.close();
+                                bw.close();
+
+                                //media rescan for correctly showing in pc
+                                if(scan.equals("-1.")) {
+                                    MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
+                                } else {
+                                    MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
+                                }
                             }
                         } catch(Exception e){
 

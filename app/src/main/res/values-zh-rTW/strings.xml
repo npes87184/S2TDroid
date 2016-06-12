@@ -46,5 +46,6 @@
     <string name="bubble_mode">泡泡轉換模式</string>
     <string name="encode">編碼</string>
     <string name="normal">一般</string>
+    <string name="choose_tip">透過選擇資料夾來對資料夾中每個檔案轉換。</string>
 
 </resources>
