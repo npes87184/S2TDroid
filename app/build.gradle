@@ -8,7 +8,7 @@ android {
         applicationId "com.npes87184.s2tdroid"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 16
+        versionCode 15
         versionName "1.61"
     }
     buildTypes {
@@ -33,5 +33,4 @@ dependencies {
     compile 'com.github.dexafree:materiallist:2.4.0'
     compile(name: 'Magnet-1.1.1', ext: 'aar')
     compile files('libs/juniversalchardet-1.0.3.jar')
-    compile 'com.daimajia.numberprogressbar:library:1.2@aar'
 }

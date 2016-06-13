@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +19,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -141,11 +140,20 @@ public class MainActivity extends Activity implements AppCompatCallback {
                         mDrawerLayout.closeDrawers();
                         break;
                     case 3:
-                        // donation
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, DonationFragment.newInstance())
-                                .commit();
-                        mDrawerLayout.closeDrawers();
+                        new SweetAlertDialog(MainActivity.this)
+                                .setTitleText(getString(R.string.donate))
+                                .setContentText(getString(R.string.donate_detail))
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        // reuse previous dialog instance
+                                        String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
+                                        Intent i = new Intent(Intent.ACTION_VIEW);
+                                        i.setData(Uri.parse(url));
+                                        startActivity(i);
+                                    }
+                                })
+                                .show();
                         break;
                     case 4:
                         // about
