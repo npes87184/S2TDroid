@@ -51,6 +51,6 @@
     <string name="encode">Encode</string>
     <string name="normal">Normal</string>
     <string name="donate">Donate</string>
-    <string name="donate_detail">1.The function is the same as free version.\n2.It deletes donate notification in free version.\n3.If we have new function. We will put it into donation version first.\n4.Give me a cup. I will devote to develop more good and no ad apps.</string>
+    <string name="donate_detail">1.It deletes donate section in free version.\n2.Transform each file in a directory.\n3.Give me a cup. I will devote to develop more good and no ad apps.</string>
 
 </resources>
