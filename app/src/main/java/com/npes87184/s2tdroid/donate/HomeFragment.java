@@ -210,6 +210,10 @@ public class HomeFragment extends PreferenceFragment implements
                                     booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
                                 }
                                 String firstLine = booknameString;
+                                // fix too large bookname
+                                if(booknameString.length()>15) {
+                                    booknameString = booknameString.substring(0, 15);
+                                }
                                 if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                     booknameString = name;
                                     Message msg = new Message();
