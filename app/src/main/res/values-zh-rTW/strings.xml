@@ -1,6 +1,8 @@
 <resources>
 
     <string name="app_name">S2TDroid</string>
+    <string name="author_name">npes87184</string>
+
     <string name="output_folder">輸出目錄</string>
     <string name="input_file">輸入檔案</string>
     <string name="cancel">取消</string>
@@ -16,11 +18,7 @@
     <string name="subject">S2TDroid</string>
     <string name="mail_body">我的問題是：\n我的手機是：\n我的 Android 版本是：\n其他：</string>
     <string name="bookname">檔名</string>
-    <string name="contact_detail">如果發現任何問題或是有任何建議，歡迎點此卡片聯繫我。</string>
     <string name="contact">聯繫我</string>
-    <string name="code_detail">這是一個開源軟體，可以點此卡片得到更多資訊。</string>
-    <string name="code">GitHub</string>
-    <string name="rate_detail">如果這個 APP 對您有幫助且不麻煩的話，幫我在 Google Play 評個 5 星，謝謝。</string>
     <string name="rate">評分</string>
     <string name="dialogHint">可以在設定中更改轉換模式。</string>
     <string name="copy">複製</string>
@@ -47,5 +45,8 @@
     <string name="encode">編碼</string>
     <string name="normal">一般</string>
     <string name="choose_tip">透過選擇資料夾來對資料夾中每個檔案轉換。</string>
+    <string name="author_tag">作者：\u0020</string>
+    <string name="version_tag">版本：\u0020</string>
+    <string name="web_tag">個人網頁</string>
 
 </resources>
