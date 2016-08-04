@@ -6,10 +6,13 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.62
+1.63
 
 Changelog
 ========
+###1.63
+* add isFilenameValid
+
 ###1.62
 * fix too large bookname
 * update donate
