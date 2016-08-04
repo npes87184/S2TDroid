@@ -152,9 +152,7 @@ public class HomeFragment extends PreferenceFragment implements
                             }
 
                             // file extension, ex: .txt, .lrc
-                            int startIndex = inFile.getName().lastIndexOf(46) + 1;
-                            int endIndex = inFile.getName().length();
-                            String file_extension = inFile.getName().substring(startIndex, endIndex);
+                            String file_extension = getFileExtension(inFile);
 
                             // file name
                             String name = inFile.getName();
@@ -347,5 +345,12 @@ public class HomeFragment extends PreferenceFragment implements
         } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
             outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         }
+    }
+
+    private String getFileExtension(File inFile) {
+        int startIndex = inFile.getName().lastIndexOf(46) + 1;
+        int endIndex = inFile.getName().length();
+        String file_extension = inFile.getName().substring(startIndex, endIndex);
+        return file_extension;
     }
 }
