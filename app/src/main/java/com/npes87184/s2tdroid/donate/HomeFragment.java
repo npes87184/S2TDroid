@@ -187,9 +187,7 @@ public class HomeFragment extends PreferenceFragment implements
                                 }
 
                                 // file extension, ex: .txt, .lrc
-                                int startIndex = inFile.getName().lastIndexOf(46) + 1;
-                                int endIndex = inFile.getName().length();
-                                String file_extension = inFile.getName().substring(startIndex, endIndex);
+                                String file_extension = getFileExtension(inFile);
 
                                 // file name
                                 String name = inFile.getName();
@@ -406,6 +404,13 @@ public class HomeFragment extends PreferenceFragment implements
         isr.close();
         bReader.close();
         return count;
+    }
+
+    private String getFileExtension(File inFile) {
+        int startIndex = inFile.getName().lastIndexOf(46) + 1;
+        int endIndex = inFile.getName().length();
+        String file_extension = inFile.getName().substring(startIndex, endIndex);
+        return file_extension;
     }
 
 }
