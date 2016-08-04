@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -193,6 +194,13 @@ public class HomeFragment extends PreferenceFragment implements
                                     syncToken.wait();
                                 }
                                 booknameString = booknameString.split(" ")[0];
+                                if( !isFilenameValid(booknameString) ) {
+                                    Message filenameNotValidMsg = new Message();
+                                    filenameNotValidMsg.what = 6;
+                                    mHandler.sendMessage(filenameNotValidMsg);
+                                    Thread.currentThread().interrupt();
+                                    return;
+                                }
                             }
                             File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
                             if(!file.exists() || !file.isDirectory()) {
@@ -310,6 +318,11 @@ public class HomeFragment extends PreferenceFragment implements
                     });
                     editDialog.show();
                     break;
+                case 6:
+                    pDialog.setTitleText(getString(R.string.illegal_filename))
+                            .setConfirmText("OK")
+                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    break;
             }
             super.handleMessage(msg);
         }
@@ -353,4 +366,14 @@ public class HomeFragment extends PreferenceFragment implements
         String file_extension = inFile.getName().substring(startIndex, endIndex);
         return file_extension;
     }
+
+    private boolean isFilenameValid(String fileName) {
+        File f = new File(fileName);
+        try {
+            return f.getCanonicalFile().getName().equals(fileName);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
 }

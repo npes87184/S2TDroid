@@ -48,5 +48,6 @@
     <string name="normal">一般</string>
     <string name="donate">捐赠</string>
     <string name="donate_detail">1.免除了ＡＰＰ中关于捐赠的东西\n2.提供整个资料夹内档案批次转换\n3.请作者喝杯饮料，更有动力开发更多免费好用且无广告的ＡＰＰ！ ：Ｄ</string>
+    <string name="illegal_filename">档名无效</string>
 
 </resources>
