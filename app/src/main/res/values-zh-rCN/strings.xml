@@ -48,5 +48,6 @@
     <string name="author_tag">作者：\u0020</string>
     <string name="version_tag">版本：\u0020</string>
     <string name="web_tag">个人网页</string>
+    <string name="illegal_filename">档名无效</string>
 
 </resources>

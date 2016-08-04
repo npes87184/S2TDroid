@@ -53,5 +53,6 @@
     <string name="version_tag">Version:\u0020</string>
     <string name="author_tag">Author:\u0020</string>
     <string name="web_tag">Visit my website</string>
+    <string name="illegal_filename">Illegal filename</string>
 
 </resources>

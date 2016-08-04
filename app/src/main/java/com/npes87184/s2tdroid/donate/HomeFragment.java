@@ -227,6 +227,13 @@ public class HomeFragment extends PreferenceFragment implements
                                         syncToken.wait();
                                     }
                                     booknameString = booknameString.split(" ")[0];
+                                    if( !isFilenameValid(booknameString) ) {
+                                        Message filenameNotValidMsg = new Message();
+                                        filenameNotValidMsg.what = 6;
+                                        mHandler.sendMessage(filenameNotValidMsg);
+                                        Thread.currentThread().interrupt();
+                                        return;
+                                    }
                                 }
                                 File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
                                 if(!file.exists() || !file.isDirectory()) {
@@ -354,6 +361,11 @@ public class HomeFragment extends PreferenceFragment implements
                 case 5:
                     pDialog.getProgressHelper().setInstantProgress(progressNum);
                     break;
+                case 6:
+                    pDialog.setTitleText(getString(R.string.illegal_filename))
+                            .setConfirmText("OK")
+                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                    break;
             }
             super.handleMessage(msg);
         }
@@ -411,6 +423,15 @@ public class HomeFragment extends PreferenceFragment implements
         int endIndex = inFile.getName().length();
         String file_extension = inFile.getName().substring(startIndex, endIndex);
         return file_extension;
+    }
+
+    private boolean isFilenameValid(String fileName) {
+        File f = new File(fileName);
+        try {
+            return f.getCanonicalFile().getName().equals(fileName);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
 }
