@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -54,6 +55,7 @@ public class HomeFragment extends PreferenceFragment implements
     private SharedPreferences prefs;
     private SweetAlertDialog pDialog;
     private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa" };
+    private float progressNum = 0;
 
     String booknameString = "default";
 
@@ -136,7 +138,6 @@ public class HomeFragment extends PreferenceFragment implements
                                 Thread.currentThread().interrupt();
                                 return;
                             }
-
                             ArrayList<String> fileList = new ArrayList<String>();
                             if(testDirFile.isDirectory()) {
                                 String[] filenames = testDirFile.list();
@@ -152,7 +153,6 @@ public class HomeFragment extends PreferenceFragment implements
                             } else {
                                 fileList.add(testDirFile.getAbsolutePath());
                             }
-
                             for(int i=0;i<fileList.size();++i) {
                                 File inFile = new File(fileList.get(i));
                                 // detect encode
@@ -176,6 +176,8 @@ public class HomeFragment extends PreferenceFragment implements
                                 }  else {
                                     encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
                                 }
+
+                                int totalLine = countLines(fileList.get(i), encodeString);
 
                                 int TorS = 0; // >0 means t2s
                                 if(encodeString.equals("GBK")) {
@@ -250,6 +252,10 @@ public class HomeFragment extends PreferenceFragment implements
                                 bw.write(firstLine + "\r");
                                 bw.newLine();
                                 while((line = bReader.readLine()) != null) {
+                                    progressNum += ((1) / (float)fileList.size()) * (1 / (float)totalLine);
+                                    Message msg = new Message();
+                                    msg.what = 5;
+                                    mHandler.sendMessage(msg);
                                     if(line.length()==0) {
                                         bw.write("\r");
                                         bw.newLine();
@@ -281,6 +287,8 @@ public class HomeFragment extends PreferenceFragment implements
                                     }
                                     bw.newLine();
                                 }
+                                is.close();
+                                isr.close();
                                 bReader.close();
                                 bw.close();
 
@@ -309,6 +317,7 @@ public class HomeFragment extends PreferenceFragment implements
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
+                    pDialog.getProgressHelper().setInstantProgress(1);
                     NumberFormat nf = NumberFormat.getInstance();
                     pDialog.setTitleText(getString(R.string.word_count) + nf.format(wordNumber))
                             .setConfirmText("OK")
@@ -343,6 +352,9 @@ public class HomeFragment extends PreferenceFragment implements
                         }
                     });
                     editDialog.show();
+                    break;
+                case 5:
+                    pDialog.getProgressHelper().setInstantProgress(progressNum);
                     break;
             }
             super.handleMessage(msg);
@@ -380,4 +392,20 @@ public class HomeFragment extends PreferenceFragment implements
             outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         }
     }
+
+    private int countLines(String filename, String encodeString) throws IOException {
+        File inFile = new File(filename);
+        InputStream is = new FileInputStream(inFile);
+        InputStreamReader isr = new InputStreamReader(is, encodeString);
+        BufferedReader bReader = new BufferedReader(isr);
+        int count = 0;
+        while((bReader.readLine()) != null) {
+            ++count;
+        }
+        is.close();
+        isr.close();
+        bReader.close();
+        return count;
+    }
+
 }
