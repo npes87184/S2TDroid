@@ -323,10 +323,14 @@ public class HomeFragment extends PreferenceFragment implements
             switch (msg.what) {
                 case 1:
                     pDialog.getProgressHelper().setInstantProgress(1);
+                    pDialog.hide();
                     NumberFormat nf = NumberFormat.getInstance();
-                    pDialog.setTitleText(getString(R.string.word_count) + nf.format(wordNumber))
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText(getString(R.string.word_count) + nf.format(wordNumber))
                             .setConfirmText("OK")
-                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            .show();
+                    wordNumber = 0;
+                    progressNum = 0;
                     break;
                 case 2:
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
@@ -362,14 +366,22 @@ public class HomeFragment extends PreferenceFragment implements
                     pDialog.getProgressHelper().setInstantProgress(progressNum);
                     break;
                 case 6:
-                    pDialog.setTitleText(getString(R.string.illegal_filename))
+                    pDialog.hide();
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.illegal_filename))
                             .setConfirmText("OK")
-                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                            .show();
                     break;
             }
             super.handleMessage(msg);
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        pDialog.dismiss();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
