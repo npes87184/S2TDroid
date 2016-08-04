@@ -35,7 +35,14 @@ public class AboutFragment extends Fragment {
         // TODO Auto-generated method stub
 
         Element versionElement = new Element();
-        versionElement.setTitle(getString(R.string.version_tag) + getString(R.string.version_name));
+        String versionNum = "";
+        try {
+            versionNum = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            versionNum = getString(R.string.version_name);
+        }
+
+        versionElement.setTitle(getString(R.string.version_tag) + versionNum);
         Element authorElement = new Element();
         authorElement.setTitle(getString(R.string.author_tag) + getString(R.string.author_name));
 
