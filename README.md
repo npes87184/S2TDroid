@@ -12,6 +12,7 @@ Changelog
 ========
 ###1.63
 * add isFilenameValid
+* fix pDialog dismiss error
 
 ###1.62
 * fix too large bookname
