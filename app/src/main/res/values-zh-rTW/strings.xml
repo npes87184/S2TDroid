@@ -46,8 +46,8 @@
     <string name="bubble_mode">泡泡轉換模式</string>
     <string name="encode">編碼</string>
     <string name="normal">一般</string>
-    <string name="donate">捐贈</string>
-    <string name="donate_detail">1.免除了ＡＰＰ中關於捐贈的東西\n2.提供整個資料夾內檔案批次轉換\n3.請作者喝杯飲料，更有動力開發更多免費好用且無廣告的ＡＰＰ！：Ｄ</string>
+    <string name="donate">Pro</string>
+    <string name="donate_detail">1. 免除了ＡＰＰ中關於捐贈的東西\n2. 提供整個資料夾內檔案批次轉換\n3. 轉換進度顯示\n4. 請作者喝杯飲料，更有動力開發更多免費好用且無廣告的ＡＰＰ！：Ｄ</string>
     <string name="illegal_filename">檔名無效</string>
 
 </resources>
