@@ -45,7 +45,7 @@ Features
 9. support txt, trc, srt, ssa, ass, saa and lrc
 10. add a checkbox that can determine the output file name
 11. Material Design
-12, transform bubble, you can transform anywhere!
+12. transform bubble, you can transform anywhere!
 
 Picture
 ========
