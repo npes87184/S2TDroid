@@ -1,8 +1,5 @@
 <resources>
 
-    <string name="app_name">S2TDroid</string>
-    <string name="author_name">npes87184</string>
-
     <string name="output_folder">輸出目錄</string>
     <string name="input_file">輸入檔案</string>
     <string name="cancel">取消</string>
