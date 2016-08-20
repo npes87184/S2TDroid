@@ -11,7 +11,7 @@
     <string name="home">主画面</string>
     <string name="transformBubble">转换泡泡</string>
     <string name="setting">设定</string>
-    <string name="about1">关於</string>
+    <string name="about">关於</string>
     <string name="wait">转换中...</string>
     <string name="output_encoding_title">输出编码</string>
     <string name="auto_detect">自动侦测</string>

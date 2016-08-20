@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
         lvs.add(getString(R.string.home));
         lvs.add(getString(R.string.transformBubble));
         lvs.add(getString(R.string.setting));
-        lvs.add(getString(R.string.about1));
+        lvs.add(getString(R.string.about));
 
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
