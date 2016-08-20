@@ -47,7 +47,7 @@ Features
 11. Material Design
 12. transform bubble, you can transform anywhere!
 
-Picture
+Pictures
 ========
 <img src="http://truth.bahamut.com.tw/s01/201505/161edda668b0d8bd1f0ca45808944f44.PNG">
 
