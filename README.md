@@ -1,54 +1,57 @@
 S2TDroid
 ========
-An opem source android app for transforming Simplified Chinese to Traditional Chinese
+An open source android app for transforming Simplified Chinese to Traditional Chinese
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid)
 
 Latest Version
 ========
-1.43
+1.63
 
 Changelog
 ========
-###1.43
-* add more file support: srt, ssa, ass, saa
-* fix showing in pc
-* if file exists add -1 in the last
+###1.63
+* add isFilenameValid
+* fix pDialog dismiss error
 
-###1.42
-* set Notification priority Min
-* fix crash in setting
-* add progressDialog
-* optimize code
-* split transform mode
+###1.62
+* fix too large bookname
+* update donate
 
-###1.41
-* setForegroundService
-* when file does not exist, add error
+###1.61
+* auto detect language
+* speed up transform
+* Update encoding function
+* fix media scan
 
-###1.40
-* Add bubble fragment
-* Add bubble transform
-* More material
+###1.50
+* Support android 6.0 permission
+* Adjust UI
+* Add simplified chinese layout
+
+###1.45
+* Add word count
 
 Features
 ========
 1. light weight and no AD transformer
-2. support GBK and UTF-8 input encode
-3. auto detect encode
-4. support choose UTF-8 or Unicode to output file
-5. very fast, 1m txt only need some seconds
-6. auto detect bookname
-7. don't need internet
-8. support txt, trc and lrc
-9. add a checkbox that can determine the output file name
-10. Material Design
+2. auto detect input languate, auto determine S to T or T to S
+3. support GBK, UTF-8, BIG5 and Unicode input encode
+4. auto detect encode
+5. support choose UTF-8 or Unicode to output file
+6. very fast, 1m txt only need some seconds
+7. auto detect bookname
+8. don't need internet
+9. support txt, trc, srt, ssa, ass, saa and lrc
+10. add a checkbox that can determine the output file name
+11. Material Design
+12. transform bubble, you can transform anywhere!
 
 Picture
 ========
 <img src="http://truth.bahamut.com.tw/s01/201505/161edda668b0d8bd1f0ca45808944f44.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201508/b03c37d6ca6d2b7ddb058149f7bc7182.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201512/3b6922ee762023f9c12d1f082541eeeb.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/c25f40b8d870e3c74f116d1a4935762a.PNG">
 
@@ -56,7 +59,7 @@ Picture
 
 <img src="http://truth.bahamut.com.tw/s01/201509/be4d5a98a3079584c38aeeb3474c9d47.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201508/b546b8b6237461be8a23b66bcde5cf18.PNG">
+<img src="http://truth.bahamut.com.tw/s01/201512/28b61e79c2bbd9916b6b7b6d177abadd.JPG">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/274b0ec1a452abb36c24a16a4d1d7947.PNG">
 
@@ -67,6 +70,7 @@ Thanks
 * sweet-alert-dialog (pedant)
 * Magnet (premnirmal)
 * MaterialList (dexafree)
+* Juniversalchardet (takscape)
 
 License
 ========
