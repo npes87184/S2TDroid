@@ -9,7 +9,7 @@
     <string name="home">Home</string>
     <string name="transformBubble">Transform Bubble</string>
     <string name="setting">Setting</string>
-    <string name="about1">About</string>
+    <string name="about">About</string>
     <string name="wait">Transforming...</string>
     <string name="output_encoding_title">Output encode</string>
     <string name="auto_detect">Auto Detect</string>
