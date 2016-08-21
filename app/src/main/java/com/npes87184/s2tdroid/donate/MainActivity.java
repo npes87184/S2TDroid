@@ -3,7 +3,6 @@ package com.npes87184.s2tdroid.donate;
 import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatCallback;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
@@ -32,7 +30,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class MainActivity extends Activity implements AppCompatCallback, DrawerLayout.DrawerListener {
+public class MainActivity extends Activity implements AppCompatCallback {
 
     private AppCompatDelegate delegate;
     private Toolbar toolbar;
@@ -41,7 +39,6 @@ public class MainActivity extends Activity implements AppCompatCallback, DrawerL
     private ListView lvLeftMenu;
     private ImageView imageViewMenu;
     private ListAdapter adapter;
-    private int selectedItem = 0;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     final List<String> permissionsList = new ArrayList<String>();
 
@@ -104,7 +101,6 @@ public class MainActivity extends Activity implements AppCompatCallback, DrawerL
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-
             }
         };
         mDrawerToggle.syncState();
@@ -114,9 +110,14 @@ public class MainActivity extends Activity implements AppCompatCallback, DrawerL
         lvLeftMenu.setAdapter(adapter);
         lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
-                selectedItem = arg2;
+            public void onItemClick(AdapterView arg0, View arg1, final int arg2, long arg3) {
                 mDrawerLayout.closeDrawers();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchFragments(arg2); // your fragment transactions go here
+                    }
+                }, 200);
             }
         });
 
@@ -198,25 +199,9 @@ public class MainActivity extends Activity implements AppCompatCallback, DrawerL
         imageViewMenu.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
-    @Override
-    public void onSupportActionModeStarted(ActionMode mode) {
-        //let's leave this empty, for now
-    }
-
-    @Override
-    public void onSupportActionModeFinished(ActionMode mode) {
-        // let's leave this empty, for now
-    }
-
-    @Override
-    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
-        return null;
-    }
-
-    @Override
-    public void onDrawerClosed(View view) {
+    private void switchFragments(int which) {
         FragmentManager fragmentManager = getFragmentManager();
-        switch (selectedItem) {
+        switch (which) {
             case 0:
                 // home
                 fragmentManager.beginTransaction()
@@ -245,17 +230,17 @@ public class MainActivity extends Activity implements AppCompatCallback, DrawerL
     }
 
     @Override
-    public void onDrawerOpened(View view) {
-
+    public void onSupportActionModeStarted(ActionMode mode) {
+        //let's leave this empty, for now
     }
 
     @Override
-    public void onDrawerStateChanged(int num) {
-
+    public void onSupportActionModeFinished(ActionMode mode) {
+        // let's leave this empty, for now
     }
 
     @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
-
+    public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
+        return null;
     }
 }
