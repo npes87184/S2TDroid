@@ -225,14 +225,6 @@ public class MainActivity extends Activity implements AppCompatCallback {
         imageViewMenu.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(MainActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .create()
-                .show();
-    }
-
     @Override
     public void onSupportActionModeStarted(ActionMode mode) {
         //let's leave this empty, for now
