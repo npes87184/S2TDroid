@@ -6,31 +6,14 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.63
+1.65
 
 Changelog
 ========
-###1.63
-* add isFilenameValid
-* fix pDialog dismiss error
-
-###1.62
-* fix too large bookname
-* update donate
-
-###1.61
-* auto detect language
-* speed up transform
-* Update encoding function
-* fix media scan
-
-###1.50
-* Support android 6.0 permission
-* Adjust UI
-* Add simplified chinese layout
-
-###1.45
-* Add word count
+###1.65
+* add state selector
+* rename appname
+* let navigationdrawer be smoother
 
 Features
 ========
