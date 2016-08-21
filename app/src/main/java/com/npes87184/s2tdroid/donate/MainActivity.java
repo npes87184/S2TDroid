@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -31,7 +32,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class MainActivity extends Activity implements AppCompatCallback {
+public class MainActivity extends Activity implements AppCompatCallback, DrawerLayout.DrawerListener {
 
     private AppCompatDelegate delegate;
     private Toolbar toolbar;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
     private ListView lvLeftMenu;
     private ImageView imageViewMenu;
     private ListAdapter adapter;
+    private int selectedItem = 0;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     final List<String> permissionsList = new ArrayList<String>();
 
@@ -113,37 +115,8 @@ public class MainActivity extends Activity implements AppCompatCallback {
         lvLeftMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView arg0, View arg1, int arg2, long arg3) {
-                FragmentManager fragmentManager = getFragmentManager();
-                switch (arg2) {
-                    case 0:
-                        // home
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, HomeFragment.newInstance())
-                                .commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case 1:
-                        // bubble
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, BubbleFragment.newInstance())
-                                .commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case 2:
-                        // setting
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, SettingFragment.newInstance())
-                                .commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case 3:
-                        // about
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.container, AboutFragment.newInstance())
-                                .commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                }
+                selectedItem = arg2;
+                mDrawerLayout.closeDrawers();
             }
         });
 
@@ -238,5 +211,51 @@ public class MainActivity extends Activity implements AppCompatCallback {
     @Override
     public ActionMode onWindowStartingSupportActionMode(ActionMode.Callback callback) {
         return null;
+    }
+
+    @Override
+    public void onDrawerClosed(View view) {
+        FragmentManager fragmentManager = getFragmentManager();
+        switch (selectedItem) {
+            case 0:
+                // home
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, HomeFragment.newInstance())
+                        .commit();
+                break;
+            case 1:
+                // bubble
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, BubbleFragment.newInstance())
+                        .commit();
+                break;
+            case 2:
+                // setting
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, SettingFragment.newInstance())
+                        .commit();
+                break;
+            case 3:
+                // about
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, AboutFragment.newInstance())
+                        .commit();
+                break;
+        }
+    }
+
+    @Override
+    public void onDrawerOpened(View view) {
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int num) {
+
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
     }
 }
