@@ -2,7 +2,7 @@ S2TDroid
 ========
 An open source android app for transforming Simplified Chinese to Traditional Chinese
 
-[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid)
+[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate)
 
 Latest Version
 ========
