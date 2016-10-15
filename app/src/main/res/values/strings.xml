@@ -51,7 +51,7 @@
     <string name="encode">Encode</string>
     <string name="normal">Normal</string>
     <string name="donate">Pro</string>
-    <string name="donate_detail">1. It deletes donate section in free version.\n2. Transform each file in a directory.\n3. The conversion progress display.\n4. Give me a cup. I will devote to develop more good and no ad apps.</string>
+    <string name="donate_detail">1. It deletes donate section in free version.\n2. Transform each file in a directory.\n3. The conversion progress display.\n4. Write to external sdcard in android 5.0 up\n5. Give me a cup. I will devote to develop more good and no ad apps.</string>
     <string name="illegal_filename">Illegal filename</string>
 
 </resources>

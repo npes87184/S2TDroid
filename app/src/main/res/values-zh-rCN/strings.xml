@@ -46,7 +46,7 @@
     <string name="encode">编码</string>
     <string name="normal">一般</string>
     <string name="donate">Pro</string>
-    <string name="donate_detail">1. 免除了ＡＰＰ中关于捐赠的东西\n2. 提供整个资料夹内档案批次转换\n3. 转换进度显示\n4. 请作者喝杯饮料，更有动力开发更多免费好用且无广告的ＡＰＰ！ ：Ｄ</string>
+    <string name="donate_detail">1. 免除了ＡＰＰ中关于捐赠的东西\n2. 提供整个资料夹内档案批次转换\n3. 转换进度显示\n4. 对于 Android 5.0 以上的用户，支援直接写到外部 SD 卡\n5. 请作者喝杯饮料，更有动力开发更多免费好用且无广告的ＡＰＰ！ ：Ｄ</string>
     <string name="illegal_filename">档名无效</string>
 
 </resources>
