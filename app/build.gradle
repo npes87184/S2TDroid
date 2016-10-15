@@ -8,8 +8,8 @@ android {
         applicationId "com.npes87184.s2tdroid.donate"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 11
-        versionName "1.66"
+        versionCode 12
+        versionName "1.66-1"
     }
     buildTypes {
         release {

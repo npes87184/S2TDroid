@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -260,18 +261,25 @@ public class HomeFragment extends PreferenceFragment implements
                                         scan = ".";
                                         outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                                     }
-                                    Uri uri;
-                                    try {
-                                        uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
-                                    } catch (Exception e) {
-                                        uri = null;
-                                    }
                                     FileUtil fileUtil = new FileUtil(getActivity());
-                                    DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, false, uri);
-                                    OutputStream outStream = getActivity().getApplication().
-                                            getContentResolver().openOutputStream(targetDocument.getUri());
+                                    OutputStreamWriter osw;
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.getExtSdCardFolder(outFile)!=null) {
+                                        // in external sdcard
+                                        Uri uri;
+                                        try {
+                                            uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
+                                        } catch (Exception e) {
+                                            uri = null;
+                                        }
+                                        DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, false, uri);
+                                        OutputStream outStream = getActivity().getApplication().
+                                                getContentResolver().openOutputStream(targetDocument.getUri());
+                                        osw = new OutputStreamWriter(outStream, prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+                                    } else {
+                                        osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+                                    }
+
                                     // doing transform
-                                    OutputStreamWriter osw = new OutputStreamWriter(outStream, prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
                                     BufferedWriter bw = new BufferedWriter(osw);
                                     bw.write(firstLine + "\r");
                                     bw.newLine();
@@ -538,8 +546,12 @@ public class HomeFragment extends PreferenceFragment implements
             return true;
         }
         else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            // Kitkat is bad
-            return false;
+            if(fileUtil.getExtSdCardFolder(folder)==null) {
+                return true;
+            } else {
+                // The file is in the external sdcard, and Kitkat is bad.
+                return false;
+            }
         }
         else if (FileUtil.isWritable(new File(folder, "DummyFile"))) {
             return true;
