@@ -15,5 +15,6 @@ public class KeyCollection {
     public static final String KEY_START = "start";
     public static final String KEY_PATH = "path";
     public static final String KEY_SAME_FILENAME = "same_filename";
+    public static final String KEY_SDCARD_URI = "sdcard_uri";
 
 }

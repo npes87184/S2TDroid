@@ -36,6 +36,8 @@
 
     <string name="oops">Oops...</string>
     <string name="oops_detail">Input file doesn\'t exist.</string>
+    <string name="oops_sdcard_detail">We need external sd card writing permission.</string>
+    <string name="oops_sdcard_kitkat_detail">Can\'t write file to external sdcard in KITKAT.</string>
 
     <string name="word_count">Word Count:</string>
 

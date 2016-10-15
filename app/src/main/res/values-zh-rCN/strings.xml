@@ -31,6 +31,8 @@
 
     <string name="oops">错误</string>
     <string name="oops_detail">输入档案不存在！</string>
+    <string name="oops_sdcard_detail">需要写入外部 SD 卡的权限</string>
+    <string name="oops_sdcard_kitkat_detail">很抱歉,在 Android 4.4,App 无法自由写入外接记忆卡。</string>
 
     <string name="word_count">转换字数：</string>
 

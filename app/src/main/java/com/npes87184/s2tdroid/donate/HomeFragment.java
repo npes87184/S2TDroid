@@ -1,21 +1,28 @@
 package com.npes87184.s2tdroid.donate;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
+import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.npes87184.s2tdroid.donate.model.Analysis;
+import com.npes87184.s2tdroid.donate.model.FileUtil;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 
 import org.mozilla.universalchardet.UniversalDetector;
@@ -24,10 +31,10 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -45,6 +52,7 @@ public class HomeFragment extends PreferenceFragment implements
     private final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
 
     private static final int EX_FILE_PICKER_RESULT = 0;
+    private static final int REQUEST_CODE_STORAGE_ACCESS = 1;
 
     boolean isIn = false;
     int wordNumber = 0;
@@ -124,195 +132,233 @@ public class HomeFragment extends PreferenceFragment implements
         startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
-                            // detect file exist
-                            if(!testDirFile.exists()) {
-                                Message msg = new Message();
-                                msg.what = 2;
-                                mHandler.sendMessage(msg);
-                                Thread.currentThread().interrupt();
-                                return;
-                            }
-                            ArrayList<String> fileList = new ArrayList<String>();
-                            if(testDirFile.isDirectory()) {
-                                String[] filenames = testDirFile.list();
-                                for (int i = 0 ; i < filenames.length ; ++i){
-                                    File tempFile = new File(testDirFile.getAbsolutePath() + "/" + filenames[i]);
-                                    int startIndex = tempFile.getName().lastIndexOf(46) + 1;
-                                    int endIndex = tempFile.getName().length();
-                                    String file_extension = tempFile.getName().substring(startIndex, endIndex);
-                                    if(!tempFile.isDirectory() && contain(filter, file_extension)){
-                                        fileList.add(tempFile.getAbsolutePath());
-                                    }
+                File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+                if(checkFolder(testSDcardFolder)) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+                                // detect file exist
+                                if(!testDirFile.exists()) {
+                                    Message msg = new Message();
+                                    msg.what = 2;
+                                    mHandler.sendMessage(msg);
+                                    Thread.currentThread().interrupt();
+                                    return;
                                 }
-                            } else {
-                                fileList.add(testDirFile.getAbsolutePath());
-                            }
-                            for(int i=0;i<fileList.size();++i) {
-                                File inFile = new File(fileList.get(i));
-                                // detect encode
-                                String encodeString;
-                                if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-                                    FileInputStream fis = new FileInputStream(fileList.get(i));
-                                    byte[] buf = new byte[4096];
-                                    UniversalDetector detector = new UniversalDetector(null);
-                                    int nread;
-                                    while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-                                        detector.handleData(buf, 0, nread);
-                                    }
-                                    detector.dataEnd();
-
-                                    encodeString = detector.getDetectedCharset();
-                                    if (encodeString == null) {
-                                        encodeString = "Unicode";
-                                    }
-                                    detector.reset();
-                                    fis.close();
-                                }  else {
-                                    encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
-                                }
-
-                                int totalLine = countLines(fileList.get(i), encodeString);
-
-                                int TorS = 0; // >0 means t2s
-                                if(encodeString.equals("GBK")) {
-                                    TorS = -100;
-                                } else if(encodeString.equals("BIG5")) {
-                                    TorS = 100;
-                                }
-
-                                // file extension, ex: .txt, .lrc
-                                String file_extension = getFileExtension(inFile);
-
-                                // file name
-                                String name = inFile.getName();
-                                int pos = name.lastIndexOf(".");
-                                if (pos > 0) {
-                                    name = name.substring(0, pos);
-                                }
-                                InputStream is = new FileInputStream(inFile);
-                                InputStreamReader isr = new InputStreamReader(is, encodeString);
-                                BufferedReader bReader = new BufferedReader(isr);
-                                String line;
-                                if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                    line = bReader.readLine();
-                                    if(Analysis.isTraditional(line)>=0) {
-                                        booknameString = Analysis.TtoS(line);
-                                    } else {
-                                        booknameString = Analysis.StoT(line);
+                                ArrayList<String> fileList = new ArrayList<String>();
+                                if(testDirFile.isDirectory()) {
+                                    String[] filenames = testDirFile.list();
+                                    for (int i = 0 ; i < filenames.length ; ++i){
+                                        File tempFile = new File(testDirFile.getAbsolutePath() + "/" + filenames[i]);
+                                        int startIndex = tempFile.getName().lastIndexOf(46) + 1;
+                                        int endIndex = tempFile.getName().length();
+                                        String file_extension = tempFile.getName().substring(startIndex, endIndex);
+                                        if(!tempFile.isDirectory() && contain(filter, file_extension)){
+                                            fileList.add(tempFile.getAbsolutePath());
+                                        }
                                     }
                                 } else {
-                                    booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
+                                    fileList.add(testDirFile.getAbsolutePath());
                                 }
-                                String firstLine = booknameString;
-                                // fix too large bookname
-                                if(booknameString.length()>15) {
-                                    booknameString = booknameString.substring(0, 15);
-                                }
-                                if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
-                                    booknameString = name;
-                                    Message msg = new Message();
-                                    msg.what = 3;
-                                    mHandler.sendMessage(msg);
-                                } else {
-                                    Message msg = new Message();
-                                    msg.what = 4;
-                                    mHandler.sendMessage(msg);
-                                    synchronized (syncToken) {
-                                        syncToken.wait();
-                                    }
-                                    booknameString = booknameString.split(" ")[0];
-                                    if( !isFilenameValid(booknameString) ) {
-                                        Message filenameNotValidMsg = new Message();
-                                        filenameNotValidMsg.what = 6;
-                                        mHandler.sendMessage(filenameNotValidMsg);
-                                        Thread.currentThread().interrupt();
-                                        return;
-                                    }
-                                }
-                                File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
-                                if(!file.exists() || !file.isDirectory()) {
-                                    file.mkdir();
-                                }
+                                for(int i=0;i<fileList.size();++i) {
+                                    File inFile = new File(fileList.get(i));
+                                    // detect encode
+                                    String encodeString;
+                                    if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
+                                        FileInputStream fis = new FileInputStream(fileList.get(i));
+                                        byte[] buf = new byte[4096];
+                                        UniversalDetector detector = new UniversalDetector(null);
+                                        int nread;
+                                        while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+                                            detector.handleData(buf, 0, nread);
+                                        }
+                                        detector.dataEnd();
 
-                                // if file exists add -1 in the last
-                                File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
-                                File outFile;
-                                String scan;
-                                if(testFile.exists()) {
-                                    scan = "-1.";
-                                    outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
-                                } else {
-                                    scan = ".";
-                                    outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
-                                }
-                                // doing transform
-                                OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-                                BufferedWriter bw = new BufferedWriter(osw);
-                                bw.write(firstLine + "\r");
-                                bw.newLine();
-                                while((line = bReader.readLine()) != null) {
-                                    progressNum += ((1) / (float)fileList.size()) * (1 / (float)totalLine);
-                                    Message msg = new Message();
-                                    msg.what = 5;
-                                    mHandler.sendMessage(msg);
-                                    if(line.length()==0) {
-                                        bw.write("\r");
-                                        bw.newLine();
-                                        continue;
+                                        encodeString = detector.getDetectedCharset();
+                                        if (encodeString == null) {
+                                            encodeString = "Unicode";
+                                        }
+                                        detector.reset();
+                                        fis.close();
+                                    }  else {
+                                        encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
                                     }
-                                    wordNumber += line.length();
+
+                                    int totalLine = countLines(fileList.get(i), encodeString);
+
+                                    int TorS = 0; // >0 means t2s
+                                    if(encodeString.equals("GBK")) {
+                                        TorS = -100;
+                                    } else if(encodeString.equals("BIG5")) {
+                                        TorS = 100;
+                                    }
+
+                                    // file extension, ex: .txt, .lrc
+                                    String file_extension = getFileExtension(inFile);
+
+                                    // file name
+                                    String name = inFile.getName();
+                                    int pos = name.lastIndexOf(".");
+                                    if (pos > 0) {
+                                        name = name.substring(0, pos);
+                                    }
+                                    InputStream is = new FileInputStream(inFile);
+                                    InputStreamReader isr = new InputStreamReader(is, encodeString);
+                                    BufferedReader bReader = new BufferedReader(isr);
+                                    String line;
                                     if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                        if(TorS<100 && TorS>-100) {
-                                            // detect step
-                                            TorS += Analysis.isTraditional(line);
-                                            if(TorS>=0) {
-                                                bw.write(Analysis.TtoS(line) + "\r");
-                                            } else {
-                                                bw.write(Analysis.StoT(line) + "\r");
-                                            }
+                                        line = bReader.readLine();
+                                        if(Analysis.isTraditional(line)>=0) {
+                                            booknameString = Analysis.TtoS(line);
                                         } else {
-                                            if(TorS>0) {
-                                                bw.write(Analysis.TtoS(line) + "\r");
-                                            } else {
-                                                bw.write(Analysis.StoT(line) + "\r");
-                                            }
+                                            booknameString = Analysis.StoT(line);
                                         }
                                     } else {
-                                        if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                            bw.write(Analysis.StoT(line) + "\r");
-                                        } else {
-                                            bw.write(Analysis.TtoS(line) + "\r");
+                                        booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
+                                    }
+                                    String firstLine = booknameString;
+                                    // fix too large bookname
+                                    if(booknameString.length()>15) {
+                                        booknameString = booknameString.substring(0, 15);
+                                    }
+                                    if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
+                                        booknameString = name;
+                                        Message msg = new Message();
+                                        msg.what = 3;
+                                        mHandler.sendMessage(msg);
+                                    } else {
+                                        Message msg = new Message();
+                                        msg.what = 4;
+                                        mHandler.sendMessage(msg);
+                                        synchronized (syncToken) {
+                                            syncToken.wait();
+                                        }
+                                        booknameString = booknameString.split(" ")[0];
+                                        if( !isFilenameValid(booknameString) ) {
+                                            Message filenameNotValidMsg = new Message();
+                                            filenameNotValidMsg.what = 6;
+                                            mHandler.sendMessage(filenameNotValidMsg);
+                                            Thread.currentThread().interrupt();
+                                            return;
                                         }
                                     }
+                                    File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+                                    if(!file.exists() || !file.isDirectory()) {
+                                        file.mkdir();
+                                    }
+
+                                    // if file exists add -1 in the last
+                                    File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
+                                    File outFile;
+                                    String scan;
+                                    if(testFile.exists()) {
+                                        scan = "-1.";
+                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
+                                    } else {
+                                        scan = ".";
+                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
+                                    }
+                                    Uri uri;
+                                    try {
+                                        uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
+                                    } catch (Exception e) {
+                                        uri = null;
+                                    }
+                                    FileUtil fileUtil = new FileUtil(getActivity());
+                                    DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, false, uri);
+                                    OutputStream outStream = getActivity().getApplication().
+                                            getContentResolver().openOutputStream(targetDocument.getUri());
+                                    // doing transform
+                                    OutputStreamWriter osw = new OutputStreamWriter(outStream, prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+                                    BufferedWriter bw = new BufferedWriter(osw);
+                                    bw.write(firstLine + "\r");
                                     bw.newLine();
-                                }
-                                is.close();
-                                isr.close();
-                                bReader.close();
-                                bw.close();
+                                    while((line = bReader.readLine()) != null) {
+                                        progressNum += ((1) / (float)fileList.size()) * (1 / (float)totalLine);
+                                        Message msg = new Message();
+                                        msg.what = 5;
+                                        mHandler.sendMessage(msg);
+                                        if(line.length()==0) {
+                                            bw.write("\r");
+                                            bw.newLine();
+                                            continue;
+                                        }
+                                        wordNumber += line.length();
+                                        if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                            if(TorS<100 && TorS>-100) {
+                                                // detect step
+                                                TorS += Analysis.isTraditional(line);
+                                                if(TorS>=0) {
+                                                    bw.write(Analysis.TtoS(line) + "\r");
+                                                } else {
+                                                    bw.write(Analysis.StoT(line) + "\r");
+                                                }
+                                            } else {
+                                                if(TorS>0) {
+                                                    bw.write(Analysis.TtoS(line) + "\r");
+                                                } else {
+                                                    bw.write(Analysis.StoT(line) + "\r");
+                                                }
+                                            }
+                                        } else {
+                                            if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
+                                                bw.write(Analysis.StoT(line) + "\r");
+                                            } else {
+                                                bw.write(Analysis.TtoS(line) + "\r");
+                                            }
+                                        }
+                                        bw.newLine();
+                                    }
+                                    is.close();
+                                    isr.close();
+                                    bReader.close();
+                                    bw.close();
 
-                                //media rescan for correctly showing in pc
-                                if(scan.equals("-1.")) {
-                                    MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
-                                } else {
-                                    MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
+                                    //media rescan for correctly showing in pc
+                                    if(scan.equals("-1.")) {
+                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
+                                    } else {
+                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
+                                    }
                                 }
+                            } catch(Exception e){
+
                             }
-                        } catch(Exception e){
-
+                            Message msg = new Message();
+                            msg.what = 1;
+                            mHandler.sendMessage(msg);
                         }
-                        Message msg = new Message();
-                        msg.what = 1;
-                        mHandler.sendMessage(msg);
+                    }).start();
+                } else {
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+                        sdcardDialog.setTitleText(getString(R.string.oops))
+                                .setContentText(getString(R.string.oops_sdcard_detail))
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        triggerStorageAccessFramework();
+                                        sdcardDialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    } else if(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+                        sdcardDialog.setTitleText(getString(R.string.oops))
+                                .setContentText(getString(R.string.oops_sdcard_kitkat_detail))
+                                .setConfirmText("OK")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sdcardDialog.dismiss();
+                                    }
+                                })
+                                .show();
                     }
-                }).start();
-
+                }
                 return true;
             }
         });
@@ -384,6 +430,7 @@ public class HomeFragment extends PreferenceFragment implements
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EX_FILE_PICKER_RESULT) {
             if (data != null) {
@@ -400,10 +447,26 @@ public class HomeFragment extends PreferenceFragment implements
                     }
                 }
             }
+            getActivity().finish();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
         }
-        getActivity().finish();
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+
+        if (requestCode == REQUEST_CODE_STORAGE_ACCESS) {
+            Uri treeUri = null;
+            if (resultCode == Activity.RESULT_OK) {
+                // Get Uri from Storage Access Framework.
+                treeUri = data.getData();
+
+                // Persist URI in shared preference so that you can use it later.
+                // Use your own framework here instead of PreferenceUtil.
+                prefs.edit().putString(KeyCollection.KEY_SDCARD_URI, treeUri.toString()).commit();
+
+                // Persist access permissions.
+                getActivity().getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+        }
     }
 
     @Override
@@ -444,6 +507,57 @@ public class HomeFragment extends PreferenceFragment implements
         } catch (IOException e) {
             return false;
         }
+    }
+
+    /**
+     * Check the folder for writeability. If not, then on Android 5 retrieve Uri for extsdcard via Storage
+     * Access Framework.
+     *
+     * @param folder The folder to be checked.
+     * @return true if the check was successful or if SAF has been triggered.
+     */
+    private boolean checkFolder(@NonNull final File folder) {
+        FileUtil fileUtil = new FileUtil(getActivity().getApplicationContext());
+        Uri uri;
+        try {
+            uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
+        } catch (Exception e) {
+            uri = null;
+        }
+
+        if (Build.VERSION.SDK_INT >= 21 && fileUtil.isOnExtSdCard(folder)) {
+            if (!folder.exists() || !folder.isDirectory()) {
+                return false;
+            }
+
+            // On Android 5, trigger storage access framework.
+            if (!fileUtil.isWritableNormalOrSaf(folder, uri)) {
+                return false;
+            }
+            // Only accept after SAF stuff is done.
+            return true;
+        }
+        else if (Build.VERSION.SDK_INT == 20) {
+            // Kitkat is bad
+            return false;
+        }
+        else if (FileUtil.isWritable(new File(folder, "DummyFile"))) {
+            return true;
+        }
+        else {
+            // some unknown error
+
+            return false;
+        }
+    }
+
+    /**
+     * Trigger the storage access framework to access the base folder of the ext sd card.
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void triggerStorageAccessFramework() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        startActivityForResult(intent, REQUEST_CODE_STORAGE_ACCESS);
     }
 
 }
