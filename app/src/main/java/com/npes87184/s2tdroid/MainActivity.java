@@ -76,6 +76,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
                         public void onClick(SweetAlertDialog sDialog) {
                             ActivityCompat.requestPermissions(MainActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
                                     REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+                            sDialog.dismiss();
                         }
                     })
                     .show();
@@ -204,6 +205,7 @@ public class MainActivity extends Activity implements AppCompatCallback {
                                 public void onClick(SweetAlertDialog sDialog) {
                                     ActivityCompat.requestPermissions(MainActivity.this, permissionsList.toArray(new String[permissionsList.size()]),
                                             REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+                                    sDialog.dismiss();
                                 }
                             })
                             .show();
