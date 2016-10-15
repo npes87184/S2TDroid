@@ -525,7 +525,7 @@ public class HomeFragment extends PreferenceFragment implements
             uri = null;
         }
 
-        if (Build.VERSION.SDK_INT >= 21 && fileUtil.isOnExtSdCard(folder)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.isOnExtSdCard(folder)) {
             if (!folder.exists() || !folder.isDirectory()) {
                 return false;
             }
@@ -537,7 +537,7 @@ public class HomeFragment extends PreferenceFragment implements
             // Only accept after SAF stuff is done.
             return true;
         }
-        else if (Build.VERSION.SDK_INT == 20) {
+        else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             // Kitkat is bad
             return false;
         }
