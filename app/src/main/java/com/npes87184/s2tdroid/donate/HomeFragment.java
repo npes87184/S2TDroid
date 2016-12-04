@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.concurrent.Exchanger;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ru.bartwell.exfilepicker.ExFilePicker;
@@ -140,7 +141,6 @@ public class HomeFragment extends PreferenceFragment implements
                         public void run() {
                             try {
                                 File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
-                                // detect file exist
                                 if(!testDirFile.exists()) {
                                     Message msg = new Message();
                                     msg.what = 2;
@@ -149,44 +149,12 @@ public class HomeFragment extends PreferenceFragment implements
                                     return;
                                 }
                                 ArrayList<String> fileList = new ArrayList<String>();
-                                if(testDirFile.isDirectory()) {
-                                    String[] filenames = testDirFile.list();
-                                    for (int i = 0 ; i < filenames.length ; ++i){
-                                        File tempFile = new File(testDirFile.getAbsolutePath() + "/" + filenames[i]);
-                                        int startIndex = tempFile.getName().lastIndexOf(46) + 1;
-                                        int endIndex = tempFile.getName().length();
-                                        String file_extension = tempFile.getName().substring(startIndex, endIndex);
-                                        if(!tempFile.isDirectory() && contain(filter, file_extension)){
-                                            fileList.add(tempFile.getAbsolutePath());
-                                        }
-                                    }
-                                } else {
-                                    fileList.add(testDirFile.getAbsolutePath());
-                                }
+                                prepareFileList(testDirFile, fileList);
+
                                 for(int i=0;i<fileList.size();++i) {
                                     File inFile = new File(fileList.get(i));
                                     // detect encode
-                                    String encodeString;
-                                    if(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-                                        FileInputStream fis = new FileInputStream(fileList.get(i));
-                                        byte[] buf = new byte[4096];
-                                        UniversalDetector detector = new UniversalDetector(null);
-                                        int nread;
-                                        while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-                                            detector.handleData(buf, 0, nread);
-                                        }
-                                        detector.dataEnd();
-
-                                        encodeString = detector.getDetectedCharset();
-                                        if (encodeString == null) {
-                                            encodeString = "Unicode";
-                                        }
-                                        detector.reset();
-                                        fis.close();
-                                    }  else {
-                                        encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
-                                    }
-
+                                    String encodeString = detectEncode(fileList.get(i));
                                     int totalLine = countLines(fileList.get(i), encodeString);
 
                                     int TorS = 0; // >0 means t2s
@@ -200,11 +168,8 @@ public class HomeFragment extends PreferenceFragment implements
                                     String file_extension = getFileExtension(inFile);
 
                                     // file name
-                                    String name = inFile.getName();
-                                    int pos = name.lastIndexOf(".");
-                                    if (pos > 0) {
-                                        name = name.substring(0, pos);
-                                    }
+                                    String name = getFileName(inFile);
+
                                     InputStream is = new FileInputStream(inFile);
                                     InputStreamReader isr = new InputStreamReader(is, encodeString);
                                     BufferedReader bReader = new BufferedReader(isr);
@@ -340,6 +305,7 @@ public class HomeFragment extends PreferenceFragment implements
                         }
                     }).start();
                 } else {
+                    // trigger SAF or in kikat.
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
                         sdcardDialog.setTitleText(getString(R.string.oops))
@@ -517,12 +483,69 @@ public class HomeFragment extends PreferenceFragment implements
         }
     }
 
+    private void prepareFileList(File testDirFile, ArrayList<String> fileList) {
+        if(testDirFile.isDirectory()) {
+            String[] filenames = testDirFile.list();
+            for (int i = 0 ; i < filenames.length ; ++i){
+                File tempFile = new File(testDirFile.getAbsolutePath() + "/" + filenames[i]);
+                String file_extension = getFileExtension(tempFile);
+                if(!tempFile.isDirectory() && contain(filter, file_extension)){
+                    fileList.add(tempFile.getAbsolutePath());
+                }
+            }
+        } else {
+            fileList.add(testDirFile.getAbsolutePath());
+        }
+    }
+
+    private String detectEncode(String testFileName) {
+        String encodeString;
+
+        try {
+            if (prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
+                FileInputStream fis = new FileInputStream(testFileName);
+                byte[] buf = new byte[4096];
+                UniversalDetector detector = new UniversalDetector(null);
+                int nread;
+                while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+                    detector.handleData(buf, 0, nread);
+                }
+                detector.dataEnd();
+
+                encodeString = detector.getDetectedCharset();
+                if (encodeString == null) {
+                    encodeString = "Unicode";
+                }
+                detector.reset();
+                fis.close();
+            } else {
+                encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
+            }
+        } catch (Exception e) {
+            encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
+        }
+
+        return encodeString;
+    }
+
+    private String getFileName(File inFile) {
+        String name = inFile.getName();
+
+        int pos = name.lastIndexOf(".");
+        if (pos > 0) {
+            name = name.substring(0, pos);
+        }
+
+        return name;
+    }
+
     /**
      * Check the folder for writeability. If not, then on Android 5 retrieve Uri for extsdcard via Storage
      * Access Framework.
      *
      * @param folder The folder to be checked.
      * @return true if the check was successful or if SAF has been triggered.
+     *         false trigger SAF or in kikat.
      */
     private boolean checkFolder(@NonNull final File folder) {
         FileUtil fileUtil = new FileUtil(getActivity().getApplicationContext());
@@ -534,31 +557,23 @@ public class HomeFragment extends PreferenceFragment implements
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.isOnExtSdCard(folder)) {
-            if (!folder.exists() || !folder.isDirectory()) {
-                return false;
-            }
-
             // On Android 5, trigger storage access framework.
             if (!fileUtil.isWritableNormalOrSaf(folder, uri)) {
                 return false;
             }
             // Only accept after SAF stuff is done.
             return true;
-        }
-        else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             if(fileUtil.getExtSdCardFolder(folder)==null) {
                 return true;
             } else {
                 // The file is in the external sdcard, and Kitkat is bad.
                 return false;
             }
-        }
-        else if (FileUtil.isWritable(new File(folder, "DummyFile"))) {
+        } else if (FileUtil.isWritable(new File(folder, "DummyFile"))) {
             return true;
-        }
-        else {
+        } else {
             // some unknown error
-
             return false;
         }
     }

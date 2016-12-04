@@ -58,7 +58,8 @@ public final class FileUtil {
             }
         }
         catch (FileNotFoundException e) {
-            return false;
+            // in android, if file not found, it will create it auto.
+            return true;
         }
         boolean result = file.canWrite();
 
@@ -81,11 +82,6 @@ public final class FileUtil {
      * @return true if it is possible to write in this directory.
      */
     public boolean isWritableNormalOrSaf(@Nullable final File folder, Uri uri) {
-        // Verify that this is a directory.
-        if (folder == null || !folder.exists() || !folder.isDirectory()) {
-            return false;
-        }
-
         // Find a non-existing file in this directory.
         int i = 0;
         File file;
