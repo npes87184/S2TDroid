@@ -283,6 +283,7 @@ public class HomeFragment extends PreferenceFragment implements
                                         }
                                         bw.newLine();
                                     }
+                                    osw.close();
                                     is.close();
                                     isr.close();
                                     bReader.close();
