@@ -217,12 +217,10 @@ public class HomeFragment extends PreferenceFragment implements
                                     // if file exists add -1 in the last
                                     File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                                     File outFile;
-                                    String scan;
-                                    if(testFile.exists()) {
-                                        scan = "-1.";
+                                    boolean blIsFileExisted = testFile.exists();
+                                    if(blIsFileExisted) {
                                         outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
                                     } else {
-                                        scan = ".";
                                         outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                                     }
                                     FileUtil fileUtil = new FileUtil(getActivity());
@@ -290,7 +288,7 @@ public class HomeFragment extends PreferenceFragment implements
                                     bw.close();
 
                                     //media rescan for correctly showing in pc
-                                    if(scan.equals("-1.")) {
+                                    if(blIsFileExisted) {
                                         MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
                                     } else {
                                         MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
