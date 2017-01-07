@@ -1,7 +1,7 @@
 <resources>
 
     <string name="output_folder">输出目录</string>
-    <string name="input_file">输入档案</string>
+    <string name="input_file">输入文件</string>
     <string name="cancel">取消</string>
     <string name="encoding_title">输入编码</string>
     <string name="start">开始！</string>
@@ -14,7 +14,7 @@
     <string name="auto_detect">自动侦测</string>
     <string name="subject">S2TDroid</string>
     <string name="mail_body">我的问题是：\n我的手机是：\n我的 Android 版本是：\n其他：</string>
-    <string name="bookname">档名</string>
+    <string name="bookname">文件名</string>
     <string name="contact">联系我</string>
     <string name="rate">评分</string>
     <string name="dialogHint">可以在设定中更改转换模式。</string>
@@ -24,16 +24,16 @@
     <string name="notification">正在使用转换泡泡中。</string>
 
     <string name="floatingPermission">如要使用转换泡泡，我们需要显示浮动视窗的权限。</string>
-    <string name="filePermission">为了完成档案繁简转换，我们需要档案读写的权限。</string>
+    <string name="filePermission">为了完成文件繁简转换，我们需要文件读写的权限。</string>
 
-    <string name="filename_detail">输出档名将会跟输入一样。如果输出目录跟输入一样，会在档名结尾加入-1。</string>
-    <string name="filename">输出档名</string>
+    <string name="filename_detail">输出文件名将会跟输入一样。如果输出目录跟输入一样，会在档名结尾加入-1。</string>
+    <string name="filename">输出文件名</string>
 
-    <string name="auto_delete_detail">在转换后自动删除来源档案。 </string>
+    <string name="auto_delete_detail">在转换后自动删除来源文件。 </string>
     <string name="auto_delete">自动删除</string>
 
     <string name="oops">错误</string>
-    <string name="oops_detail">输入档案不存在！</string>
+    <string name="oops_detail">输入文件不存在！</string>
     <string name="oops_sdcard_detail">需要写入外部 SD 卡的权限</string>
     <string name="oops_sdcard_kitkat_detail">很抱歉，在 Android 4.4，App 无法自由写入外接记忆卡。</string>
 
@@ -50,6 +50,6 @@
     <string name="author_tag">作者：\u0020</string>
     <string name="version_tag">版本：\u0020</string>
     <string name="web_tag">个人网页</string>
-    <string name="illegal_filename">档名无效</string>
+    <string name="illegal_filename">文件名无效</string>
 
 </resources>
