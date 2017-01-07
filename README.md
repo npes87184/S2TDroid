@@ -6,10 +6,16 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.66
+1.67
 
 Changelog
 ========
+###1.67
+* refactor
+* update dependent project
+* appropriately close file
+* add auto detect
+
 ###1.66
 * fix dialog leak
 * add external sdcard support
@@ -47,8 +53,6 @@ Pictures
 <img src="http://truth.bahamut.com.tw/s01/201509/be4d5a98a3079584c38aeeb3474c9d47.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201512/28b61e79c2bbd9916b6b7b6d177abadd.JPG">
-
-<img src="http://truth.bahamut.com.tw/s01/201508/274b0ec1a452abb36c24a16a4d1d7947.PNG">
 
 Thanks
 ========
