@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.concurrent.Exchanger;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ru.bartwell.exfilepicker.ExFilePicker;
@@ -163,10 +164,8 @@ public class HomeFragment extends PreferenceFragment implements
                                         TorS = 100;
                                     }
 
-                                    // file extension, ex: .txt, .lrc
                                     String file_extension = getFileExtension(inFile);
 
-                                    // file name
                                     String name = getFileName(inFile);
 
                                     InputStream is = new FileInputStream(inFile);
@@ -223,23 +222,8 @@ public class HomeFragment extends PreferenceFragment implements
                                     } else {
                                         outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
                                     }
-                                    FileUtil fileUtil = new FileUtil(getActivity());
-                                    OutputStreamWriter osw;
-                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.getExtSdCardFolder(outFile)!=null) {
-                                        // in external sdcard
-                                        Uri uri;
-                                        try {
-                                            uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
-                                        } catch (Exception e) {
-                                            uri = null;
-                                        }
-                                        DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, false, uri);
-                                        OutputStream outStream = getActivity().getApplication().
-                                                getContentResolver().openOutputStream(targetDocument.getUri());
-                                        osw = new OutputStreamWriter(outStream, prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-                                    } else {
-                                        osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-                                    }
+
+                                    OutputStreamWriter osw = getOutputStreamWriter(outFile);
 
                                     // doing transform
                                     BufferedWriter bw = new BufferedWriter(osw);
@@ -452,6 +436,35 @@ public class HomeFragment extends PreferenceFragment implements
         } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
             outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         }
+    }
+
+    private OutputStreamWriter getOutputStreamWriter(File outFile) {
+        FileUtil fileUtil = new FileUtil(getActivity());
+        OutputStreamWriter osw;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.getExtSdCardFolder(outFile)!=null) {
+            // in external sdcard
+            Uri uri;
+            try {
+                uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
+            } catch (Exception e) {
+                uri = null;
+            }
+            DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, false, uri);
+            try {
+                OutputStream outStream = getActivity().getApplication().
+                        getContentResolver().openOutputStream(targetDocument.getUri());
+                osw = new OutputStreamWriter(outStream, prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+            } catch (Exception e) {
+                osw = null;
+            }
+        } else {
+            try {
+                osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+            } catch (Exception e) {
+                osw = null;
+            }
+        }
+        return osw;
     }
 
     private boolean deleteSourceFile(File inFile) {
