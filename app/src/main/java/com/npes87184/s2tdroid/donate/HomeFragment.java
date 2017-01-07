@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -281,11 +282,11 @@ public class HomeFragment extends PreferenceFragment implements
                                         }
                                         bw.newLine();
                                     }
-                                    osw.close();
-                                    is.close();
-                                    isr.close();
-                                    bReader.close();
                                     bw.close();
+                                    osw.close();
+                                    bReader.close();
+                                    isr.close();
+                                    is.close();
 
                                     //media rescan for correctly showing in pc
                                     if(blIsFileExisted) {
@@ -459,9 +460,9 @@ public class HomeFragment extends PreferenceFragment implements
         while((bReader.readLine()) != null) {
             ++count;
         }
-        is.close();
-        isr.close();
         bReader.close();
+        isr.close();
+        is.close();
         return count;
     }
 
