@@ -256,8 +256,11 @@ public class HomeFragment extends PreferenceFragment implements
                                 }
                                 bw.newLine();
                             }
-                            bReader.close();
                             bw.close();
+                            osw.close();
+                            bReader.close();
+                            isr.close();
+                            is.close();
 
                             //media rescan for correctly show in pc
                             if(scan.equals("-1.")) {
