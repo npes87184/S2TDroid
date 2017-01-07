@@ -14,7 +14,7 @@ Changelog
 * refactor
 * update dependent project
 * appropriately close file
-* add auto detect
+* add auto delete
 
 ###1.66
 * fix dialog leak
