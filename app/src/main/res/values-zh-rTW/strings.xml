@@ -29,6 +29,9 @@
     <string name="filename_detail">輸出檔名將會跟輸入一樣。如果輸出目錄跟輸入一樣，會在檔名結尾加入-1。</string>
     <string name="filename">輸出檔名</string>
 
+    <string name="auto_delete_detail">在轉換後自動刪除來源檔案。</string>
+    <string name="auto_delete">自動刪除</string>
+
     <string name="oops">錯誤</string>
     <string name="oops_detail">輸入檔案不存在！</string>
     <string name="oops_sdcard_detail">需要寫入外部 SD 卡的權限</string>

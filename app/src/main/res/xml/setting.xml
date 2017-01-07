@@ -25,6 +25,12 @@
             android:summary="@string/filename_detail"
             android:title="@string/filename" android:defaultValue="false">
         </CheckBoxPreference>
+
+        <CheckBoxPreference android:key="delete_source"
+            android:icon="@drawable/ic_delete_forever_black_48dp"
+            android:summary="@string/auto_delete_detail"
+            android:title="@string/auto_delete" android:defaultValue="false">
+        </CheckBoxPreference>presence_offline.png
     </PreferenceCategory>
 
     <PreferenceCategory

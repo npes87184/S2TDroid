@@ -18,7 +18,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -294,6 +293,10 @@ public class HomeFragment extends PreferenceFragment implements
                                     } else {
                                         MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
                                     }
+
+                                    if(prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
+                                        deleteSourceFile(inFile);
+                                    }
                                 }
                             } catch(Exception e){
 
@@ -449,6 +452,27 @@ public class HomeFragment extends PreferenceFragment implements
         } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
             outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
         }
+    }
+
+    private boolean deleteSourceFile(File inFile) {
+        boolean blRet;
+        FileUtil fileUtil = new FileUtil(getActivity());
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.getExtSdCardFolder(inFile)!=null) {
+            // in external sdcard
+            Uri uri;
+            try {
+                uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
+            } catch (Exception e) {
+                uri = null;
+            }
+            DocumentFile targetDocument = fileUtil.getDocumentFile(inFile, false, uri);
+            blRet = targetDocument.delete();
+        } else {
+            blRet = inFile.delete();
+        }
+
+        return blRet;
     }
 
     private int countLines(String filename, String encodeString) throws IOException {
