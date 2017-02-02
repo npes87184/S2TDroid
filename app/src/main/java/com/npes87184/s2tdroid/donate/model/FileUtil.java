@@ -59,8 +59,8 @@ public final class FileUtil {
         }
         catch (FileNotFoundException e) {
             // in android, if file not found, it will create it auto.
-            return true;
         }
+
         boolean result = file.canWrite();
 
         // Ensure that file is not created during this process.
