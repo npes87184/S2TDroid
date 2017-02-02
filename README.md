@@ -6,10 +6,13 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.67
+1.68
 
 Changelog
 ========
+###1.68
+* Fix external sd card related issues
+
 ###1.67
 * refactor
 * update dependent project
@@ -19,11 +22,6 @@ Changelog
 ###1.66
 * fix dialog leak
 * add external sdcard support
-
-###1.65
-* add state selector
-* rename appname
-* let navigationdrawer be smoother
 
 Features
 ========
