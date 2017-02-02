@@ -600,12 +600,11 @@ public class HomeFragment extends PreferenceFragment implements
             // Only accept after SAF stuff is done.
             return true;
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            if(fileUtil.getExtSdCardFolder(folder)==null) {
-                return true;
-            } else {
+            if (fileUtil.isOnExtSdCard(folder) && !fileUtil.isWritableNormal(folder)) {
                 // The file is in the external sdcard, and Kitkat is bad.
                 return false;
             }
+            return true;
         } else if (FileUtil.isWritable(new File(folder, "DummyFile"))) {
             return true;
         } else {

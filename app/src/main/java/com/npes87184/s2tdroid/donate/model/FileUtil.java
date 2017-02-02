@@ -72,6 +72,24 @@ public final class FileUtil {
         return result;
     }
 
+    /**
+     * Check for a directory if it is possible to create files within this directory via normal writing
+     *
+     * @param folder The directory
+     * @return true if it is possible to write in this directory.
+     */
+    public static  boolean isWritableNormal(@Nullable final File folder) {
+        int i = 0;
+        File file;
+        do {
+            String fileName = "AugendiagnoseDummyFile" + (++i);
+            file = new File(folder, fileName);
+        }
+        while (file.exists());
+
+        return isWritable(file);
+    }
+
     // Utility methods for Android 5
 
     /**
