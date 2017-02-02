@@ -448,7 +448,7 @@ public class HomeFragment extends PreferenceFragment implements
             } catch (Exception e) {
                 uri = null;
             }
-            DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, false, uri);
+            DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, uri);
             try {
                 OutputStream outStream = getActivity().getApplication().
                         getContentResolver().openOutputStream(targetDocument.getUri());
@@ -478,7 +478,7 @@ public class HomeFragment extends PreferenceFragment implements
             } catch (Exception e) {
                 uri = null;
             }
-            DocumentFile targetDocument = fileUtil.getDocumentFile(inFile, false, uri);
+            DocumentFile targetDocument = fileUtil.getDocumentFile(inFile, uri);
             blRet = targetDocument.delete();
         } else {
             blRet = inFile.delete();

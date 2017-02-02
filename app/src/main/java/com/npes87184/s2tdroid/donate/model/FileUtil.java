@@ -117,7 +117,7 @@ public final class FileUtil {
         // Next check SAF writability.
         DocumentFile document = null;
         try {
-            document = getDocumentFile(file, false, uri);
+            document = getDocumentFile(file, uri);
         }
         catch (Exception e) {
             return false;
@@ -152,17 +152,10 @@ public final class FileUtil {
      * existing, it is created.
      *
      * @param file              The file.
-     * @param isDirectory       flag indicating if the file should be a directory.
      * @return The DocumentFile
      */
-    public DocumentFile getDocumentFile(@NonNull final File file, final boolean isDirectory, Uri uri) {
-        Uri[] treeUris = new Uri[1];
-        treeUris[0] = uri;
+    public DocumentFile getDocumentFile(@NonNull final File file, Uri uri) {
         Uri treeUri = null;
-
-        if (treeUris.length == 0) {
-            return null;
-        }
 
         String fullPath;
         try {
@@ -175,18 +168,15 @@ public final class FileUtil {
         String baseFolder = null;
 
         // First try to get the base folder via unofficial StorageVolume API from the URIs.
-
-        for (int i = 0; baseFolder == null && i < treeUris.length; i++) {
-            String treeBase = getFullPathFromTreeUri(treeUris[i]);
-            if (treeBase != null && fullPath.startsWith(treeBase)) {
-                treeUri = treeUris[i];
-                baseFolder = treeBase;
-            }
+        String treeBase = getFullPathFromTreeUri(uri);
+        if (treeBase != null && fullPath.startsWith(treeBase)) {
+            treeUri = uri;
+            baseFolder = treeBase;
         }
 
         if (baseFolder == null) {
             // Alternatively, take root folder from device and assume that base URI works.
-            treeUri = treeUris[0];
+            treeUri = uri;
             baseFolder = getExtSdCardFolder(file);
         }
 
@@ -204,11 +194,7 @@ public final class FileUtil {
             DocumentFile nextDocument = document.findFile(parts[i]);
 
             if (nextDocument == null) {
-                if (i < parts.length - 1 || isDirectory) {
-                    nextDocument = document.createDirectory(parts[i]);
-                } else {
-                    nextDocument = document.createFile("image", parts[i]);
-                }
+                nextDocument = document.createFile("image", parts[i]);
             }
             document = nextDocument;
         }
