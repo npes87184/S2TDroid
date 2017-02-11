@@ -1,12 +1,16 @@
 package com.npes87184.s2tdroid.donate;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
@@ -70,6 +74,36 @@ public class AboutFragment extends Fragment {
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         playStoreElement.setIntent(goToMarket);
 
+        Element licenseElement = new Element();
+        licenseElement.setTitle("Open Source License");
+        licenseElement.setIcon(R.drawable.about_icon_link);
+        licenseElement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Licence");
+
+                WebView wv = new WebView(getActivity());
+                wv.loadUrl("file:///android_asset/licence.html");
+                wv.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+        });
+
         View aboutPage = new AboutPage(getActivity())
                 .setDescription(getString(R.string.app_name))
                 .setImage(R.drawable.ic_launcher2)
@@ -79,6 +113,7 @@ public class AboutFragment extends Fragment {
                 .addItem(webElement)
                 .addItem(playStoreElement)
                 .addGitHub("npes87184/S2TDroid")
+                .addItem(licenseElement)
                 .create();
         return aboutPage;
     }

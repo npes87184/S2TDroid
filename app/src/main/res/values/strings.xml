@@ -2,7 +2,7 @@
 
     <string name="app_name" translatable="false">S2TDroid Pro</string>
     <string name="author_name" translatable="false">npes87184</string>
-    <string name="version_name" translatable="false">1.64</string>
+    <string name="version_name" translatable="false">1.7.0</string>
 
     <string name="output_folder">Output Folder</string>
     <string name="input_file">Input File</string>

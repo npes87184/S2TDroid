@@ -63,7 +63,7 @@ public class HomeFragment extends PreferenceFragment implements
     private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa" };
     private float progressNum = 0;
 
-    String booknameString = "default";
+    String booknameString = "S2TDroid";
 
     Object syncToken = new Object();
 
