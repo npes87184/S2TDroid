@@ -55,6 +55,7 @@ public class HomeFragment extends PreferenceFragment implements
     private static final int REQUEST_CODE_STORAGE_ACCESS = 0;
 
     int wordNumber = 0;
+    boolean blCheckFolder = false;
 
     private Preference inputPreference;
     private Preference outputPreference;
@@ -150,8 +151,20 @@ public class HomeFragment extends PreferenceFragment implements
         startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                if(checkFolder(testSDcardFolder)) {
+                final File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+                Thread checkFolderThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        blCheckFolder = checkFolder(testSDcardFolder);
+                    }
+                });
+                checkFolderThread.start();
+                try {
+                    checkFolderThread.join();
+                } catch (Exception e) {
+
+                }
+                if(blCheckFolder) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
