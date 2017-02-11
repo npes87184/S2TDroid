@@ -5,23 +5,18 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.pdf.PdfDocument;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.view.menu.ExpandedMenuView;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -59,7 +54,6 @@ public class HomeFragment extends PreferenceFragment implements
     private static final int REQUEST_CODE_STORAGE_ACCESS = 0;
 
     int wordNumber = 0;
-    boolean blCheckFolder = false;
 
     private Preference inputPreference;
     private Preference outputPreference;
