@@ -27,7 +27,7 @@
     <string name="floatingPermission">如要使用转换泡泡，我们需要显示浮动视窗的权限。</string>
     <string name="filePermission">为了完成文件繁简转换，我们需要文件读写的权限。</string>
 
-    <string name="filename_detail">输出文件名将会跟输入一样。如果输出目录跟输入一样，会在档名结尾加入-1。</string>
+    <string name="filename_detail">输出文件名将会跟输入一样。</string>
     <string name="filename">输出文件名</string>
 
     <string name="auto_delete_detail">在转换后自动删除来源文件。 </string>

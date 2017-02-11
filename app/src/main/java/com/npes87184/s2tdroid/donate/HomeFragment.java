@@ -228,15 +228,7 @@ public class HomeFragment extends PreferenceFragment implements
                                         file.mkdir();
                                     }
 
-                                    // if file exists add -1 in the last
-                                    File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension);
-                                    File outFile;
-                                    boolean blIsFileExisted = testFile.exists();
-                                    if (blIsFileExisted) {
-                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "-1." + file_extension);
-                                    } else {
-                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension);
-                                    }
+                                    File outFile = getOutFile(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR), booknameString, file_extension);
 
                                     OutputStreamWriter osw = getOutputStreamWriter(outFile);
 
@@ -287,11 +279,7 @@ public class HomeFragment extends PreferenceFragment implements
                                     is.close();
 
                                     //media rescan for correctly showing in pc
-                                    if (blIsFileExisted) {
-                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "-1." + file_extension}, null, null);
-                                    } else {
-                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension}, null, null);
-                                    }
+                                    MediaScannerConnection.scanFile(getActivity(), new String[]{outFile.getAbsolutePath()}, null, null);
 
                                     if (prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
                                         deleteSourceFile(inFile);
@@ -471,6 +459,14 @@ public class HomeFragment extends PreferenceFragment implements
             }
         }
         return osw;
+    }
+
+    private File getOutFile(String strPath, String strName, String strExtention) {
+        File file = new File(strPath + strName + "." +strExtention);
+        for (int i = 1; file.exists(); ++i) {
+            file = new File(strPath + strName + "(" + i + ")." + strExtention);
+        }
+        return file;
     }
 
     private boolean deleteSourceFile(File inFile) {
