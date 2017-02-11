@@ -3,6 +3,7 @@
     <string name="output_folder">输出目录</string>
     <string name="input_file">输入文件</string>
     <string name="cancel">取消</string>
+    <string name="select">选取</string>
     <string name="encoding_title">输入编码</string>
     <string name="start">开始！</string>
     <string name="home">主画面</string>
@@ -33,7 +34,7 @@
     <string name="auto_delete">自动删除</string>
 
     <string name="oops">错误</string>
-    <string name="oops_detail">输入文件不存在！</string>
+    <string name="oops_file_does_not_exist">输入文件不存在！</string>
     <string name="oops_sdcard_detail">需要写入外部 SD 卡的权限</string>
     <string name="oops_sdcard_kitkat_detail">很抱歉，在 Android 4.4，App 无法自由写入外接记忆卡。</string>
 

@@ -29,7 +29,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'cn.pedant.sweetalert:library:1.3'
-    compile(name: 'ExFilePicker-1.8', ext: 'aar')
+    compile(name: 'filepicker-release', ext: 'aar')
     compile 'com.premnirmal.magnet:library:1.1.6'
     compile files('libs/juniversalchardet-1.0.3.jar')
     compile 'com.github.medyo:android-about-page:1.1.1'

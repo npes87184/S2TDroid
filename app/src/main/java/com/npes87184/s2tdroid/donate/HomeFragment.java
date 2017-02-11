@@ -21,6 +21,10 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.npes87184.s2tdroid.donate.model.Analysis;
 import com.npes87184.s2tdroid.donate.model.FileUtil;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
@@ -41,8 +45,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import ru.bartwell.exfilepicker.ExFilePicker;
-import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 
 /**
  * Created by npes87184 on 2015/5/17.
@@ -50,12 +52,8 @@ import ru.bartwell.exfilepicker.ExFilePickerParcelObject;
 public class HomeFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
+    private static final int REQUEST_CODE_STORAGE_ACCESS = 0;
 
-    private static final int EX_FILE_PICKER_RESULT = 0;
-    private static final int REQUEST_CODE_STORAGE_ACCESS = 1;
-
-    boolean isIn = false;
     int wordNumber = 0;
 
     private Preference inputPreference;
@@ -96,35 +94,54 @@ public class HomeFragment extends PreferenceFragment implements
                 .setTitleText(getString(R.string.wait));
 
         inputPreference = findPreference(KeyCollection.KEY_INPUT_FILE);
-        inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+        inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
         inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Toast.makeText(getActivity(), getString(R.string.choose_tip), Toast.LENGTH_LONG).show();
-                isIn = true;
-                Intent intent = new Intent(getActivity(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
-                intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
-                intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
-                intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_ALL);
-                intent.putExtra(ExFilePicker.SET_FILTER_LISTED, filter);
-                intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_PATH, APP_DIR));
-                startActivityForResult(intent, EX_FILE_PICKER_RESULT);
+                DialogProperties properties = new DialogProperties();
+                properties.selection_mode = DialogConfigs.SINGLE_MODE;
+                properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
+                properties.root = new File("/");
+                properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+                properties.offset = new File(prefs.getString(KeyCollection.KEY_PATH, DialogConfigs.DEFAULT_DIR));
+                properties.extensions = filter;
+                FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+                dialog.setPositiveBtnName(getString(R.string.select));
+                dialog.setNegativeBtnName(getString(R.string.cancel));
+                dialog.setDialogSelectionListener(new DialogSelectionListener() {
+                    @Override
+                    public void onSelectedFilePaths(String[] files) {
+                        inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, files[0] + "/").commit();
+                        prefs.edit().putString(KeyCollection.KEY_PATH, new File(files[0]).getParent()).apply();
+                    }
+                });
+                dialog.show();
                 return true;
             }
         });
 
         outputPreference = findPreference(KeyCollection.KEY_OUTPUT_FOLDER);
-        outputPreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+        outputPreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
         outputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                isIn = false;
-                Intent intent = new Intent(getActivity(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
-                intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
-                intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
-                intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_DIRECTORIES);
-                intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
-                startActivityForResult(intent, EX_FILE_PICKER_RESULT);
+                DialogProperties properties = new DialogProperties();
+                properties.selection_mode = DialogConfigs.SINGLE_MODE;
+                properties.selection_type = DialogConfigs.DIR_SELECT;
+                properties.root = new File("/");
+                properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+                properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+                FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+                dialog.setPositiveBtnName(getString(R.string.select));
+                dialog.setNegativeBtnName(getString(R.string.cancel));
+                dialog.setDialogSelectionListener(new DialogSelectionListener() {
+                    @Override
+                    public void onSelectedFilePaths(String[] files) {
+                        outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, files[0] + "/").commit();
+                    }
+                });
+                dialog.show();
                 return true;
             }
         });
@@ -133,13 +150,13 @@ public class HomeFragment extends PreferenceFragment implements
         startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
-                File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+                File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
                 if(checkFolder(testSDcardFolder)) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+                                File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
                                 if(!testDirFile.exists()) {
                                     Message msg = new Message();
                                     msg.what = 2;
@@ -207,19 +224,19 @@ public class HomeFragment extends PreferenceFragment implements
                                             return;
                                         }
                                     }
-                                    File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+                                    File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
                                     if(!file.exists() || !file.isDirectory()) {
                                         file.mkdir();
                                     }
 
                                     // if file exists add -1 in the last
-                                    File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
+                                    File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR)  + booknameString  + "." + file_extension);
                                     File outFile;
                                     boolean blIsFileExisted = testFile.exists();
                                     if(blIsFileExisted) {
-                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
+                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR)  + booknameString + "-1." + file_extension);
                                     } else {
-                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
+                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR)  + booknameString  + "." + file_extension);
                                     }
 
                                     OutputStreamWriter osw = getOutputStreamWriter(outFile);
@@ -272,9 +289,9 @@ public class HomeFragment extends PreferenceFragment implements
 
                                     //media rescan for correctly showing in pc
                                     if(blIsFileExisted) {
-                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
+                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "-1." + file_extension}, null, null);
                                     } else {
-                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
+                                        MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension}, null, null);
                                     }
 
                                     if(prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
@@ -340,7 +357,7 @@ public class HomeFragment extends PreferenceFragment implements
                 case 2:
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText(getString(R.string.oops))
-                            .setContentText(getString(R.string.oops_detail))
+                            .setContentText(getString(R.string.oops_file_does_not_exist))
                             .show();
                     break;
                 case 3:
@@ -391,26 +408,6 @@ public class HomeFragment extends PreferenceFragment implements
     @Override
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EX_FILE_PICKER_RESULT) {
-            if (data != null) {
-                ExFilePickerParcelObject object = (ExFilePickerParcelObject) data.getParcelableExtra(ExFilePickerParcelObject.class.getCanonicalName());
-                if (object.count > 0) {
-                    // Here is object contains selected files names and path
-                    if(isIn) {
-                        inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, object.path + object.names.get(0) + "/").commit();
-                        prefs.edit().putString(KeyCollection.KEY_PATH, object.path).commit();
-                        prefs.edit().putString(KeyCollection.KEY_FILE_NAME, object.names.get(0)).commit();
-                    }
-                    else {
-                        outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, object.path + object.names.get(0) + "/").commit();
-                    }
-                }
-            }
-            getActivity().finish();
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-        }
-
         if (requestCode == REQUEST_CODE_STORAGE_ACCESS) {
             Uri treeUri = null;
             if (resultCode == Activity.RESULT_OK) {
@@ -419,7 +416,7 @@ public class HomeFragment extends PreferenceFragment implements
 
                 // Persist URI in shared preference so that you can use it later.
                 // Use your own framework here instead of PreferenceUtil.
-                prefs.edit().putString(KeyCollection.KEY_SDCARD_URI, treeUri.toString()).commit();
+                prefs.edit().putString(KeyCollection.KEY_SDCARD_URI, treeUri.toString()).apply();
 
                 // Persist access permissions.
                 getActivity().getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION |
@@ -431,9 +428,9 @@ public class HomeFragment extends PreferenceFragment implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(KeyCollection.KEY_INPUT_FILE)) {
-            inputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_INPUT_FILE, APP_DIR));
+            inputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
         } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
-            outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
+            outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
         }
     }
 

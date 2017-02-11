@@ -7,6 +7,7 @@
     <string name="output_folder">Output Folder</string>
     <string name="input_file">Input File</string>
     <string name="cancel">Cancel</string>
+    <string name="select">Select</string>
     <string name="encoding_title">Input encode</string>
     <string name="start">Start</string>
     <string name="home">Home</string>
@@ -38,7 +39,7 @@
     <string name="notification">S2TDroid transform bubble is acting.</string>
 
     <string name="oops">Oops...</string>
-    <string name="oops_detail">Input file doesn\'t exist.</string>
+    <string name="oops_file_does_not_exist">Input file doesn\'t exist.</string>
     <string name="oops_sdcard_detail">We need external sd card writing permission.</string>
     <string name="oops_sdcard_kitkat_detail">Can\'t write file to external sdcard in KITKAT.</string>
 
