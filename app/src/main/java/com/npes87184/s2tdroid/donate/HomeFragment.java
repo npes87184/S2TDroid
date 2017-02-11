@@ -5,19 +5,23 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.pdf.PdfDocument;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.view.menu.ExpandedMenuView;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -151,27 +155,18 @@ public class HomeFragment extends PreferenceFragment implements
         startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(final Preference preference) {
+                pDialog.show();
+                pDialog.setCancelable(false);
                 final File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                Thread checkFolderThread = new Thread(new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        blCheckFolder = checkFolder(testSDcardFolder);
-                    }
-                });
-                checkFolderThread.start();
-                try {
-                    checkFolderThread.join();
-                } catch (Exception e) {
-
-                }
-                if(blCheckFolder) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
+                        Message msg;
+                        if (checkFolder(testSDcardFolder)) {
                             try {
                                 File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
-                                if(!testDirFile.exists()) {
-                                    Message msg = new Message();
+                                if (!testDirFile.exists()) {
+                                    msg = new Message();
                                     msg.what = 2;
                                     mHandler.sendMessage(msg);
                                     Thread.currentThread().interrupt();
@@ -180,16 +175,16 @@ public class HomeFragment extends PreferenceFragment implements
                                 ArrayList<String> fileList = new ArrayList<String>();
                                 prepareFileList(testDirFile, fileList);
 
-                                for(int i=0;i<fileList.size();++i) {
+                                for (int i = 0; i < fileList.size(); ++i) {
                                     File inFile = new File(fileList.get(i));
                                     // detect encode
                                     String encodeString = detectEncode(fileList.get(i));
                                     int totalLine = countLines(fileList.get(i), encodeString);
 
                                     int TorS = 0; // >0 means t2s
-                                    if(encodeString.equals("GBK")) {
+                                    if (encodeString.equals("GBK")) {
                                         TorS = -100;
-                                    } else if(encodeString.equals("BIG5")) {
+                                    } else if (encodeString.equals("BIG5")) {
                                         TorS = 100;
                                     }
 
@@ -201,35 +196,32 @@ public class HomeFragment extends PreferenceFragment implements
                                     InputStreamReader isr = new InputStreamReader(is, encodeString);
                                     BufferedReader bReader = new BufferedReader(isr);
                                     String line;
-                                    if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                    if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
                                         line = bReader.readLine();
-                                        if(Analysis.isTraditional(line)>=0) {
+                                        if (Analysis.isTraditional(line) >= 0) {
                                             booknameString = Analysis.TtoS(line);
                                         } else {
                                             booknameString = Analysis.StoT(line);
                                         }
                                     } else {
-                                        booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")?Analysis.StoT(bReader.readLine()):Analysis.TtoS(bReader.readLine());
+                                        booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(bReader.readLine()) : Analysis.TtoS(bReader.readLine());
                                     }
                                     String firstLine = booknameString;
                                     // fix too large bookname
-                                    if(booknameString.length()>15) {
+                                    if (booknameString.length() > 15) {
                                         booknameString = booknameString.substring(0, 15);
                                     }
-                                    if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
+                                    if (prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                         booknameString = name;
-                                        Message msg = new Message();
-                                        msg.what = 3;
-                                        mHandler.sendMessage(msg);
                                     } else {
-                                        Message msg = new Message();
+                                        msg = new Message();
                                         msg.what = 4;
                                         mHandler.sendMessage(msg);
                                         synchronized (syncToken) {
                                             syncToken.wait();
                                         }
                                         booknameString = booknameString.split(" ")[0];
-                                        if( !isFilenameValid(booknameString) ) {
+                                        if (!isFilenameValid(booknameString)) {
                                             Message filenameNotValidMsg = new Message();
                                             filenameNotValidMsg.what = 6;
                                             mHandler.sendMessage(filenameNotValidMsg);
@@ -238,18 +230,18 @@ public class HomeFragment extends PreferenceFragment implements
                                         }
                                     }
                                     File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                                    if(!file.exists() || !file.isDirectory()) {
+                                    if (!file.exists() || !file.isDirectory()) {
                                         file.mkdir();
                                     }
 
                                     // if file exists add -1 in the last
-                                    File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR)  + booknameString  + "." + file_extension);
+                                    File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension);
                                     File outFile;
                                     boolean blIsFileExisted = testFile.exists();
-                                    if(blIsFileExisted) {
-                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR)  + booknameString + "-1." + file_extension);
+                                    if (blIsFileExisted) {
+                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "-1." + file_extension);
                                     } else {
-                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR)  + booknameString  + "." + file_extension);
+                                        outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension);
                                     }
 
                                     OutputStreamWriter osw = getOutputStreamWriter(outFile);
@@ -258,35 +250,35 @@ public class HomeFragment extends PreferenceFragment implements
                                     BufferedWriter bw = new BufferedWriter(osw);
                                     bw.write(firstLine + "\r");
                                     bw.newLine();
-                                    while((line = bReader.readLine()) != null) {
-                                        progressNum += ((1) / (float)fileList.size()) * (1 / (float)totalLine);
-                                        Message msg = new Message();
+                                    while ((line = bReader.readLine()) != null) {
+                                        progressNum += ((1) / (float) fileList.size()) * (1 / (float) totalLine);
+                                        msg = new Message();
                                         msg.what = 5;
                                         mHandler.sendMessage(msg);
-                                        if(line.length()==0) {
+                                        if (line.length() == 0) {
                                             bw.write("\r");
                                             bw.newLine();
                                             continue;
                                         }
                                         wordNumber += line.length();
-                                        if(prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                            if(TorS<100 && TorS>-100) {
+                                        if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                            if (TorS < 100 && TorS > -100) {
                                                 // detect step
                                                 TorS += Analysis.isTraditional(line);
-                                                if(TorS>=0) {
+                                                if (TorS >= 0) {
                                                     bw.write(Analysis.TtoS(line) + "\r");
                                                 } else {
                                                     bw.write(Analysis.StoT(line) + "\r");
                                                 }
                                             } else {
-                                                if(TorS>0) {
+                                                if (TorS > 0) {
                                                     bw.write(Analysis.TtoS(line) + "\r");
                                                 } else {
                                                     bw.write(Analysis.StoT(line) + "\r");
                                                 }
                                             }
                                         } else {
-                                            if(prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
+                                            if (prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
                                                 bw.write(Analysis.StoT(line) + "\r");
                                             } else {
                                                 bw.write(Analysis.TtoS(line) + "\r");
@@ -301,53 +293,59 @@ public class HomeFragment extends PreferenceFragment implements
                                     is.close();
 
                                     //media rescan for correctly showing in pc
-                                    if(blIsFileExisted) {
+                                    if (blIsFileExisted) {
                                         MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "-1." + file_extension}, null, null);
                                     } else {
                                         MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR) + booknameString + "." + file_extension}, null, null);
                                     }
 
-                                    if(prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
+                                    if (prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
                                         deleteSourceFile(inFile);
                                     }
                                 }
-                            } catch(Exception e){
+                            } catch (Exception e) {
 
                             }
-                            Message msg = new Message();
+                            msg = new Message();
                             msg.what = 1;
                             mHandler.sendMessage(msg);
+                        } else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pDialog.hide();
+                                    // trigger SAF or in kikat.
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+                                        sdcardDialog.setTitleText(getString(R.string.oops))
+                                                .setContentText(getString(R.string.oops_sdcard_detail))
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        triggerStorageAccessFramework();
+                                                        sdcardDialog.dismiss();
+                                                    }
+                                                })
+                                                .show();
+                                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+                                        sdcardDialog.setTitleText(getString(R.string.oops))
+                                                .setContentText(getString(R.string.oops_sdcard_kitkat_detail))
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sdcardDialog.dismiss();
+                                                    }
+                                                })
+                                                .show();
+                                    }
+                                }
+                            });
                         }
-                    }).start();
-                } else {
-                    // trigger SAF or in kikat.
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                        sdcardDialog.setTitleText(getString(R.string.oops))
-                                .setContentText(getString(R.string.oops_sdcard_detail))
-                                .setConfirmText("OK")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        triggerStorageAccessFramework();
-                                        sdcardDialog.dismiss();
-                                    }
-                                })
-                                .show();
-                    } else if(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                        sdcardDialog.setTitleText(getString(R.string.oops))
-                                .setContentText(getString(R.string.oops_sdcard_kitkat_detail))
-                                .setConfirmText("OK")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sdcardDialog.dismiss();
-                                    }
-                                })
-                                .show();
                     }
-                }
+                }).start();
                 return true;
             }
         });
@@ -366,8 +364,11 @@ public class HomeFragment extends PreferenceFragment implements
                             .show();
                     wordNumber = 0;
                     progressNum = 0;
+                    pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
+                            .setTitleText(getString(R.string.wait));
                     break;
                 case 2:
+                    pDialog.hide();
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText(getString(R.string.oops))
                             .setContentText(getString(R.string.oops_file_does_not_exist))
@@ -381,6 +382,8 @@ public class HomeFragment extends PreferenceFragment implements
                     AlertDialog.Builder editDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppCompatAlertDialogStyle));
                     editDialog.setTitle(getResources().getString(R.string.bookname));
 
+                    pDialog.hide();
+
                     final EditText editText = new EditText(getActivity());
                     editText.setText(booknameString);
                     editDialog.setView(editText);
@@ -390,7 +393,7 @@ public class HomeFragment extends PreferenceFragment implements
                             booknameString = editText.getText().toString();
                             pDialog.show();
                             pDialog.setCancelable(false);
-                            synchronized(syncToken) {
+                            synchronized (syncToken) {
                                 syncToken.notify();
                             }
                         }
