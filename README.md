@@ -6,22 +6,15 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.68
+1.7.0
 
 Changelog
 ========
-###1.68
-* Fix external sd card related issues
-
-###1.67
-* refactor
-* update dependent project
-* appropriately close file
-* add auto delete
-
-###1.66
-* fix dialog leak
-* add external sdcard support
+###1.7.0
+* add license in about page
+* use FilePicker as file chooser
+* do checkFolder in thread
+* Strengthen the function of the same file name
 
 Features
 ========
@@ -54,11 +47,10 @@ Pictures
 
 Thanks
 ========
-* ExFilePicker (bartwell)
+* android-filepicker (Angads25)
 * JNovelDownloader (pupuliao)
 * sweet-alert-dialog (pedant)
 * Magnet (premnirmal)
-* MaterialList (dexafree)
 * Juniversalchardet (takscape)
 
 License
