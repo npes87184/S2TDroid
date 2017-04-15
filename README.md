@@ -6,11 +6,15 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.0
+1.7.1
 
 Changelog
 ========
-###1.7.0
+### 1.7.1
+* support ini file
+* update libs
+
+### 1.7.0
 * add license in about page
 * use FilePicker as file chooser
 * do checkFolder in thread
