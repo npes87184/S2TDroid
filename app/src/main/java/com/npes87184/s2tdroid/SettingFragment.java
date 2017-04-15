@@ -1,11 +1,15 @@
 package com.npes87184.s2tdroid;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import com.npes87184.s2tdroid.model.KeyCollection;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by npes87184 on 2015/5/17.
@@ -18,6 +22,7 @@ public class SettingFragment extends PreferenceFragment implements
     private SharedPreferences prefs;
     private Preference outEncodePreference;
     private Preference encoding;
+    private Preference delete_source;
     private static SettingFragment fragment;
 
     public static SettingFragment newInstance() {
@@ -59,6 +64,28 @@ public class SettingFragment extends PreferenceFragment implements
 
         outEncodePreference = findPreference(KeyCollection.KEY_OUTPUT_ENCODING);
         outEncodePreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
+
+        delete_source = findPreference(KeyCollection.KEY_DELETE_SOURCE);
+        delete_source.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new SweetAlertDialog(getActivity())
+                        .setTitleText(getString(R.string.donate))
+                        .setContentText(getString(R.string.donate_detail))
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                // reuse previous dialog instance
+                                String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                startActivity(i);
+                            }
+                        })
+                        .show();
+                return true;
+            }
+        });
     }
 
     @Override

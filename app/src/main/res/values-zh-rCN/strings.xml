@@ -33,6 +33,9 @@
     <string name="filename_detail">输出文件名将会跟输入一样。如果输出目录跟输入一样，会在档名结尾加入-1。</string>
     <string name="filename">输出文件名</string>
 
+    <string name="auto_delete_detail">在转换后自动删除来源文件。 </string>
+    <string name="auto_delete">自动删除</string>
+
     <string name="oops">错误</string>
     <string name="oops_detail">输入文件不存在！</string>
 
