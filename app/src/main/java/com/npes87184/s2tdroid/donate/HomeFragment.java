@@ -60,7 +60,7 @@ public class HomeFragment extends PreferenceFragment implements
     private Preference startPreference;
     private SharedPreferences prefs;
     private SweetAlertDialog pDialog;
-    private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa" };
+    private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa", "ini" };
     private float progressNum = 0;
 
     String booknameString = "S2TDroid";
