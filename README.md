@@ -6,10 +6,14 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.2
+1.7.3
 
 Changelog
 ========
+### 1.7.3
+* Reduce the frequency of updating progress
+* Don't use support ContextThemeWrapper
+
 ### 1.7.2
 * fix permission problem in filepicker when click back.
 * add an option to direct to external sdcard in filepicker.
