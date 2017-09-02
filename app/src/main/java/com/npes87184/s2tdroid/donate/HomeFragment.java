@@ -62,6 +62,8 @@ public class HomeFragment extends PreferenceFragment implements
     private SweetAlertDialog pDialog;
     private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa", "ini" };
     private float progressNum = 0;
+    private float lastProgressNum = 0;
+    private float roundProgress = 0;
 
     String booknameString = "S2TDroid";
 
@@ -238,13 +240,12 @@ public class HomeFragment extends PreferenceFragment implements
                                     bw.newLine();
                                     while ((line = bReader.readLine()) != null) {
                                         progressNum += ((1) / (float) fileList.size()) * (1 / (float) totalLine);
-                                        msg = new Message();
-                                        msg.what = 5;
-                                        mHandler.sendMessage(msg);
-                                        if (line.length() == 0) {
-                                            bw.write("\r");
-                                            bw.newLine();
-                                            continue;
+                                        roundProgress = ((float) (int)(progressNum*100))/(float) 100;
+                                        if (roundProgress - lastProgressNum > 0.01) {
+                                            lastProgressNum = roundProgress;
+                                            msg = new Message();
+                                            msg.what = 5;
+                                            mHandler.sendMessage(msg);
                                         }
                                         wordNumber += line.length();
                                         if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
@@ -346,6 +347,7 @@ public class HomeFragment extends PreferenceFragment implements
                             .show();
                     wordNumber = 0;
                     progressNum = 0;
+                    lastProgressNum = 0;
                     pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
                             .setTitleText(getString(R.string.wait));
                     break;
