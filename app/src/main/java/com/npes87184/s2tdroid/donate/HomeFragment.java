@@ -16,7 +16,7 @@ import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
+import android.view.ContextThemeWrapper;
 import android.widget.EditText;
 import android.widget.Toast;
 
