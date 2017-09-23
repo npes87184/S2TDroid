@@ -203,10 +203,6 @@ public class HomeFragment extends PreferenceFragment implements
                                         booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(bReader.readLine()) : Analysis.TtoS(bReader.readLine());
                                     }
                                     String firstLine = booknameString;
-                                    // fix too large bookname
-                                    if (booknameString.length() > 15) {
-                                        booknameString = booknameString.substring(0, 15);
-                                    }
                                     if (prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                         booknameString = name;
                                     } else {
@@ -225,6 +221,11 @@ public class HomeFragment extends PreferenceFragment implements
                                             return;
                                         }
                                     }
+                                    // fix too large bookname
+                                    if (booknameString.length() > 100) {
+                                        booknameString = booknameString.substring(0, 100);
+                                    }
+
                                     File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
                                     if (!file.exists() || !file.isDirectory()) {
                                         file.mkdir();
