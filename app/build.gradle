@@ -32,5 +32,5 @@ dependencies {
     compile(name: 'filepicker-release', ext: 'aar')
     compile 'com.premnirmal.magnet:library:1.1.6'
     compile files('libs/juniversalchardet-1.0.3.jar')
-    compile 'com.github.medyo:android-about-page:1.1.1'
+    compile 'com.github.medyo:android-about-page:1.2.1'
 }

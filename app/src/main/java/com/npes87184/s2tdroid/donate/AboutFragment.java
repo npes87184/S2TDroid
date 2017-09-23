@@ -52,7 +52,7 @@ public class AboutFragment extends Fragment {
 
         Element emailElement = new Element();
         emailElement.setTitle(getString(R.string.contact));
-        emailElement.setIcon(R.drawable.about_icon_email);
+        emailElement.setIconDrawable(R.drawable.about_icon_email);
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "npes87184@gmail.com", null));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.subject));
@@ -61,7 +61,7 @@ public class AboutFragment extends Fragment {
 
         Element webElement = new Element();
         webElement.setTitle(getString(R.string.web_tag));
-        webElement.setIcon(R.drawable.about_icon_link);
+        webElement.setIconDrawable(R.drawable.about_icon_link);
         String url = "https://npes87184.github.io";
         Intent webIntent = new Intent(Intent.ACTION_VIEW);
         webIntent.setData(Uri.parse(url));
@@ -69,14 +69,14 @@ public class AboutFragment extends Fragment {
 
         Element playStoreElement = new Element();
         playStoreElement.setTitle(getString(R.string.rate));
-        playStoreElement.setIcon(R.drawable.about_icon_google_play);
+        playStoreElement.setIconDrawable(R.drawable.about_icon_google_play);
         Uri uri = Uri.parse("market://details?id=com.npes87184.s2tdroid.donate");
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         playStoreElement.setIntent(goToMarket);
 
         Element licenseElement = new Element();
         licenseElement.setTitle("Open Source License");
-        licenseElement.setIcon(R.drawable.about_icon_link);
+        licenseElement.setIconDrawable(R.drawable.about_icon_link);
         licenseElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
