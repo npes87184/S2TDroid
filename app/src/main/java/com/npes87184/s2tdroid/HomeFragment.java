@@ -178,8 +178,8 @@ public class HomeFragment extends PreferenceFragment implements
                             }
                             String firstLine = booknameString;
                             // fix too large bookname
-                            if(booknameString.length()>15) {
-                                booknameString = booknameString.substring(0, 15);
+                            if(booknameString.length() > 100) {
+                                booknameString = booknameString.substring(0, 100);
                             }
                             if(prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
                                 booknameString = name;
