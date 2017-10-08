@@ -6,10 +6,15 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.4
+1.7.5
 
 Changelog
 ========
+### 1.7.5
+* Add file order option
+* Update filepicker lib
+* Show time yyyy/MM/dd in filepicker lib
+
 ### 1.7.4
 * Set max length of filename to 100
 * Adjust color
