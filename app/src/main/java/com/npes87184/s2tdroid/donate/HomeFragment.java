@@ -64,6 +64,7 @@ public class HomeFragment extends PreferenceFragment implements
     private float progressNum = 0;
     private float lastProgressNum = 0;
     private float roundProgress = 0;
+    private int fileOrder = 0;
 
     String booknameString = "S2TDroid";
 
@@ -94,6 +95,8 @@ public class HomeFragment extends PreferenceFragment implements
         pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
                 .setTitleText(getString(R.string.wait));
 
+        fileOrder = Integer.parseInt(prefs.getString(KeyCollection.KEY_FILE_SORT, "0"));
+
         inputPreference = findPreference(KeyCollection.KEY_INPUT_FILE);
         inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
         inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -107,6 +110,7 @@ public class HomeFragment extends PreferenceFragment implements
                 properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
                 properties.offset = new File(prefs.getString(KeyCollection.KEY_PATH, DialogConfigs.DEFAULT_DIR));
                 properties.extensions = filter;
+                properties.file_order = fileOrder;
                 FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
                 dialog.setPositiveBtnName(getString(R.string.select));
                 dialog.setNegativeBtnName(getString(R.string.cancel));
@@ -133,6 +137,7 @@ public class HomeFragment extends PreferenceFragment implements
                 properties.root = new File("/");
                 properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
                 properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+                properties.file_order = fileOrder;
                 FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
                 dialog.setPositiveBtnName(getString(R.string.select));
                 dialog.setNegativeBtnName(getString(R.string.cancel));

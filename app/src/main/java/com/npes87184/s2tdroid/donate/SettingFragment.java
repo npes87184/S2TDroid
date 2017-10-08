@@ -15,6 +15,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     private Preference mode;
     private Preference bubble_mode;
+    private Preference file_sort;
     private SharedPreferences prefs;
     private Preference outEncodePreference;
     private Preference encoding;
@@ -53,6 +54,23 @@ public class SettingFragment extends PreferenceFragment implements
             bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
         }
 
+        file_sort = findPreference(KeyCollection.KEY_FILE_SORT);
+        switch (Integer.parseInt(prefs.getString(KeyCollection.KEY_FILE_SORT, "0"))) {
+            default:
+            case 0:
+                file_sort.setSummary(getActivity().getString(R.string.file_order_name_ascending));
+                break;
+            case 1:
+                file_sort.setSummary(getActivity().getString(R.string.file_order_name_descending));
+                break;
+            case 2:
+                file_sort.setSummary(getActivity().getString(R.string.file_order_date_ascending));
+                break;
+            case 3:
+                file_sort.setSummary(getActivity().getString(R.string.file_order_date_descending));
+                break;
+        }
+
         encoding = findPreference(KeyCollection.KEY_ENCODING);
         encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")?
                 getResources().getString(R.string.auto_detect):prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
@@ -76,13 +94,29 @@ public class SettingFragment extends PreferenceFragment implements
             } else {
                 mode.setSummary(getActivity().getString(R.string.auto_detect));
             }
-        } else if(key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
+        } else if (key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
             if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
                 bubble_mode.setSummary(getActivity().getString(R.string.t2s));
             } else if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
                 bubble_mode.setSummary(getActivity().getString(R.string.s2t));
             } else {
                 bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+            }
+        } else if (key.equals(KeyCollection.KEY_FILE_SORT)) {
+            switch (Integer.parseInt(prefs.getString(KeyCollection.KEY_FILE_SORT, "0"))) {
+                default:
+                case 0:
+                    file_sort.setSummary(getActivity().getString(R.string.file_order_name_ascending));
+                    break;
+                case 1:
+                    file_sort.setSummary(getActivity().getString(R.string.file_order_name_descending));
+                    break;
+                case 2:
+                    file_sort.setSummary(getActivity().getString(R.string.file_order_date_ascending));
+                    break;
+                case 3:
+                    file_sort.setSummary(getActivity().getString(R.string.file_order_date_descending));
+                    break;
             }
         }
     }

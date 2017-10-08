@@ -30,7 +30,15 @@
             android:icon="@drawable/ic_delete_forever_black_48dp"
             android:summary="@string/auto_delete_detail"
             android:title="@string/auto_delete" android:defaultValue="false">
-        </CheckBoxPreference>presence_offline.png
+        </CheckBoxPreference>
+
+        <ListPreference android:entries="@array/file_order_entry"
+            android:entryValues="@array/file_order_value"
+            android:dialogTitle="@string/file_sort"
+            android:negativeButtonText="@string/cancel"
+            android:key="file_sort"
+            android:icon="@drawable/ic_menu_sort_by_size"
+            android:title="@string/file_sort"/>
     </PreferenceCategory>
 
     <PreferenceCategory

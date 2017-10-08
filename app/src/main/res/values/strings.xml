@@ -61,4 +61,11 @@
     <string name="web_tag">Visit my website</string>
     <string name="illegal_filename">Illegal filename</string>
 
+    <!-- file order related. -->
+    <string name="file_sort">File sort</string>
+    <string name="file_order_name_ascending">By name, ascending</string>
+    <string name="file_order_name_descending">By name, descending</string>
+    <string name="file_order_date_ascending">By date, ascending</string>
+    <string name="file_order_date_descending">By date, descending</string>
+
 </resources>
