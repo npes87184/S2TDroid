@@ -6,10 +6,13 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.5
+1.7.6
 
 Changelog
 ========
+### 1.7.6
+* One can use the converted original file name now.
+
 ### 1.7.5
 * Add file order option
 * Update filepicker lib
