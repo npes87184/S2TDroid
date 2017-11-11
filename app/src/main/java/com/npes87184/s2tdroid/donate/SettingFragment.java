@@ -15,6 +15,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     private Preference mode;
     private Preference bubble_mode;
+    private Preference file_name;
     private Preference file_sort;
     private SharedPreferences prefs;
     private Preference outEncodePreference;
@@ -52,6 +53,15 @@ public class SettingFragment extends PreferenceFragment implements
             bubble_mode.setSummary(getActivity().getString(R.string.s2t));
         } else {
             bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+        }
+
+        file_name = findPreference(KeyCollection.KEY_FILENAME);
+        if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
+            file_name.setSummary(getString(R.string.filename_same));
+        } else if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_transformed_key))) {
+            file_name.setSummary(getString(R.string.filename_same_transformed));
+        } else {
+            file_name.setSummary(getString(R.string.filename_manual));
         }
 
         file_sort = findPreference(KeyCollection.KEY_FILE_SORT);
@@ -101,6 +111,14 @@ public class SettingFragment extends PreferenceFragment implements
                 bubble_mode.setSummary(getActivity().getString(R.string.s2t));
             } else {
                 bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+            }
+        } else if (key.equals(KeyCollection.KEY_FILENAME)) {
+            if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
+                file_name.setSummary(getString(R.string.filename_same));
+            } else if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_transformed_key))) {
+                file_name.setSummary(getString(R.string.filename_same_transformed));
+            } else {
+                file_name.setSummary(getString(R.string.filename_manual));
             }
         } else if (key.equals(KeyCollection.KEY_FILE_SORT)) {
             switch (Integer.parseInt(prefs.getString(KeyCollection.KEY_FILE_SORT, "0"))) {

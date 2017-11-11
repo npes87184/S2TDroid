@@ -53,4 +53,16 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="file_name_option_entry">
+        <item>@string/filename_same</item>
+        <item>@string/filename_same_transformed</item>
+        <item>@string/filename_manual</item>
+    </string-array>
+
+    <string-array name="file_name_option_value">
+        <item>@string/filename_same_key</item>
+        <item>@string/filename_same_transformed_key</item>
+        <item>@string/filename_manual_key</item>
+    </string-array>
+
 </resources>

@@ -27,9 +27,6 @@
     <string name="floatingPermission">如要使用轉換泡泡，我們需要顯示浮動視窗的權限。</string>
     <string name="filePermission">為了完成檔案繁簡轉換，我們需要檔案讀寫的權限。</string>
 
-    <string name="filename_detail">輸出檔名將會跟輸入一樣。</string>
-    <string name="filename">輸出檔名</string>
-
     <string name="auto_delete_detail">在轉換後自動刪除來源檔案。</string>
     <string name="auto_delete">自動刪除</string>
 
@@ -59,5 +56,11 @@
     <string name="file_order_name_descending">根據名稱，降序。</string>
     <string name="file_order_date_ascending">根據修改時間，升序。</string>
     <string name="file_order_date_descending">根據修改時間，降序。</string>
+
+    <!-- file name related. -->
+    <string name="filename">輸出檔名</string>
+    <string name="filename_same">與原檔名相同</string>
+    <string name="filename_same_transformed">轉換後的原檔名</string>
+    <string name="filename_manual">透過自動提示手動輸入</string>
 
 </resources>

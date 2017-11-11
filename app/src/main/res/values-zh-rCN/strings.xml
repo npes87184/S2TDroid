@@ -27,9 +27,6 @@
     <string name="floatingPermission">如要使用转换泡泡，我们需要显示浮动视窗的权限。</string>
     <string name="filePermission">为了完成文件繁简转换，我们需要文件读写的权限。</string>
 
-    <string name="filename_detail">输出文件名将会跟输入一样。</string>
-    <string name="filename">输出文件名</string>
-
     <string name="auto_delete_detail">在转换后自动删除来源文件。 </string>
     <string name="auto_delete">自动删除</string>
 
@@ -54,10 +51,16 @@
     <string name="illegal_filename">文件名无效</string>
 
     <!-- file order related. -->
-        <string name="file_sort">文件排序</string>
-        <string name="file_order_name_ascending">根据名称，升序。 </string>
-        <string name="file_order_name_descending">根据名称，降序。 </string>
-        <string name="file_order_date_ascending">根据修改时间，升序。 </string>
-        <string name="file_order_date_descending">根据修改时间，降序。 </string>
+    <string name="file_sort">文件排序</string>
+    <string name="file_order_name_ascending">根据名称，升序。 </string>
+    <string name="file_order_name_descending">根据名称，降序。 </string>
+    <string name="file_order_date_ascending">根据修改时间，升序。 </string>
+    <string name="file_order_date_descending">根据修改时间，降序。 </string>
+
+    <!-- file name related. -->
+    <string name="filename">输出文件名</string>
+    <string name="filename_same">与原文件名相同</string>
+    <string name="filename_same_transformed">转换后的原文件名</string>
+    <string name="filename_manual">透过自动提示手动输入</string>
 
 </resources>

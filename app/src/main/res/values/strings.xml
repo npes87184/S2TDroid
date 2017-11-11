@@ -30,9 +30,6 @@
     <string name="floatingPermission">We need floating window permission to use bubble.</string>
     <string name="filePermission">We need the permission of file access to work perfectly.</string>
 
-    <string name="filename_detail">Output file name will be the same as input file.</string>
-    <string name="filename">Output File Name</string>
-
     <string name="auto_delete_detail">Auto delete source file(s) after transforming.</string>
     <string name="auto_delete">Auto delete</string>
 
@@ -67,5 +64,14 @@
     <string name="file_order_name_descending">By name, descending</string>
     <string name="file_order_date_ascending">By date, ascending</string>
     <string name="file_order_date_descending">By date, descending</string>
+
+    <!-- file name related. -->
+    <string name="filename">Output File Name</string>
+    <string name="filename_same">The same with original file.</string>
+    <string name="filename_same_transformed">The same with original file but translated.</string>
+    <string name="filename_manual">Manual input with some tip.</string>
+    <string name="filename_same_key" translatable="false">same</string>
+    <string name="filename_same_transformed_key" translatable="false">same_transalted</string>
+    <string name="filename_manual_key" translatable="false">manual</string>
 
 </resources>

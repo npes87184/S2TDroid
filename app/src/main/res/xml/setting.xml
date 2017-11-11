@@ -20,17 +20,18 @@
             android:icon="@drawable/ic_menu_copy_holo_light"
             android:title="@string/bubble_mode"/>
 
-        <CheckBoxPreference android:key="same_filename"
+        <ListPreference android:entries="@array/file_name_option_entry"
+            android:entryValues="@array/file_name_option_value"
+            android:dialogTitle="@string/filename"
+            android:negativeButtonText="@string/cancel"
+            android:key="filename"
             android:icon="@drawable/ic_menu_save"
-            android:summary="@string/filename_detail"
-            android:title="@string/filename" android:defaultValue="false">
-        </CheckBoxPreference>
+            android:title="@string/filename"/>
 
         <CheckBoxPreference android:key="delete_source"
             android:icon="@drawable/ic_delete_forever_black_48dp"
             android:summary="@string/auto_delete_detail"
-            android:title="@string/auto_delete" android:defaultValue="false">
-        </CheckBoxPreference>
+            android:title="@string/auto_delete" android:defaultValue="false"/>
 
         <ListPreference android:entries="@array/file_order_entry"
             android:entryValues="@array/file_order_value"

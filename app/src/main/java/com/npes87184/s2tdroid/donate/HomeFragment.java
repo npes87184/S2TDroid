@@ -192,6 +192,7 @@ public class HomeFragment extends PreferenceFragment implements
                                     String file_extension = getFileExtension(inFile);
 
                                     String name = getFileName(inFile);
+                                    String translatedName;
 
                                     InputStream is = new FileInputStream(inFile);
                                     InputStreamReader isr = new InputStreamReader(is, encodeString);
@@ -201,15 +202,20 @@ public class HomeFragment extends PreferenceFragment implements
                                         line = bReader.readLine();
                                         if (Analysis.isTraditional(line) >= 0) {
                                             booknameString = Analysis.TtoS(line);
+                                            translatedName = Analysis.TtoS(name);
                                         } else {
                                             booknameString = Analysis.StoT(line);
+                                            translatedName = Analysis.StoT(name);
                                         }
                                     } else {
                                         booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(bReader.readLine()) : Analysis.TtoS(bReader.readLine());
+                                        translatedName = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(name) : Analysis.TtoS(name);
                                     }
                                     String firstLine = booknameString;
-                                    if (prefs.getBoolean(KeyCollection.KEY_SAME_FILENAME, false)) {
+                                    if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
                                         booknameString = name;
+                                    } else if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_transformed_key))) {
+                                        booknameString = translatedName;
                                     } else {
                                         msg = new Message();
                                         msg.what = 4;
@@ -244,6 +250,7 @@ public class HomeFragment extends PreferenceFragment implements
                                     BufferedWriter bw = new BufferedWriter(osw);
                                     bw.write(firstLine + "\r");
                                     bw.newLine();
+
                                     while ((line = bReader.readLine()) != null) {
                                         progressNum += ((1) / (float) fileList.size()) * (1 / (float) totalLine);
                                         roundProgress = ((float) (int)(progressNum*100))/(float) 100;
