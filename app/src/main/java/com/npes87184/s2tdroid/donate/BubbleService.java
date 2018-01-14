@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.facebook.rebound.SpringConfig;
 import com.npes87184.s2tdroid.donate.model.Analysis;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 import com.premnirmal.Magnet.IconCallback;
@@ -40,6 +41,7 @@ public class BubbleService extends Service implements IconCallback {
     @Override
     public void onCreate() {
         super.onCreate();
+        SpringConfig springConfig = SpringConfig.fromBouncinessAndSpeed(10, 50);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -50,14 +52,14 @@ public class BubbleService extends Service implements IconCallback {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
 
-    // The stack builder object will contain an artificial back stack for the
-    // started Activity.
-    // This ensures that navigating backward from the Activity leads out of
-    // your application to the Home screen.
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-    // Adds the back stack for the Intent (but not the Intent itself)
+        // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(MainActivity.class);
-    // Adds the Intent that starts the Activity to the top of the stack
+        // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -68,7 +70,7 @@ public class BubbleService extends Service implements IconCallback {
         startForeground(1, mBuilder.build());
 
         scale = getResources().getDisplayMetrics().density;
-        int size = (int)(60 * scale);
+        int size = (int) (60 * scale);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         ImageView iconView = new ImageView(this);
         iconView.setImageResource(R.drawable.telegram);
@@ -76,21 +78,23 @@ public class BubbleService extends Service implements IconCallback {
         iconView.setMaxHeight(size);
         iconView.setMaxWidth(size);
         iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        mMagnet = new Magnet.Builder(this)
+        mMagnet = Magnet.newBuilder(this)
                 .setIconView(iconView)
                 .setIconCallback(this)
-                .setRemoveIconResId(R.drawable.trash)
-                .setRemoveIconShadow(R.drawable.bottom_shadow)
-                .setShouldFlingAway(true)
+                .setShouldShowRemoveView(true)
                 .setShouldStickToWall(true)
                 .setRemoveIconShouldBeResponsive(true)
+                .setInitialPosition(300, 400)
+                .setHideFactor(0.2f)
+                .withSpringConfig(springConfig)
                 .build();
         mMagnet.show();
     }
 
     @Override
     public void onFlingAway() {
-
+        mMagnet.destroy();
+        stopSelf();
     }
 
     @Override
@@ -134,13 +138,13 @@ public class BubbleService extends Service implements IconCallback {
         // in Lollipop the dialog will be covered by input...
         int size = (int)(150 * scale);
         alert.getWindow().getAttributes().y = -1*size;
-        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         alert.show();
     }
 
     @Override
     public void onIconDestroyed() {
-        stopSelf();
+
     }
 
     private void copyToClipboard(String str) {
