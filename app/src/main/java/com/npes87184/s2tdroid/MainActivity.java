@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import za.co.riggaroo.materialhelptutorial.TutorialItem;
+import za.co.riggaroo.materialhelptutorial.tutorial.MaterialTutorialActivity;
 
 public class MainActivity extends AppCompatActivity implements AppCompatCallback {
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
     private ImageView imageViewMenu;
     private ListAdapter adapter;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
+    final private int REQUEST_CODE_PRO = 123;
     final List<String> permissionsList = new ArrayList<String>();
 
     @Override
@@ -142,20 +145,7 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
                         mDrawerLayout.closeDrawers();
                         break;
                     case 3:
-                        new SweetAlertDialog(MainActivity.this)
-                                .setTitleText(getString(R.string.donate))
-                                .setContentText(getString(R.string.donate_detail))
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        // reuse previous dialog instance
-                                        String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
-                                        Intent i = new Intent(Intent.ACTION_VIEW);
-                                        i.setData(Uri.parse(url));
-                                        startActivity(i);
-                                    }
-                                })
-                                .show();
+                        ShowProPromotion();
                         break;
                     case 4:
                         // about
@@ -173,6 +163,22 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
         fragmentManager.beginTransaction()
                 .replace(R.id.container, HomeFragment.newInstance())
                 .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode){
+            case REQUEST_CODE_PRO:
+                String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -253,6 +259,29 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
                 .setPositiveButton("OK", okListener)
                 .create()
                 .show();
+    }
+
+    private void ShowProPromotion() {
+        TutorialItem tutorialItem1 = new TutorialItem(this.getString(R.string.pro_batch), this.getString(R.string.pro_batch_desc),
+                R.color.blue, R.drawable.batch);
+        TutorialItem tutorialItem2 = new TutorialItem(this.getString(R.string.pro_external), this.getString(R.string.pro_external_desc),
+                R.color.bluegray, R.drawable.external);
+        TutorialItem tutorialItem3 = new TutorialItem(this.getString(R.string.pro_progress), this.getString(R.string.pro_progress_desc),
+                R.color.brown, R.drawable.progress);
+        TutorialItem tutorialItem4 = new TutorialItem(this.getString(R.string.pro_no_pro), this.getString(R.string.pro_no_pro_desc),
+                R.color.teal, R.drawable.no_pro);
+        TutorialItem tutorialItem5 = new TutorialItem(this.getString(R.string.pro_and_more), this.getString(R.string.pro_and_more_desc),
+                R.color.blue, R.drawable.and_more);
+        ArrayList<TutorialItem> tutorialItems = new ArrayList<>();
+        tutorialItems.add(tutorialItem1);
+        tutorialItems.add(tutorialItem2);
+        tutorialItems.add(tutorialItem3);
+        tutorialItems.add(tutorialItem4);
+        tutorialItems.add(tutorialItem5);
+
+        Intent mainAct = new Intent(this, MaterialTutorialActivity.class);
+        mainAct.putParcelableArrayListExtra(MaterialTutorialActivity.MATERIAL_TUTORIAL_ARG_TUTORIAL_ITEMS, tutorialItems);
+        startActivityForResult(mainAct, REQUEST_CODE_PRO);
     }
 
     @Override

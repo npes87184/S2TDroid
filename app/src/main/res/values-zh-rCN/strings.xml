@@ -44,8 +44,6 @@
     <string name="bubble_mode">泡泡转换模式</string>
     <string name="encode">编码</string>
     <string name="normal">一般</string>
-    <string name="donate">Pro</string>
-    <string name="donate_detail">1. 免除了ＡＰＰ中关于捐赠的东西\n2. 提供整个资料夹内文件批次转换\n3. 转换进度显示\n4. 对于 Android 5.0 以上的用户，支援直接写到外部 SD 卡\n5. 增加一个选项可在转换完成后删除来源文件\n6. 请作者喝杯饮料，更有动力开发更多免费好用且无广告的ＡＰＰ！ ：Ｄ</string>
     <string name="illegal_filename">文件名无效</string>
 
     <string name="author_tag">作者：\u0020</string>
@@ -58,5 +56,15 @@
     <string name="rate_cancel">之后提醒</string>
     <string name="rate_no">不用了，谢谢</string>
 
+    <string name="pro_batch">批次转换</string>
+    <string name="pro_batch_desc">Pro 将提供批次转换功能，方便一次转换超过一个文件。 </string>
+    <string name="pro_external">直接输出到外部 SD 卡</string>
+    <string name="pro_external_desc">只要您的 Android 版本大于 Lollipop，Pro 将允许您将文件直接写到外部 SD 卡。 </string>
+    <string name="pro_progress">转换进度</string>
+    <string name="pro_progress_desc">在 Pro 中，将提供准确的转换进度，当转换数个大文件时，能够明确知道转换进度。 </string>
+    <string name="pro_no_pro">移除了 Pro 相关的宣传</string>
+    <string name="pro_no_pro_desc">移除了 Pro 相关的宣传，并且之后也不会有任何新的付费内容出现在 Pro 版中。 </string>
+    <string name="pro_and_more">还有更多</string>
+    <string name="pro_and_more_desc">Pro 中还额外提供了更多的功能，如更有弹性的文件名设定，自动删除来源文件以及更加轻小的文件选择界面等。立即点选右下角的 Play 应用商店看看吧！ </string>
 
 </resources>

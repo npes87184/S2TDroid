@@ -9,7 +9,11 @@ import android.preference.PreferenceFragment;
 
 import com.npes87184.s2tdroid.model.KeyCollection;
 
+import java.util.ArrayList;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import za.co.riggaroo.materialhelptutorial.TutorialItem;
+import za.co.riggaroo.materialhelptutorial.tutorial.MaterialTutorialActivity;
 
 /**
  * Created by npes87184 on 2015/5/17.
@@ -24,6 +28,7 @@ public class SettingFragment extends PreferenceFragment implements
     private Preference encoding;
     private Preference delete_source;
     private static SettingFragment fragment;
+    final private int REQUEST_CODE_PRO = 123;
 
     public static SettingFragment newInstance() {
         if(fragment==null) {
@@ -69,20 +74,7 @@ public class SettingFragment extends PreferenceFragment implements
         delete_source.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new SweetAlertDialog(getActivity())
-                        .setTitleText(getString(R.string.donate))
-                        .setContentText(getString(R.string.donate_detail))
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                // reuse previous dialog instance
-                                String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate";
-                                Intent i = new Intent(Intent.ACTION_VIEW);
-                                i.setData(Uri.parse(url));
-                                startActivity(i);
-                            }
-                        })
-                        .show();
+                ShowProPromotion();
                 return true;
             }
         });
@@ -112,6 +104,29 @@ public class SettingFragment extends PreferenceFragment implements
                 bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
             }
         }
+    }
+
+    private void ShowProPromotion() {
+        TutorialItem tutorialItem1 = new TutorialItem(this.getString(R.string.pro_batch), this.getString(R.string.pro_batch_desc),
+                R.color.blue, R.drawable.batch);
+        TutorialItem tutorialItem2 = new TutorialItem(this.getString(R.string.pro_external), this.getString(R.string.pro_external_desc),
+                R.color.bluegray, R.drawable.external);
+        TutorialItem tutorialItem3 = new TutorialItem(this.getString(R.string.pro_progress), this.getString(R.string.pro_progress_desc),
+                R.color.brown, R.drawable.progress);
+        TutorialItem tutorialItem4 = new TutorialItem(this.getString(R.string.pro_no_pro), this.getString(R.string.pro_no_pro_desc),
+                R.color.teal, R.drawable.no_pro);
+        TutorialItem tutorialItem5 = new TutorialItem(this.getString(R.string.pro_and_more), this.getString(R.string.pro_and_more_desc),
+                R.color.blue, R.drawable.and_more);
+        ArrayList<TutorialItem> tutorialItems = new ArrayList<>();
+        tutorialItems.add(tutorialItem1);
+        tutorialItems.add(tutorialItem2);
+        tutorialItems.add(tutorialItem3);
+        tutorialItems.add(tutorialItem4);
+        tutorialItems.add(tutorialItem5);
+
+        Intent mainAct = new Intent(this.getActivity(), MaterialTutorialActivity.class);
+        mainAct.putParcelableArrayListExtra(MaterialTutorialActivity.MATERIAL_TUTORIAL_ARG_TUTORIAL_ITEMS, tutorialItems);
+        getActivity().startActivityForResult(mainAct, REQUEST_CODE_PRO);
     }
 
 }

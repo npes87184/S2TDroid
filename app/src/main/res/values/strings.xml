@@ -52,8 +52,7 @@
     <string name="bubble_mode">Bubble Mode</string>
     <string name="encode">Encode</string>
     <string name="normal">Normal</string>
-    <string name="donate">Pro</string>
-    <string name="donate_detail">1. It deletes donate section in free version.\n2. Transform each file in a directory.\n3. The conversion progress display.\n4. Write to external sdcard in android 5.0 up\n5. Auto delete source file(s) after transforming.\n6. Give me a cup. I will devote to develop more good and no ad apps.</string>
+    <string name="donate" translatable="false">Pro</string>
     <string name="illegal_filename">Illegal filename</string>
 
     <string name="version_tag">Version:\u0020</string>
@@ -65,5 +64,16 @@
     <string name="rate_ok">Rate now</string>
     <string name="rate_cancel">Later</string>
     <string name="rate_no">No, thanks</string>
+
+    <string name="pro_batch">Batch mode</string>
+    <string name="pro_batch_desc">Transform more than one file once.</string>
+    <string name="pro_external">Directly write file to external SD card</string>
+    <string name="pro_external_desc">If your android version is newer than Lollipop, you can write output file to external SD card directly.</string>
+    <string name="pro_progress">Progress</string>
+    <string name="pro_progress_desc">In pro, we will show accurate and reliable transformed progress.</string>
+    <string name="pro_no_pro">No promotion</string>
+    <string name="pro_no_pro_desc">In pro, you will never see promotion ever.</string>
+    <string name="pro_and_more">And more</string>
+    <string name="pro_and_more_desc">There are many new features in pro. Include more advanced file name control, source file auto deletion and more lightweight file chooser. Click on the Play Store in the bottom right corner now to see it!</string>
 
 </resources>
