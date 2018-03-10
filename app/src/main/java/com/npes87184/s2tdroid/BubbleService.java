@@ -13,12 +13,13 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 
-import android.support.v7.internal.view.ContextThemeWrapper;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.facebook.rebound.SpringConfig;
 import com.npes87184.s2tdroid.model.Analysis;
 import com.npes87184.s2tdroid.model.KeyCollection;
 import com.premnirmal.Magnet.IconCallback;
@@ -41,6 +42,8 @@ public class BubbleService extends Service implements IconCallback {
     @Override
     public void onCreate() {
         super.onCreate();
+        SpringConfig springConfig = SpringConfig.fromBouncinessAndSpeed(10, 50);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.notification)
@@ -76,21 +79,23 @@ public class BubbleService extends Service implements IconCallback {
         iconView.setMaxHeight(size);
         iconView.setMaxWidth(size);
         iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        mMagnet = new Magnet.Builder(this)
+        mMagnet = Magnet.newBuilder(this)
                 .setIconView(iconView)
                 .setIconCallback(this)
-                .setRemoveIconResId(R.drawable.trash)
-                .setRemoveIconShadow(R.drawable.bottom_shadow)
-                .setShouldFlingAway(true)
+                .setShouldShowRemoveView(true)
                 .setShouldStickToWall(true)
                 .setRemoveIconShouldBeResponsive(true)
+                .setInitialPosition(300, 400)
+                .setHideFactor(0.2f)
+                .withSpringConfig(springConfig)
                 .build();
         mMagnet.show();
     }
 
     @Override
     public void onFlingAway() {
-
+        mMagnet.destroy();
+        stopSelf();
     }
 
     @Override
@@ -134,13 +139,12 @@ public class BubbleService extends Service implements IconCallback {
         // in Lollipop the dialog will be covered by input...
         int size = (int)(150 * scale);
         alert.getWindow().getAttributes().y = -1*size;
-        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         alert.show();
     }
 
     @Override
     public void onIconDestroyed() {
-        stopSelf();
     }
 
     private void copyToClipboard(String str) {

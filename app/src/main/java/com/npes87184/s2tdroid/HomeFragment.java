@@ -11,7 +11,7 @@ import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.internal.view.ContextThemeWrapper;
+import android.view.ContextThemeWrapper;
 import android.widget.EditText;
 
 import com.npes87184.s2tdroid.model.Analysis;

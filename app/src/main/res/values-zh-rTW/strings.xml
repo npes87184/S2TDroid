@@ -15,11 +15,7 @@
     <string name="subject">S2TDroid</string>
     <string name="mail_body">我的問題是：\n我的手機是：\n我的 Android 版本是：\n其他：</string>
     <string name="bookname">檔名</string>
-    <string name="contact_detail">如果發現任何問題或是有任何建議，歡迎點此卡片聯繫我。</string>
     <string name="contact">聯繫我</string>
-    <string name="code_detail">這是一個開源軟體，可以點此卡片得到更多資訊。</string>
-    <string name="code">GitHub</string>
-    <string name="rate_detail">如果這個 APP 對您有幫助且不麻煩的話，幫我在 Google Play 評個 5 星，謝謝。</string>
     <string name="rate">評分</string>
     <string name="dialogHint">可以在設定中更改轉換模式。</string>
     <string name="copy">複製</string>
@@ -51,5 +47,9 @@
     <string name="donate">Pro</string>
     <string name="donate_detail">1. 免除了ＡＰＰ中關於捐贈的東西\n2. 提供整個資料夾內檔案批次轉換\n3. 轉換時顯示轉換進度\n4. 對於 Android 5.0 以上的用戶，支援直接寫到外部 SD 卡\n5. 增加一個選項可在轉換完成後刪除來源檔案\n6. 請作者喝杯飲料，更有動力開發更多免費好用且無廣告的ＡＰＰ！：Ｄ</string>
     <string name="illegal_filename">檔名無效</string>
+
+    <string name="author_tag">作者：\u0020</string>
+    <string name="version_tag">版本：\u0020</string>
+    <string name="web_tag">個人網頁</string>
 
 </resources>

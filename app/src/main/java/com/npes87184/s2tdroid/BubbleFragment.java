@@ -85,10 +85,12 @@ public class BubbleFragment extends Fragment {
             if(Build.VERSION.SDK_INT >= 23) {
                 if (!Settings.canDrawOverlays(getActivity())) {
                     // SYSTEM_ALERT_WINDOW permission not granted...
+                    /* there is a bug in android O, which is canDrawOverlays always return false.
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText(getString(R.string.oops))
                             .setContentText(getString(R.string.floatingPermission))
                             .show();
+                    */
                 } else {
                     getActivity().startService(new Intent(getActivity(), BubbleService.class));
                 }

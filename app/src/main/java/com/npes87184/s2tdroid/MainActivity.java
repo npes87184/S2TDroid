@@ -1,7 +1,6 @@
 package com.npes87184.s2tdroid;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +13,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatCallback;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -32,9 +31,8 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class MainActivity extends Activity implements AppCompatCallback {
+public class MainActivity extends AppCompatActivity implements AppCompatCallback {
 
-    private AppCompatDelegate delegate;
     private Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -48,15 +46,6 @@ public class MainActivity extends Activity implements AppCompatCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //let's create the delegate, passing the activity at both arguments (Activity, AppCompatCallback)
-        delegate = AppCompatDelegate.create(this, this);
-
-        //we need to call the onCreate() of the AppCompatDelegate
-        delegate.onCreate(savedInstanceState);
-
-        //we use the delegate to inflate the layout
-        delegate.setContentView(R.layout.activity_main);
 
         List<String> permissionsNeeded = new ArrayList<String>();
 
@@ -93,9 +82,9 @@ public class MainActivity extends Activity implements AppCompatCallback {
 
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setTitleTextColor(Color.parseColor("#fafafa"));
-        delegate.setSupportActionBar(toolbar);
-        delegate.getSupportActionBar().setHomeButtonEnabled(true);
-        delegate.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -252,16 +241,6 @@ public class MainActivity extends Activity implements AppCompatCallback {
                 .setPositiveButton("OK", okListener)
                 .create()
                 .show();
-    }
-
-    @Override
-    public void onSupportActionModeStarted(ActionMode mode) {
-        //let's leave this empty, for now
-    }
-
-    @Override
-    public void onSupportActionModeFinished(ActionMode mode) {
-        // let's leave this empty, for now
     }
 
     @Override

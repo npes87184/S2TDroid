@@ -13,12 +13,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.dexafree.materialList.cards.SmallImageCard;
-import com.dexafree.materialList.controller.OnDismissCallback;
-import com.dexafree.materialList.controller.RecyclerItemClickListener;
-import com.dexafree.materialList.model.Card;
-import com.dexafree.materialList.model.CardItemView;
-import com.dexafree.materialList.view.MaterialListView;
+import mehdi.sakout.aboutpage.AboutPage;
+import mehdi.sakout.aboutpage.Element;
 
 /**
  * Created by npes87184 on 2015/5/17.
@@ -41,91 +37,84 @@ public class AboutFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // TODO Auto-generated method stub
-        v = inflater.inflate(R.layout.about, container, false);
-        MaterialListView mListView = (MaterialListView) v.findViewById(R.id.material_listview);
-        mListView.setOnDismissCallback(new OnDismissCallback() {
+
+        Element versionElement = new Element();
+        String versionNum = "";
+        try {
+            versionNum = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            versionNum = getString(R.string.version_name);
+        }
+
+        versionElement.setTitle(getString(R.string.version_tag) + versionNum);
+        Element authorElement = new Element();
+        authorElement.setTitle(getString(R.string.author_tag) + getString(R.string.author_name));
+
+        Element emailElement = new Element();
+        emailElement.setTitle(getString(R.string.contact));
+        emailElement.setIconDrawable(R.drawable.about_icon_email);
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "npes87184@gmail.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.mail_body));
+        emailElement.setIntent(emailIntent);
+
+        Element webElement = new Element();
+        webElement.setTitle(getString(R.string.web_tag));
+        webElement.setIconDrawable(R.drawable.about_icon_link);
+        String url = "https://npes87184.github.io";
+        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+        webIntent.setData(Uri.parse(url));
+        webElement.setIntent(webIntent);
+
+        Element playStoreElement = new Element();
+        playStoreElement.setTitle(getString(R.string.rate));
+        playStoreElement.setIconDrawable(R.drawable.about_icon_google_play);
+        Uri uri = Uri.parse("market://details?id=com.npes87184.s2tdroid");
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        playStoreElement.setIntent(goToMarket);
+
+        Element licenseElement = new Element();
+        licenseElement.setTitle("Open Source License");
+        licenseElement.setIconDrawable(R.drawable.about_icon_link);
+        licenseElement.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDismiss(Card card, int position) {
-                // Do whatever you want here
+            public void onClick(View v) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Licence");
+
+                WebView wv = new WebView(getActivity());
+                wv.loadUrl("file:///android_asset/licence.html");
+                wv.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        view.loadUrl(url);
+                        return true;
+                    }
+                });
+
+                alert.setView(wv);
+                alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
 
-        mListView.addOnItemTouchListener(new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(CardItemView view, int position) {
-                if (view.getTag().toString().equals("contact")) {
-                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto", "npes87184@gmail.com", null));
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.subject));
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.mail_body));
-                    startActivity(emailIntent);
-                } else if (view.getTag().toString().equals("code")) {
-                    String url = "https://github.com/npes87184/S2TDroid";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                } else if (view.getTag().toString().equals("rate")) {
-                    String url = "https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                } else if (view.getTag().toString().equals("library")) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                    alert.setTitle("Licence");
-
-                    WebView wv = new WebView(getActivity());
-                    wv.loadUrl("file:///android_asset/licence.html");
-                    wv.setWebViewClient(new WebViewClient() {
-                        @Override
-                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                            view.loadUrl(url);
-
-                            return true;
-                        }
-                    });
-
-                    alert.setView(wv);
-                    alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
-                }
-            }
-
-            @Override
-            public void onItemLongClick(CardItemView view, int position) {
-
-            }
-        });
-
-        SmallImageCard code = new SmallImageCard(getActivity());
-        code.setDescription(R.string.code_detail);
-        code.setTitle(R.string.code);
-        code.setTag("code");
-        mListView.add(code);
-
-        SmallImageCard rate = new SmallImageCard(getActivity());
-        rate.setDescription(R.string.rate_detail);
-        rate.setTitle(R.string.rate);
-        rate.setTag("rate");
-        mListView.add(rate);
-
-        SmallImageCard library = new SmallImageCard(getActivity());
-        library.setDescription("sweet-alert-dialog, ExFilePicker, JNovelDownloader, Materiallist, Juniversalchardet and Magnet");
-        library.setTitle("Library");
-        library.setTag("library");
-        mListView.add(library);
-
-        SmallImageCard contact = new SmallImageCard(getActivity());
-        contact.setDescription(getString(R.string.contact_detail));
-        contact.setTitle(getString(R.string.contact));
-        contact.setDrawable(R.drawable.npes);
-        contact.setTag("contact");
-        mListView.add(contact);
-
-        return v;
+        View aboutPage = new AboutPage(getActivity())
+                .setDescription(getString(R.string.app_name))
+                .setImage(R.drawable.ic_launcher2)
+                .addItem(versionElement)
+                .addItem(authorElement)
+                .addItem(emailElement)
+                .addItem(webElement)
+                .addItem(playStoreElement)
+                .addGitHub("npes87184/S2TDroid")
+                .addItem(licenseElement)
+                .create();
+        return aboutPage;
     }
 }

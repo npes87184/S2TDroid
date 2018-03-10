@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.npes87184.s2tdroid"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode 24
         versionName "1.6.7"
     }
@@ -27,10 +27,12 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'cn.pedant.sweetalert:library:1.3'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.github.f0ris.sweetalert:library:1.5.2'
     compile(name: 'ExFilePicker-1.8', ext: 'aar')
-    compile 'com.github.dexafree:materiallist:2.4.0'
-    compile 'com.premnirmal.magnet:library:1.1.6'
+    compile 'com.github.medyo:android-about-page:1.2.1'
+    compile 'com.premnirmal.magnet:library:1.2.7'
+    compile 'com.facebook.rebound:rebound:0.3.8'
+    compile 'com.tumblr:backboard:0.1.2'
     compile files('libs/juniversalchardet-1.0.3.jar')
 }

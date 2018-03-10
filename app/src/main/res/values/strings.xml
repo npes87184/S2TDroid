@@ -1,6 +1,9 @@
 <resources>
 
     <string name="app_name" translatable="false">S2TDroid</string>
+    <string name="author_name" translatable="false">npes87184</string>
+    <string name="version_name" translatable="false">1.6.8</string>
+
     <string name="output_folder">Output Folder</string>
     <string name="input_file">Input File</string>
     <string name="cancel">Cancel</string>
@@ -16,11 +19,7 @@
     <string name="subject">S2TDroid</string>
     <string name="mail_body">My problem is:\nMy phone is: \nMy android version is:\nOther:</string>
     <string name="bookname">filename</string>
-    <string name="contact_detail">If you find any problem, welcome to contact me! Note: You can click this card to send me a e-mail.</string>
     <string name="contact">Contact Me</string>
-    <string name="code_detail">This is an open source project, you can click this card to see more information.</string>
-    <string name="code">GitHub</string>
-    <string name="rate_detail">If this app helps you, please rate 5 star in google play. Thanks!</string>
     <string name="rate">Rate</string>
     <string name="dialogHint">You can change mode in setting.</string>
     <string name="copy">Copy</string>
@@ -57,4 +56,7 @@
     <string name="donate_detail">1. It deletes donate section in free version.\n2. Transform each file in a directory.\n3. The conversion progress display.\n4. Write to external sdcard in android 5.0 up\n5. Auto delete source file(s) after transforming.\n6. Give me a cup. I will devote to develop more good and no ad apps.</string>
     <string name="illegal_filename">Illegal filename</string>
 
+    <string name="version_tag">Version:\u0020</string>
+    <string name="author_tag">Author:\u0020</string>
+    <string name="web_tag">Visit my website</string>
 </resources>
