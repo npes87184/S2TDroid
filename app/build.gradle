@@ -35,4 +35,5 @@ dependencies {
     compile 'com.facebook.rebound:rebound:0.3.8'
     compile 'com.tumblr:backboard:0.1.2'
     compile files('libs/juniversalchardet-1.0.3.jar')
+    compile 'io.github.kobakei:ratethisapp:1.2.0'
 }

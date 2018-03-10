@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.kobakei.ratethisapp.RateThisApp;
 import com.npes87184.s2tdroid.model.ListAdapter;
 
 import java.util.ArrayList;
@@ -46,6 +47,17 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RateThisApp.onCreate(this);
+        RateThisApp.showRateDialogIfNeeded(this);
+
+        RateThisApp.Config config = new RateThisApp.Config();
+        config.setTitle(R.string.rate_title);
+        config.setMessage(R.string.rate_msg);
+        config.setYesButtonText(R.string.rate_ok);
+        config.setNoButtonText(R.string.rate_no);
+        config.setCancelButtonText(R.string.rate_cancel);
+        RateThisApp.init(config);
 
         List<String> permissionsNeeded = new ArrayList<String>();
 

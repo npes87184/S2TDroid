@@ -59,4 +59,11 @@
     <string name="version_tag">Version:\u0020</string>
     <string name="author_tag">Author:\u0020</string>
     <string name="web_tag">Visit my website</string>
+
+    <string name="rate_title">Rate S2TDroid</string>
+    <string name="rate_msg">If you enjoy using this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thank you for your support!</string>
+    <string name="rate_ok">Rate now</string>
+    <string name="rate_cancel">Later</string>
+    <string name="rate_no">No, thanks</string>
+
 </resources>

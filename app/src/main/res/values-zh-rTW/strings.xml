@@ -52,4 +52,10 @@
     <string name="version_tag">版本：\u0020</string>
     <string name="web_tag">個人網頁</string>
 
+    <string name="rate_title">請幫 S2TDroid 評分</string>
+    <string name="rate_msg">如果您喜歡 S2TDroid，請花不到一分鐘的時間為這個 App 評分。小小步驟，大大鼓勵。謝謝支持！</string>
+    <string name="rate_ok">立即評分</string>
+    <string name="rate_cancel">之後提醒</string>
+    <string name="rate_no">不用了，謝謝</string>
+
 </resources>
