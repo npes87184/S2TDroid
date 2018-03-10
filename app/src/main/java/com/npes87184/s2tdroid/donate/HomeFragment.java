@@ -54,7 +54,8 @@ public class HomeFragment extends PreferenceFragment implements
     private static final int REQUEST_CODE_STORAGE_ACCESS = 0;
 
     int wordNumber = 0;
-
+    String booknameString = "S2TDroid";
+    Object syncToken = new Object();
     private Preference inputPreference;
     private Preference outputPreference;
     private Preference startPreference;
@@ -63,12 +64,72 @@ public class HomeFragment extends PreferenceFragment implements
     private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa", "ini" };
     private float progressNum = 0;
     private float lastProgressNum = 0;
+    Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    pDialog.getProgressHelper().setInstantProgress(1);
+                    pDialog.hide();
+                    NumberFormat nf = NumberFormat.getInstance();
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText(getString(R.string.word_count) + nf.format(wordNumber))
+                            .setConfirmText("OK")
+                            .show();
+                    wordNumber = 0;
+                    progressNum = 0;
+                    lastProgressNum = 0;
+                    pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
+                            .setTitleText(getString(R.string.wait));
+                    break;
+                case 2:
+                    pDialog.hide();
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.oops))
+                            .setContentText(getString(R.string.oops_file_does_not_exist))
+                            .show();
+                    break;
+                case 3:
+                    pDialog.show();
+                    pDialog.setCancelable(false);
+                    break;
+                case 4:
+                    AlertDialog.Builder editDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppCompatAlertDialogStyle));
+                    editDialog.setTitle(getResources().getString(R.string.bookname));
+
+                    pDialog.hide();
+
+                    final EditText editText = new EditText(getActivity());
+                    editText.setText(booknameString);
+                    editDialog.setView(editText);
+                    editDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        // do something when the button is clicked
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            booknameString = editText.getText().toString();
+                            pDialog.show();
+                            pDialog.setCancelable(false);
+                            synchronized (syncToken) {
+                                syncToken.notify();
+                            }
+                        }
+                    });
+                    editDialog.show();
+                    break;
+                case 5:
+                    pDialog.getProgressHelper().setInstantProgress(progressNum);
+                    break;
+                case 6:
+                    pDialog.hide();
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.illegal_filename))
+                            .setConfirmText("OK")
+                            .show();
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
     private float roundProgress = 0;
     private int fileOrder = 0;
-
-    String booknameString = "S2TDroid";
-
-    Object syncToken = new Object();
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -347,71 +408,6 @@ public class HomeFragment extends PreferenceFragment implements
         });
     }
 
-    Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    pDialog.getProgressHelper().setInstantProgress(1);
-                    pDialog.hide();
-                    NumberFormat nf = NumberFormat.getInstance();
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText(getString(R.string.word_count) + nf.format(wordNumber))
-                            .setConfirmText("OK")
-                            .show();
-                    wordNumber = 0;
-                    progressNum = 0;
-                    lastProgressNum = 0;
-                    pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
-                            .setTitleText(getString(R.string.wait));
-                    break;
-                case 2:
-                    pDialog.hide();
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText(getString(R.string.oops))
-                            .setContentText(getString(R.string.oops_file_does_not_exist))
-                            .show();
-                    break;
-                case 3:
-                    pDialog.show();
-                    pDialog.setCancelable(false);
-                    break;
-                case 4:
-                    AlertDialog.Builder editDialog = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppCompatAlertDialogStyle));
-                    editDialog.setTitle(getResources().getString(R.string.bookname));
-
-                    pDialog.hide();
-
-                    final EditText editText = new EditText(getActivity());
-                    editText.setText(booknameString);
-                    editDialog.setView(editText);
-                    editDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        // do something when the button is clicked
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            booknameString = editText.getText().toString();
-                            pDialog.show();
-                            pDialog.setCancelable(false);
-                            synchronized (syncToken) {
-                                syncToken.notify();
-                            }
-                        }
-                    });
-                    editDialog.show();
-                    break;
-                case 5:
-                    pDialog.getProgressHelper().setInstantProgress(progressNum);
-                    break;
-                case 6:
-                    pDialog.hide();
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText(getString(R.string.illegal_filename))
-                            .setConfirmText("OK")
-                            .show();
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    };
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -617,16 +613,10 @@ public class HomeFragment extends PreferenceFragment implements
             // Only accept after SAF stuff is done.
             return true;
         } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            if (fileUtil.isOnExtSdCard(folder) && !fileUtil.isWritableNormal(folder)) {
-                // The file is in the external sdcard, and Kitkat is bad.
-                return false;
-            }
-            return true;
-        } else if (FileUtil.isWritable(new File(folder, "DummyFile"))) {
-            return true;
+            return !(fileUtil.isOnExtSdCard(folder) && !FileUtil.isWritableNormal(folder));
         } else {
             // some unknown error
-            return false;
+            return FileUtil.isWritable(new File(folder, "DummyFile"));
         }
     }
 

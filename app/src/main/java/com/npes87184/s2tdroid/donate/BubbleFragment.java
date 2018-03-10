@@ -38,7 +38,7 @@ public class BubbleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         v = inflater.inflate(R.layout.bubble, container, false);
-        Button startBubble = (Button)v.findViewById(R.id.button);
+        Button startBubble = v.findViewById(R.id.button);
         startBubble.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +71,7 @@ public class BubbleFragment extends Fragment {
 
             }
         });
-        TextView textView = (TextView) v.findViewById(R.id.textView2);
+        TextView textView = v.findViewById(R.id.textView2);
         final float scale = getResources().getDisplayMetrics().density;
         int size = (int)(7 * scale);
         textView.setTextSize(size);

@@ -183,10 +183,10 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
     }
 
     private void findViews() {
-        toolbar = (Toolbar) findViewById(R.id.tl_custom);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
-        lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
-        imageViewMenu = (ImageView) findViewById(R.id.imageView_left_menu);
+        toolbar = findViewById(R.id.tl_custom);
+        mDrawerLayout = findViewById(R.id.dl_left);
+        lvLeftMenu = findViewById(R.id.lv_left_menu);
+        imageViewMenu = findViewById(R.id.imageView_left_menu);
         imageViewMenu.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
