@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -138,7 +139,11 @@ public class BubbleService extends Service implements IconCallback {
         // in Lollipop the dialog will be covered by input...
         int size = (int)(150 * scale);
         alert.getWindow().getAttributes().y = -1*size;
-        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        } else {
+            alert.getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
+        }
         alert.show();
     }
 
