@@ -107,6 +107,8 @@ public class BubbleService extends Service implements IconCallback {
     @Override
     public void onIconClick(View icon, float iconXPose, float iconYPose) {
 
+        mMagnet.goToWall();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppCompatAlertDialogStyle));
         String mode;
         if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
