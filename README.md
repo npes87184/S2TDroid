@@ -6,10 +6,14 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.7
+1.7.8
 
 Changelog
 ========
+### 1.7.8
+* Fix the problem that the click bubble will flash back.
+* The bubble will stick to the wall as much as possible.
+
 ### 1.7.7
 * Update dependent libraries to improve stability.
 
