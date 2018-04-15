@@ -208,17 +208,7 @@ public class HomeFragment extends PreferenceFragment implements
                                 file.mkdir();
                             }
 
-                            // if file exists add -1 in the last
-                            File testFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)   + booknameString  + "." + file_extension);
-                            File outFile;
-                            String scan;
-                            if(testFile.exists()) {
-                                scan = "-1.";
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString + "-1." + file_extension);
-                            } else {
-                                scan = ".";
-                                outFile = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR)  + booknameString  + "." + file_extension);
-                            }
+                            File outFile = getOutFile(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR), booknameString, file_extension);
 
                             // doing transform
                             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
@@ -264,11 +254,7 @@ public class HomeFragment extends PreferenceFragment implements
                             is.close();
 
                             //media rescan for correctly show in pc
-                            if(scan.equals("-1.")) {
-                                MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "-1." + file_extension}, null, null);
-                            } else {
-                                MediaScannerConnection.scanFile(getActivity(), new String[]{prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR) + booknameString + "." + file_extension}, null, null);
-                            }
+                            MediaScannerConnection.scanFile(getActivity(), new String[]{outFile.getAbsolutePath()}, null, null);
                         } catch(Exception e){
 
                         }
@@ -389,6 +375,14 @@ public class HomeFragment extends PreferenceFragment implements
         } catch (IOException e) {
             return false;
         }
+    }
+
+    private File getOutFile(String strPath, String strName, String strExtention) {
+        File file = new File(strPath + strName + "." +strExtention);
+        for (int i = 1; file.exists(); ++i) {
+            file = new File(strPath + strName + "(" + i + ")." + strExtention);
+        }
+        return file;
     }
 
 }
