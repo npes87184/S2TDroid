@@ -42,9 +42,9 @@ public class HomeFragment extends PreferenceFragment implements
 
     private final String APP_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/S2TDroid/";
 
-    private static final int EX_FILE_PICKER_RESULT = 0;
+    private static final int EX_FILE_PICKER_RESULT_IN = 0;
+    private static final int EX_FILE_PICKER_RESULT_OUT = 1;
 
-    boolean isIn = false;
     int wordNumber = 0;
 
     private Preference inputPreference;
@@ -78,14 +78,13 @@ public class HomeFragment extends PreferenceFragment implements
         inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                isIn = true;
                 Intent intent = new Intent(getActivity(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_FILES);
                 intent.putExtra(ExFilePicker.SET_FILTER_LISTED, new String[] { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa", "ini" });
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_PATH, APP_DIR));
-                startActivityForResult(intent, EX_FILE_PICKER_RESULT);
+                startActivityForResult(intent, EX_FILE_PICKER_RESULT_IN);
                 return true;
             }
         });
@@ -95,13 +94,12 @@ public class HomeFragment extends PreferenceFragment implements
         outputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                isIn = false;
                 Intent intent = new Intent(getActivity(), ru.bartwell.exfilepicker.ExFilePickerActivity.class);
                 intent.putExtra(ExFilePicker.SET_START_DIRECTORY, prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, APP_DIR));
                 intent.putExtra(ExFilePicker.ENABLE_QUIT_BUTTON, true);
                 intent.putExtra(ExFilePicker.SET_CHOICE_TYPE, ExFilePicker.CHOICE_TYPE_DIRECTORIES);
                 intent.putExtra(ExFilePicker.SET_ONLY_ONE_ITEM, true);
-                startActivityForResult(intent, EX_FILE_PICKER_RESULT);
+                startActivityForResult(intent, EX_FILE_PICKER_RESULT_OUT);
                 return true;
             }
         });
@@ -331,19 +329,20 @@ public class HomeFragment extends PreferenceFragment implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EX_FILE_PICKER_RESULT) {
+        if (requestCode == EX_FILE_PICKER_RESULT_IN) {
             if (data != null) {
                 ExFilePickerParcelObject object = (ExFilePickerParcelObject) data.getParcelableExtra(ExFilePickerParcelObject.class.getCanonicalName());
                 if (object.count > 0) {
-                    // Here is object contains selected files names and path
-                    if(isIn) {
-                        inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, object.path + object.names.get(0) + "/").commit();
-                        prefs.edit().putString(KeyCollection.KEY_PATH, object.path).commit();
-                        prefs.edit().putString(KeyCollection.KEY_FILE_NAME, object.names.get(0)).commit();
-                    }
-                    else {
-                        outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, object.path + object.names.get(0) + "/").commit();
-                    }
+                    inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, object.path + object.names.get(0) + "/").commit();
+                    prefs.edit().putString(KeyCollection.KEY_PATH, object.path).commit();
+                    prefs.edit().putString(KeyCollection.KEY_FILE_NAME, object.names.get(0)).commit();
+                }
+            }
+        } else if (requestCode == EX_FILE_PICKER_RESULT_OUT) {
+            if (data != null) {
+                ExFilePickerParcelObject object = (ExFilePickerParcelObject) data.getParcelableExtra(ExFilePickerParcelObject.class.getCanonicalName());
+                if (object.count > 0) {
+                    outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, object.path + object.names.get(0) + "/").commit();
                 }
             }
         }
