@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.github.f0ris.sweetalert:library:1.5.2'
     implementation(name: 'filepicker-release', ext: 'aar')
     implementation 'com.premnirmal.magnet:library:1.2.7'
