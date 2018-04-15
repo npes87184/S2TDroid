@@ -268,16 +268,13 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
                 R.color.bluegray, R.drawable.external);
         TutorialItem tutorialItem3 = new TutorialItem(this.getString(R.string.pro_progress), this.getString(R.string.pro_progress_desc),
                 R.color.brown, R.drawable.progress);
-        TutorialItem tutorialItem4 = new TutorialItem(this.getString(R.string.pro_no_pro), this.getString(R.string.pro_no_pro_desc),
-                R.color.teal, R.drawable.no_pro);
-        TutorialItem tutorialItem5 = new TutorialItem(this.getString(R.string.pro_and_more), this.getString(R.string.pro_and_more_desc),
+        TutorialItem tutorialItem4 = new TutorialItem(this.getString(R.string.pro_and_more), this.getString(R.string.pro_and_more_desc),
                 R.color.blue, R.drawable.and_more);
         ArrayList<TutorialItem> tutorialItems = new ArrayList<>();
         tutorialItems.add(tutorialItem1);
         tutorialItems.add(tutorialItem2);
         tutorialItems.add(tutorialItem3);
         tutorialItems.add(tutorialItem4);
-        tutorialItems.add(tutorialItem5);
 
         Intent mainAct = new Intent(this, MaterialTutorialActivity.class);
         mainAct.putParcelableArrayListExtra(MaterialTutorialActivity.MATERIAL_TUTORIAL_ARG_TUTORIAL_ITEMS, tutorialItems);
