@@ -21,7 +21,8 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="left|center_vertical"
-        android:padding="3dp" />
+        android:padding="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
 </LinearLayout>
