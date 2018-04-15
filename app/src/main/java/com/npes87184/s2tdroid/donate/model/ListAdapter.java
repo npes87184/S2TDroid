@@ -92,7 +92,7 @@ public class ListAdapter extends BaseAdapter {
     private void setIcon(ImageView icon, @DrawableRes int iconRes) {
         icon.setImageResource(iconRes);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            icon.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ff212121")));
+            icon.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ff424242")));
         }
     }
 }
