@@ -6,46 +6,17 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.8
+1.7.9
 
 Changelog
 ========
+### 1.7.9
+* Update dependent libraries to improve stability.
+* Refine navigation side bar.
+
 ### 1.7.8
 * Fix the problem that the click bubble will flash back.
 * The bubble will stick to the wall as much as possible.
-
-### 1.7.7
-* Update dependent libraries to improve stability.
-
-### 1.7.6
-* One can use the converted original file name now.
-
-### 1.7.5
-* Add file order option
-* Update filepicker lib
-* Show time yyyy/MM/dd in filepicker lib
-
-### 1.7.4
-* Set max length of filename to 100
-* Adjust color
-
-### 1.7.3
-* Reduce the frequency of updating progress
-* Don't use support ContextThemeWrapper
-
-### 1.7.2
-* fix permission problem in filepicker when click back.
-* add an option to direct to external sdcard in filepicker.
-
-### 1.7.1
-* support ini file
-* update libs
-
-### 1.7.0
-* add license in about page
-* use FilePicker as file chooser
-* do checkFolder in thread
-* Strengthen the function of the same file name
 
 Features
 ========
