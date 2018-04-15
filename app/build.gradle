@@ -8,8 +8,8 @@ android {
         applicationId "com.npes87184.s2tdroid"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 26
-        versionName "1.7.1"
+        versionCode 27
+        versionName "1.7.2"
     }
     buildTypes {
         release {
@@ -26,18 +26,18 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.github.f0ris.sweetalert:library:1.5.2'
-    compile(name: 'ExFilePicker-1.8', ext: 'aar')
-    compile 'com.github.medyo:android-about-page:1.2.1'
-    compile 'com.premnirmal.magnet:library:1.2.7'
-    compile 'com.facebook.rebound:rebound:0.3.8'
-    compile 'com.tumblr:backboard:0.1.2'
-    compile files('libs/juniversalchardet-1.0.3.jar')
-    compile 'io.github.kobakei:ratethisapp:1.2.0'
-    compile 'com.android.support:percent:27.0.2'
-    compile 'com.android.support:support-annotations:27.0.2'
-    compile 'com.github.bumptech.glide:glide:3.8.0'
-    compile(name: 'materialhelptutorial-release', ext: 'aar')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.github.f0ris.sweetalert:library:1.5.2'
+    implementation(name: 'ExFilePicker-1.8', ext: 'aar')
+    implementation 'com.github.medyo:android-about-page:1.2.1'
+    implementation 'com.premnirmal.magnet:library:1.2.7'
+    implementation 'com.facebook.rebound:rebound:0.3.8'
+    implementation 'com.tumblr:backboard:0.1.2'
+    implementation files('libs/juniversalchardet-1.0.3.jar')
+    implementation 'io.github.kobakei:ratethisapp:1.2.0'
+    implementation 'com.android.support:percent:27.1.1'
+    implementation 'com.android.support:support-annotations:27.1.1'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation(name: 'materialhelptutorial-release', ext: 'aar')
 }
