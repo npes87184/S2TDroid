@@ -1,6 +1,10 @@
 package com.npes87184.s2tdroid.model;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,26 +68,35 @@ public class ListAdapter extends BaseAdapter {
         }
 
         holder.value.setText(list.get(position));
+        @DrawableRes int iconRes;
         switch(position) {
             case 0:
-                holder.icon.setImageResource(R.drawable.ic_menu_star);
+                iconRes = R.drawable.ic_star_border_black_24dp;
                 break;
             case 1:
-                holder.icon.setImageResource(R.drawable.ic_functions_black_48dp);
+                iconRes = R.drawable.ic_lightbulb_outline_black_24dp;
                 break;
             case 2:
-                holder.icon.setImageResource(R.drawable.perm_group_system_tools);
+                iconRes = R.drawable.ic_settings_black_24dp;
                 break;
             case 3:
-                holder.icon.setImageResource(R.drawable.money);
+                iconRes = R.drawable.ic_loyalty_black_24dp;
                 break;
             case 4:
-                holder.icon.setImageResource(R.drawable.ic_menu_info_details);
+            default:
+                iconRes = R.drawable.ic_info_outline_black_24dp;
                 break;
         }
 
+        setIcon(holder.icon, iconRes);
 
         return convertView;
     }
 
+    private void setIcon(ImageView icon, @DrawableRes int iconRes) {
+        icon.setImageResource(iconRes);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            icon.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ff212121")));
+        }
+    }
 }
