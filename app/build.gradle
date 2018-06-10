@@ -8,8 +8,8 @@ android {
         applicationId "com.npes87184.s2tdroid"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 27
-        versionName "1.7.2"
+        versionCode 28
+        versionName "1.7.3"
     }
     buildTypes {
         release {
@@ -30,7 +30,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.github.f0ris.sweetalert:library:1.5.2'
     implementation(name: 'ExFilePicker-1.8', ext: 'aar')
-    implementation 'com.github.medyo:android-about-page:1.2.1'
+    implementation 'com.github.medyo:android-about-page:1.2.4'
     implementation 'com.premnirmal.magnet:library:1.2.7'
     implementation 'com.facebook.rebound:rebound:0.3.8'
     implementation 'com.tumblr:backboard:0.1.2'
