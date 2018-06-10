@@ -8,8 +8,8 @@ android {
         applicationId "com.npes87184.s2tdroid.donate"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 24
-        versionName "1.7.9"
+        versionCode 25
+        versionName "1.7.10"
     }
     buildTypes {
         release {
@@ -34,5 +34,5 @@ dependencies {
     implementation 'com.facebook.rebound:rebound:0.3.8'
     implementation 'com.tumblr:backboard:0.1.2'
     implementation files('libs/juniversalchardet-1.0.3.jar')
-    implementation 'com.github.medyo:android-about-page:1.2.1'
+    implementation 'com.github.medyo:android-about-page:1.2.4'
 }
