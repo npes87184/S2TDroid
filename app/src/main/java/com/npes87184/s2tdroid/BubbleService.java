@@ -1,5 +1,8 @@
 package com.npes87184.s2tdroid;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -46,7 +49,7 @@ public class BubbleService extends Service implements IconCallback {
         SpringConfig springConfig = SpringConfig.fromBouncinessAndSpeed(10, 50);
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, createNotificationChannel())
                         .setSmallIcon(R.drawable.notification)
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(getString(R.string.notification))
@@ -158,5 +161,22 @@ public class BubbleService extends Service implements IconCallback {
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("text label", str);
         clipboard.setPrimaryClip(clip);
+    }
+
+    private String createNotificationChannel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return "";
+        }
+
+        /* Build.VERSION.SDK_INT >= Build.VERSION_CODES.O */
+        String strChannelID = "com.npes87184.s2tdroid.bubble";
+        String strChannelName = "S2TDroid - Bubble";
+        NotificationChannel chan = new NotificationChannel(strChannelID,
+                strChannelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.GREEN);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(chan);
+        return strChannelID;
     }
 }
