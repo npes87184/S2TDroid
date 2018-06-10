@@ -103,7 +103,7 @@ public class BubbleService extends Service implements IconCallback {
 
     @Override
     public void onMove(float x, float y) {
-
+        mMagnet.goToWall();
     }
 
     @Override
@@ -138,6 +138,7 @@ public class BubbleService extends Service implements IconCallback {
                     out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
                 }
                 copyToClipboard(out);
+                mMagnet.goToWall();
             }
         });
         AlertDialog alert = builder.create();
