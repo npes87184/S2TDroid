@@ -2,7 +2,6 @@ package com.npes87184.s2tdroid;
 
 import android.Manifest;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatCallback;
 import android.support.v7.view.ActionMode;
