@@ -34,7 +34,7 @@ dependencies {
     implementation 'com.github.f0ris.sweetalert:library:1.5.2'
     implementation(name: 'ExFilePicker-1.8', ext: 'aar')
     implementation 'com.github.medyo:android-about-page:1.2.4'
-    implementation 'com.github.recruit-lifestyle:FloatingView:2.3.2'
+    implementation 'com.github.recruit-lifestyle:FloatingView:2.4.0'
     implementation 'com.facebook.rebound:rebound:0.3.8'
     implementation 'com.tumblr:backboard:0.1.2'
     implementation files('libs/juniversalchardet-1.0.3.jar')
