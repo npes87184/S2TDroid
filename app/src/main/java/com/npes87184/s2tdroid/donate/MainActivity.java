@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
         if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
             permissionsNeeded.add("WRITE_EXTERNAL_STORAGE");
 
-        if (permissionsList.size() > 0) {
+        if (Build.VERSION.SDK_INT >= 23 && permissionsList.size() > 0) {
             // Need Rationale
             new SweetAlertDialog(this)
                     .setTitleText(getString(R.string.app_name))
