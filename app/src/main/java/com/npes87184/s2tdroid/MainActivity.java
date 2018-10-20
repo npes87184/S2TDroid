@@ -254,14 +254,6 @@ public class MainActivity extends AppCompatActivity implements AppCompatCallback
         imageViewMenu.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(MainActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .create()
-                .show();
-    }
-
     private void ShowProPromotion() {
         TutorialItem tutorialItem1 = new TutorialItem(this.getString(R.string.pro_batch), this.getString(R.string.pro_batch_desc),
                 R.color.blue, R.drawable.batch);
