@@ -8,10 +8,14 @@ An open source android app for transforming Simplified Chinese to Traditional Ch
 
 Latest Version
 ========
-1.7.10
+1.8.0
 
 Changelog
 ========
+### 1.8.0
+* Compatible with Android P
+* Rewrite the bubble related logic to make it more stable.
+
 ### 1.7.10
 * let bubble stick to wall more aggressive
 * add notification channel
