@@ -159,28 +159,13 @@ public class HomeFragment extends PreferenceFragment implements
             properties.offset = new File(prefs.getString(KeyCollection.KEY_PATH, DialogConfigs.DEFAULT_DIR));
             properties.extensions = filter;
             properties.file_order = fileOrder;
-            FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
-            WindowManager.LayoutParams lp = null;
-            Window window = dialog.getWindow();
-            if (window != null) {
-                lp = new WindowManager.LayoutParams();
-                lp.copyFrom(window.getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-            }
-            dialog.setPositiveBtnName(getString(R.string.select));
-            dialog.setNegativeBtnName(getString(R.string.cancel));
-            dialog.setDialogSelectionListener(new DialogSelectionListener() {
+            showFilePickerDialog(properties, new DialogSelectionListener() {
                 @Override
                 public void onSelectedFilePaths(String[] files) {
                     inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, files[0] + "/").commit();
                     prefs.edit().putString(KeyCollection.KEY_PATH, new File(files[0]).getParent()).apply();
                 }
             });
-            dialog.show();
-            if (lp != null) {
-                dialog.getWindow().setAttributes(lp);
-            }
             return true;
         }
     };
@@ -195,30 +180,34 @@ public class HomeFragment extends PreferenceFragment implements
             properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
             properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
             properties.file_order = fileOrder;
-            FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
-            WindowManager.LayoutParams lp = null;
-            Window window = dialog.getWindow();
-            if (window != null) {
-                lp = new WindowManager.LayoutParams();
-                lp.copyFrom(window.getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-            }
-            dialog.setPositiveBtnName(getString(R.string.select));
-            dialog.setNegativeBtnName(getString(R.string.cancel));
-            dialog.setDialogSelectionListener(new DialogSelectionListener() {
+            showFilePickerDialog(properties, new DialogSelectionListener() {
                 @Override
                 public void onSelectedFilePaths(String[] files) {
                     outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, files[0] + "/").commit();
                 }
             });
-            dialog.show();
-            if (lp != null) {
-                dialog.getWindow().setAttributes(lp);
-            }
             return true;
         }
     };
+
+    private void showFilePickerDialog(DialogProperties properties, DialogSelectionListener listener) {
+        FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+        WindowManager.LayoutParams lp = null;
+        Window window = dialog.getWindow();
+        if (window != null) {
+            lp = new WindowManager.LayoutParams();
+            lp.copyFrom(window.getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        }
+        dialog.setPositiveBtnName(getString(R.string.select));
+        dialog.setNegativeBtnName(getString(R.string.cancel));
+        dialog.setDialogSelectionListener(listener);
+        dialog.show();
+        if (lp != null) {
+            dialog.getWindow().setAttributes(lp);
+        }
+    }
 
     private Preference.OnPreferenceClickListener startListener = new Preference.OnPreferenceClickListener() {
         @Override
