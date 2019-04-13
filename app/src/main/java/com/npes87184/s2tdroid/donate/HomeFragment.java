@@ -17,6 +17,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -173,6 +175,14 @@ public class HomeFragment extends PreferenceFragment implements
                 properties.extensions = filter;
                 properties.file_order = fileOrder;
                 FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+                WindowManager.LayoutParams lp = null;
+                Window window = dialog.getWindow();
+                if (window != null) {
+                    lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(window.getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+                }
                 dialog.setPositiveBtnName(getString(R.string.select));
                 dialog.setNegativeBtnName(getString(R.string.cancel));
                 dialog.setDialogSelectionListener(new DialogSelectionListener() {
@@ -183,6 +193,9 @@ public class HomeFragment extends PreferenceFragment implements
                     }
                 });
                 dialog.show();
+                if (lp != null) {
+                    dialog.getWindow().setAttributes(lp);
+                }
                 return true;
             }
         });
@@ -200,6 +213,14 @@ public class HomeFragment extends PreferenceFragment implements
                 properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
                 properties.file_order = fileOrder;
                 FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+                WindowManager.LayoutParams lp = null;
+                Window window = dialog.getWindow();
+                if (window != null) {
+                    lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(window.getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+                }
                 dialog.setPositiveBtnName(getString(R.string.select));
                 dialog.setNegativeBtnName(getString(R.string.cancel));
                 dialog.setDialogSelectionListener(new DialogSelectionListener() {
@@ -209,6 +230,9 @@ public class HomeFragment extends PreferenceFragment implements
                     }
                 });
                 dialog.show();
+                if (lp != null) {
+                    dialog.getWindow().setAttributes(lp);
+                }
                 return true;
             }
         });
