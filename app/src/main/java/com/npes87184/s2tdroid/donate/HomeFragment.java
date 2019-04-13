@@ -147,6 +147,272 @@ public class HomeFragment extends PreferenceFragment implements
         return false;
     }
 
+    private Preference.OnPreferenceClickListener inputListener = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            Toast.makeText(getActivity(), getString(R.string.choose_tip), Toast.LENGTH_LONG).show();
+            DialogProperties properties = new DialogProperties();
+            properties.selection_mode = DialogConfigs.SINGLE_MODE;
+            properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
+            properties.root = new File("/");
+            properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+            properties.offset = new File(prefs.getString(KeyCollection.KEY_PATH, DialogConfigs.DEFAULT_DIR));
+            properties.extensions = filter;
+            properties.file_order = fileOrder;
+            FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+            WindowManager.LayoutParams lp = null;
+            Window window = dialog.getWindow();
+            if (window != null) {
+                lp = new WindowManager.LayoutParams();
+                lp.copyFrom(window.getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            dialog.setPositiveBtnName(getString(R.string.select));
+            dialog.setNegativeBtnName(getString(R.string.cancel));
+            dialog.setDialogSelectionListener(new DialogSelectionListener() {
+                @Override
+                public void onSelectedFilePaths(String[] files) {
+                    inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, files[0] + "/").commit();
+                    prefs.edit().putString(KeyCollection.KEY_PATH, new File(files[0]).getParent()).apply();
+                }
+            });
+            dialog.show();
+            if (lp != null) {
+                dialog.getWindow().setAttributes(lp);
+            }
+            return true;
+        }
+    };
+
+    private Preference.OnPreferenceClickListener outputListener = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            DialogProperties properties = new DialogProperties();
+            properties.selection_mode = DialogConfigs.SINGLE_MODE;
+            properties.selection_type = DialogConfigs.DIR_SELECT;
+            properties.root = new File("/");
+            properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+            properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+            properties.file_order = fileOrder;
+            FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
+            WindowManager.LayoutParams lp = null;
+            Window window = dialog.getWindow();
+            if (window != null) {
+                lp = new WindowManager.LayoutParams();
+                lp.copyFrom(window.getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            }
+            dialog.setPositiveBtnName(getString(R.string.select));
+            dialog.setNegativeBtnName(getString(R.string.cancel));
+            dialog.setDialogSelectionListener(new DialogSelectionListener() {
+                @Override
+                public void onSelectedFilePaths(String[] files) {
+                    outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, files[0] + "/").commit();
+                }
+            });
+            dialog.show();
+            if (lp != null) {
+                dialog.getWindow().setAttributes(lp);
+            }
+            return true;
+        }
+    };
+
+    private Preference.OnPreferenceClickListener startListener = new Preference.OnPreferenceClickListener() {
+        @Override
+        public boolean onPreferenceClick(final Preference preference) {
+            pDialog.show();
+            pDialog.setCancelable(false);
+            final File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Message msg;
+                    if (checkFolder(testSDcardFolder)) {
+                        try {
+                            File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
+                            if (!testDirFile.exists()) {
+                                msg = new Message();
+                                msg.what = 2;
+                                mHandler.sendMessage(msg);
+                                Thread.currentThread().interrupt();
+                                return;
+                            }
+                            ArrayList<String> fileList = new ArrayList<String>();
+                            prepareFileList(testDirFile, fileList);
+
+                            for (int i = 0; i < fileList.size(); ++i) {
+                                File inFile = new File(fileList.get(i));
+                                // detect encode
+                                String encodeString = detectEncode(fileList.get(i));
+                                int totalLine = countLines(fileList.get(i), encodeString);
+
+                                int TorS = 0; // >0 means t2s
+                                if (encodeString.equals("GBK")) {
+                                    TorS = -100;
+                                } else if (encodeString.equals("BIG5")) {
+                                    TorS = 100;
+                                }
+
+                                String file_extension = getFileExtension(inFile);
+
+                                String name = getFileName(inFile);
+                                String translatedName;
+
+                                InputStream is = new FileInputStream(inFile);
+                                InputStreamReader isr = new InputStreamReader(is, encodeString);
+                                BufferedReader bReader = new BufferedReader(isr);
+                                String line;
+                                if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                    line = bReader.readLine();
+                                    if (Analysis.isTraditional(line) >= 0) {
+                                        booknameString = Analysis.TtoS(line);
+                                        translatedName = Analysis.TtoS(name);
+                                    } else {
+                                        booknameString = Analysis.StoT(line);
+                                        translatedName = Analysis.StoT(name);
+                                    }
+                                } else {
+                                    booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(bReader.readLine()) : Analysis.TtoS(bReader.readLine());
+                                    translatedName = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(name) : Analysis.TtoS(name);
+                                }
+                                String firstLine = booknameString;
+                                if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
+                                    booknameString = name;
+                                } else if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_transformed_key))) {
+                                    booknameString = translatedName;
+                                } else {
+                                    msg = new Message();
+                                    msg.what = 4;
+                                    mHandler.sendMessage(msg);
+                                    synchronized (syncToken) {
+                                        syncToken.wait();
+                                    }
+                                    booknameString = booknameString.split(" ")[0];
+                                    if (!isFilenameValid(booknameString)) {
+                                        Message filenameNotValidMsg = new Message();
+                                        filenameNotValidMsg.what = 6;
+                                        mHandler.sendMessage(filenameNotValidMsg);
+                                        Thread.currentThread().interrupt();
+                                        return;
+                                    }
+                                }
+                                // fix too large bookname
+                                if (booknameString.length() > 100) {
+                                    booknameString = booknameString.substring(0, 100);
+                                }
+
+                                File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+                                if (!file.exists() || !file.isDirectory()) {
+                                    file.mkdir();
+                                }
+
+                                File outFile = getOutFile(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR), booknameString, file_extension);
+
+                                OutputStreamWriter osw = getOutputStreamWriter(outFile);
+
+                                // doing transform
+                                BufferedWriter bw = new BufferedWriter(osw);
+                                bw.write(firstLine + "\r");
+                                bw.newLine();
+
+                                while ((line = bReader.readLine()) != null) {
+                                    progressNum += ((1) / (float) fileList.size()) * (1 / (float) totalLine);
+                                    roundProgress = ((float) (int)(progressNum*100))/(float) 100;
+                                    if (roundProgress - lastProgressNum > 0.01) {
+                                        lastProgressNum = roundProgress;
+                                        msg = new Message();
+                                        msg.what = 5;
+                                        mHandler.sendMessage(msg);
+                                    }
+                                    wordNumber += line.length();
+                                    if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
+                                        if (TorS < 100 && TorS > -100) {
+                                            // detect step
+                                            TorS += Analysis.isTraditional(line);
+                                            if (TorS >= 0) {
+                                                bw.write(Analysis.TtoS(line) + "\r");
+                                            } else {
+                                                bw.write(Analysis.StoT(line) + "\r");
+                                            }
+                                        } else {
+                                            if (TorS > 0) {
+                                                bw.write(Analysis.TtoS(line) + "\r");
+                                            } else {
+                                                bw.write(Analysis.StoT(line) + "\r");
+                                            }
+                                        }
+                                    } else {
+                                        if (prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
+                                            bw.write(Analysis.StoT(line) + "\r");
+                                        } else {
+                                            bw.write(Analysis.TtoS(line) + "\r");
+                                        }
+                                    }
+                                    bw.newLine();
+                                }
+                                bw.close();
+                                osw.close();
+                                bReader.close();
+                                isr.close();
+                                is.close();
+
+                                //media rescan for correctly showing in pc
+                                MediaScannerConnection.scanFile(getActivity(), new String[]{outFile.getAbsolutePath()}, null, null);
+
+                                if (prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
+                                    deleteSourceFile(inFile);
+                                }
+                            }
+                        } catch (Exception e) {
+
+                        }
+                        msg = new Message();
+                        msg.what = 1;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pDialog.hide();
+                                // trigger SAF or in kikat.
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+                                    sdcardDialog.setTitleText(getString(R.string.oops))
+                                            .setContentText(getString(R.string.oops_sdcard_detail))
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                    triggerStorageAccessFramework();
+                                                    sdcardDialog.dismiss();
+                                                }
+                                            })
+                                            .show();
+                                } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                                    final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+                                    sdcardDialog.setTitleText(getString(R.string.oops))
+                                            .setContentText(getString(R.string.oops_sdcard_kitkat_detail))
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                    sdcardDialog.dismiss();
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+            return true;
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,274 +428,14 @@ public class HomeFragment extends PreferenceFragment implements
 
         inputPreference = findPreference(KeyCollection.KEY_INPUT_FILE);
         inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
-        inputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getActivity(), getString(R.string.choose_tip), Toast.LENGTH_LONG).show();
-                DialogProperties properties = new DialogProperties();
-                properties.selection_mode = DialogConfigs.SINGLE_MODE;
-                properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
-                properties.root = new File("/");
-                properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-                properties.offset = new File(prefs.getString(KeyCollection.KEY_PATH, DialogConfigs.DEFAULT_DIR));
-                properties.extensions = filter;
-                properties.file_order = fileOrder;
-                FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
-                WindowManager.LayoutParams lp = null;
-                Window window = dialog.getWindow();
-                if (window != null) {
-                    lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(window.getAttributes());
-                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-                }
-                dialog.setPositiveBtnName(getString(R.string.select));
-                dialog.setNegativeBtnName(getString(R.string.cancel));
-                dialog.setDialogSelectionListener(new DialogSelectionListener() {
-                    @Override
-                    public void onSelectedFilePaths(String[] files) {
-                        inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, files[0] + "/").commit();
-                        prefs.edit().putString(KeyCollection.KEY_PATH, new File(files[0]).getParent()).apply();
-                    }
-                });
-                dialog.show();
-                if (lp != null) {
-                    dialog.getWindow().setAttributes(lp);
-                }
-                return true;
-            }
-        });
+        inputPreference.setOnPreferenceClickListener(inputListener);
 
         outputPreference = findPreference(KeyCollection.KEY_OUTPUT_FOLDER);
         outputPreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-        outputPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                DialogProperties properties = new DialogProperties();
-                properties.selection_mode = DialogConfigs.SINGLE_MODE;
-                properties.selection_type = DialogConfigs.DIR_SELECT;
-                properties.root = new File("/");
-                properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-                properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                properties.file_order = fileOrder;
-                FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
-                WindowManager.LayoutParams lp = null;
-                Window window = dialog.getWindow();
-                if (window != null) {
-                    lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(window.getAttributes());
-                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-                }
-                dialog.setPositiveBtnName(getString(R.string.select));
-                dialog.setNegativeBtnName(getString(R.string.cancel));
-                dialog.setDialogSelectionListener(new DialogSelectionListener() {
-                    @Override
-                    public void onSelectedFilePaths(String[] files) {
-                        outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, files[0] + "/").commit();
-                    }
-                });
-                dialog.show();
-                if (lp != null) {
-                    dialog.getWindow().setAttributes(lp);
-                }
-                return true;
-            }
-        });
+        outputPreference.setOnPreferenceClickListener(outputListener);
 
         startPreference = findPreference(KeyCollection.KEY_START);
-        startPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(final Preference preference) {
-                pDialog.show();
-                pDialog.setCancelable(false);
-                final File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Message msg;
-                        if (checkFolder(testSDcardFolder)) {
-                            try {
-                                File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
-                                if (!testDirFile.exists()) {
-                                    msg = new Message();
-                                    msg.what = 2;
-                                    mHandler.sendMessage(msg);
-                                    Thread.currentThread().interrupt();
-                                    return;
-                                }
-                                ArrayList<String> fileList = new ArrayList<String>();
-                                prepareFileList(testDirFile, fileList);
-
-                                for (int i = 0; i < fileList.size(); ++i) {
-                                    File inFile = new File(fileList.get(i));
-                                    // detect encode
-                                    String encodeString = detectEncode(fileList.get(i));
-                                    int totalLine = countLines(fileList.get(i), encodeString);
-
-                                    int TorS = 0; // >0 means t2s
-                                    if (encodeString.equals("GBK")) {
-                                        TorS = -100;
-                                    } else if (encodeString.equals("BIG5")) {
-                                        TorS = 100;
-                                    }
-
-                                    String file_extension = getFileExtension(inFile);
-
-                                    String name = getFileName(inFile);
-                                    String translatedName;
-
-                                    InputStream is = new FileInputStream(inFile);
-                                    InputStreamReader isr = new InputStreamReader(is, encodeString);
-                                    BufferedReader bReader = new BufferedReader(isr);
-                                    String line;
-                                    if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                        line = bReader.readLine();
-                                        if (Analysis.isTraditional(line) >= 0) {
-                                            booknameString = Analysis.TtoS(line);
-                                            translatedName = Analysis.TtoS(name);
-                                        } else {
-                                            booknameString = Analysis.StoT(line);
-                                            translatedName = Analysis.StoT(name);
-                                        }
-                                    } else {
-                                        booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(bReader.readLine()) : Analysis.TtoS(bReader.readLine());
-                                        translatedName = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(name) : Analysis.TtoS(name);
-                                    }
-                                    String firstLine = booknameString;
-                                    if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
-                                        booknameString = name;
-                                    } else if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_transformed_key))) {
-                                        booknameString = translatedName;
-                                    } else {
-                                        msg = new Message();
-                                        msg.what = 4;
-                                        mHandler.sendMessage(msg);
-                                        synchronized (syncToken) {
-                                            syncToken.wait();
-                                        }
-                                        booknameString = booknameString.split(" ")[0];
-                                        if (!isFilenameValid(booknameString)) {
-                                            Message filenameNotValidMsg = new Message();
-                                            filenameNotValidMsg.what = 6;
-                                            mHandler.sendMessage(filenameNotValidMsg);
-                                            Thread.currentThread().interrupt();
-                                            return;
-                                        }
-                                    }
-                                    // fix too large bookname
-                                    if (booknameString.length() > 100) {
-                                        booknameString = booknameString.substring(0, 100);
-                                    }
-
-                                    File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                                    if (!file.exists() || !file.isDirectory()) {
-                                        file.mkdir();
-                                    }
-
-                                    File outFile = getOutFile(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR), booknameString, file_extension);
-
-                                    OutputStreamWriter osw = getOutputStreamWriter(outFile);
-
-                                    // doing transform
-                                    BufferedWriter bw = new BufferedWriter(osw);
-                                    bw.write(firstLine + "\r");
-                                    bw.newLine();
-
-                                    while ((line = bReader.readLine()) != null) {
-                                        progressNum += ((1) / (float) fileList.size()) * (1 / (float) totalLine);
-                                        roundProgress = ((float) (int)(progressNum*100))/(float) 100;
-                                        if (roundProgress - lastProgressNum > 0.01) {
-                                            lastProgressNum = roundProgress;
-                                            msg = new Message();
-                                            msg.what = 5;
-                                            mHandler.sendMessage(msg);
-                                        }
-                                        wordNumber += line.length();
-                                        if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
-                                            if (TorS < 100 && TorS > -100) {
-                                                // detect step
-                                                TorS += Analysis.isTraditional(line);
-                                                if (TorS >= 0) {
-                                                    bw.write(Analysis.TtoS(line) + "\r");
-                                                } else {
-                                                    bw.write(Analysis.StoT(line) + "\r");
-                                                }
-                                            } else {
-                                                if (TorS > 0) {
-                                                    bw.write(Analysis.TtoS(line) + "\r");
-                                                } else {
-                                                    bw.write(Analysis.StoT(line) + "\r");
-                                                }
-                                            }
-                                        } else {
-                                            if (prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                                bw.write(Analysis.StoT(line) + "\r");
-                                            } else {
-                                                bw.write(Analysis.TtoS(line) + "\r");
-                                            }
-                                        }
-                                        bw.newLine();
-                                    }
-                                    bw.close();
-                                    osw.close();
-                                    bReader.close();
-                                    isr.close();
-                                    is.close();
-
-                                    //media rescan for correctly showing in pc
-                                    MediaScannerConnection.scanFile(getActivity(), new String[]{outFile.getAbsolutePath()}, null, null);
-
-                                    if (prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
-                                        deleteSourceFile(inFile);
-                                    }
-                                }
-                            } catch (Exception e) {
-
-                            }
-                            msg = new Message();
-                            msg.what = 1;
-                            mHandler.sendMessage(msg);
-                        } else {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pDialog.hide();
-                                    // trigger SAF or in kikat.
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                                        sdcardDialog.setTitleText(getString(R.string.oops))
-                                                .setContentText(getString(R.string.oops_sdcard_detail))
-                                                .setConfirmText("OK")
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                        triggerStorageAccessFramework();
-                                                        sdcardDialog.dismiss();
-                                                    }
-                                                })
-                                                .show();
-                                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                                        final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                                        sdcardDialog.setTitleText(getString(R.string.oops))
-                                                .setContentText(getString(R.string.oops_sdcard_kitkat_detail))
-                                                .setConfirmText("OK")
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                        sdcardDialog.dismiss();
-                                                    }
-                                                })
-                                                .show();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }).start();
-                return true;
-            }
-        });
+        startPreference.setOnPreferenceClickListener(startListener);
     }
 
     @Override
