@@ -26,7 +26,7 @@ import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.npes87184.s2tdroid.donate.model.Analysis;
+import com.npes87184.s2tdroid.donate.model.Transformer;
 import com.npes87184.s2tdroid.donate.model.FileUtil;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 
@@ -256,16 +256,16 @@ public class HomeFragment extends PreferenceFragment implements
                                 String line;
                                 if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
                                     line = bReader.readLine();
-                                    if (Analysis.isTraditional(line) >= 0) {
-                                        booknameString = Analysis.TtoS(line);
-                                        translatedName = Analysis.TtoS(name);
+                                    if (Transformer.isTraditional(line) >= 0) {
+                                        booknameString = Transformer.TtoS(line);
+                                        translatedName = Transformer.TtoS(name);
                                     } else {
-                                        booknameString = Analysis.StoT(line);
-                                        translatedName = Analysis.StoT(name);
+                                        booknameString = Transformer.StoT(line);
+                                        translatedName = Transformer.StoT(name);
                                     }
                                 } else {
-                                    booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(bReader.readLine()) : Analysis.TtoS(bReader.readLine());
-                                    translatedName = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Analysis.StoT(name) : Analysis.TtoS(name);
+                                    booknameString = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Transformer.StoT(bReader.readLine()) : Transformer.TtoS(bReader.readLine());
+                                    translatedName = prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t") ? Transformer.StoT(name) : Transformer.TtoS(name);
                                 }
                                 String firstLine = booknameString;
                                 if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
@@ -320,24 +320,24 @@ public class HomeFragment extends PreferenceFragment implements
                                     if (prefs.getString(KeyCollection.KEY_MODE, "0").equals("0")) {
                                         if (TorS < 100 && TorS > -100) {
                                             // detect step
-                                            TorS += Analysis.isTraditional(line);
+                                            TorS += Transformer.isTraditional(line);
                                             if (TorS >= 0) {
-                                                bw.write(Analysis.TtoS(line) + "\r");
+                                                bw.write(Transformer.TtoS(line) + "\r");
                                             } else {
-                                                bw.write(Analysis.StoT(line) + "\r");
+                                                bw.write(Transformer.StoT(line) + "\r");
                                             }
                                         } else {
                                             if (TorS > 0) {
-                                                bw.write(Analysis.TtoS(line) + "\r");
+                                                bw.write(Transformer.TtoS(line) + "\r");
                                             } else {
-                                                bw.write(Analysis.StoT(line) + "\r");
+                                                bw.write(Transformer.StoT(line) + "\r");
                                             }
                                         }
                                     } else {
                                         if (prefs.getString(KeyCollection.KEY_MODE, "s2t").equals("s2t")) {
-                                            bw.write(Analysis.StoT(line) + "\r");
+                                            bw.write(Transformer.StoT(line) + "\r");
                                         } else {
-                                            bw.write(Analysis.TtoS(line) + "\r");
+                                            bw.write(Transformer.TtoS(line) + "\r");
                                         }
                                     }
                                     bw.newLine();

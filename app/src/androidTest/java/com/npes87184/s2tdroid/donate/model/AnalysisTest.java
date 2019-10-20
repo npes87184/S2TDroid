@@ -15,15 +15,15 @@ public class AnalysisTest extends TestCase {
     }
 
     public void testStoT() {
-        assertTrue("Test StoT failed.", strTraditional.equals(Analysis.StoT(strSimple)));
+        assertTrue("Test StoT failed.", strTraditional.equals(Transformer.StoT(strSimple)));
     }
 
     public void testTtoS() {
-        assertTrue("Test TtoS failed.", strSimple.equals(Analysis.TtoS(strTraditional)));
+        assertTrue("Test TtoS failed.", strSimple.equals(Transformer.TtoS(strTraditional)));
     }
 
     public void testIsTraditional() {
-        assertTrue("Test IsTraditional failed.", Analysis.isTraditional(strTraditional) > 0);
-        assertTrue("Test IsTraditional failed.", Analysis.isTraditional(strSimple) <= 0);
+        assertTrue("Test IsTraditional failed.", Transformer.isTraditional(strTraditional) > 0);
+        assertTrue("Test IsTraditional failed.", Transformer.isTraditional(strSimple) <= 0);
     }
 }

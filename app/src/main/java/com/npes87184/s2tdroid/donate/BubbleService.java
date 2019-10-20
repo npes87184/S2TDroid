@@ -27,7 +27,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.npes87184.s2tdroid.donate.model.Analysis;
+import com.npes87184.s2tdroid.donate.model.Transformer;
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
 
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener;
@@ -79,9 +79,9 @@ public class BubbleService extends Service implements FloatingViewListener {
                     public void onClick(DialogInterface dialog, int which) {
                         String out = input.getText().toString();
                         if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
-                            out = Analysis.isTraditional(out)>=0 ? Analysis.TtoS(out):Analysis.StoT(out);
+                            out = Transformer.isTraditional(out)>=0 ? Transformer.TtoS(out): Transformer.StoT(out);
                         } else {
-                            out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Analysis.StoT(out):Analysis.TtoS(out);
+                            out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Transformer.StoT(out): Transformer.TtoS(out);
                         }
                         copyToClipboard(out);
                     }

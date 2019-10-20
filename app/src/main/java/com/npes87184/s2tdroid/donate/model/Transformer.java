@@ -6,9 +6,9 @@ import java.util.Map;
 /**
  * Created by npes87184 on 2015/4/10.
  */
-public class Analysis {
+public class Transformer {
 
-    public Analysis() {
+    public Transformer() {
 
     }
 
