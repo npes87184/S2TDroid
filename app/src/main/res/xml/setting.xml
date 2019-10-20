@@ -9,7 +9,7 @@
             android:dialogTitle="@string/mode"
             android:negativeButtonText="@string/cancel"
             android:key="mode"
-            android:icon="@drawable/ic_menu_attachment"
+            android:icon="@drawable/outline_attachment_black_48"
             android:title="@string/mode"/>
 
         <ListPreference android:entries="@array/mode_entry"
@@ -17,7 +17,7 @@
             android:dialogTitle="@string/bubble_mode"
             android:negativeButtonText="@string/cancel"
             android:key="bubble_mode"
-            android:icon="@drawable/ic_menu_copy_holo_light"
+            android:icon="@drawable/outline_edit_black_48"
             android:title="@string/bubble_mode"/>
 
         <ListPreference android:entries="@array/file_name_option_entry"
@@ -25,11 +25,11 @@
             android:dialogTitle="@string/filename"
             android:negativeButtonText="@string/cancel"
             android:key="filename"
-            android:icon="@drawable/ic_menu_save"
+            android:icon="@drawable/outline_save_black_48"
             android:title="@string/filename"/>
 
         <CheckBoxPreference android:key="delete_source"
-            android:icon="@drawable/ic_delete_forever_black_48dp"
+            android:icon="@drawable/outline_delete_forever_black_48"
             android:summary="@string/auto_delete_detail"
             android:title="@string/auto_delete" android:defaultValue="false"/>
 
@@ -38,15 +38,15 @@
             android:dialogTitle="@string/file_sort"
             android:negativeButtonText="@string/cancel"
             android:key="file_sort"
-            android:icon="@drawable/ic_menu_sort_by_size"
+            android:icon="@drawable/outline_sort_black_48"
             android:title="@string/file_sort"/>
     </PreferenceCategory>
 
     <PreferenceCategory
     android:title="@string/encode"
     android:key="encodingCategory">
-        <ListPreference android:entries="@array/encoding_entry" android:entryValues="@array/encoding_value" android:negativeButtonText="@string/cancel" android:dialogTitle="@string/encoding_title" android:title="@string/encoding_title" android:key="encoding" android:icon="@drawable/ic_menu_find_holo_light"/>
-        <ListPreference android:entries="@array/output_encoding_entry" android:entryValues="@array/output_encoding_value" android:dialogTitle="@string/output_encoding_title" android:negativeButtonText="@string/cancel" android:key="output_encoding" android:icon="@drawable/ic_perm_group_user_dictionary_write" android:title="@string/output_encoding_title"/>
+        <ListPreference android:entries="@array/encoding_entry" android:entryValues="@array/encoding_value" android:negativeButtonText="@string/cancel" android:dialogTitle="@string/encoding_title" android:title="@string/encoding_title" android:key="encoding" android:icon="@drawable/outline_find_in_page_black_48"/>
+        <ListPreference android:entries="@array/output_encoding_entry" android:entryValues="@array/output_encoding_value" android:dialogTitle="@string/output_encoding_title" android:negativeButtonText="@string/cancel" android:key="output_encoding" android:icon="@drawable/outline_save_alt_black_48" android:title="@string/output_encoding_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
