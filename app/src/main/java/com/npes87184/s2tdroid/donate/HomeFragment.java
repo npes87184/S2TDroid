@@ -279,7 +279,6 @@ public class HomeFragment extends PreferenceFragment implements
                                     synchronized (syncToken) {
                                         syncToken.wait();
                                     }
-                                    booknameString = booknameString.split(" ")[0];
                                     if (!isFilenameValid(booknameString)) {
                                         Message filenameNotValidMsg = new Message();
                                         filenameNotValidMsg.what = 6;
