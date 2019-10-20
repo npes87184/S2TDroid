@@ -39,4 +39,13 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="bubble_size_entry">
+        <item>@string/small</item>
+        <item>@string/large</item>
+    </string-array>
+
+    <string-array name="bubble_size_value">
+        <item>small</item>
+        <item>large</item>
+    </string-array>
 </resources>

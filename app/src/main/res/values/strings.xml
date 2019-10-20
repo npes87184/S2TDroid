@@ -48,8 +48,12 @@
     <string name="s2t">Simple to Traditional</string>
     <string name="t2s">Traditional to Simple</string>
 
+    <string name="small">Small</string>
+    <string name="large">Large</string>
+
     <string name="mode">Mode</string>
     <string name="bubble_mode">Bubble Mode</string>
+    <string name="bubble_size">Bubble Size</string>
     <string name="encode">Encode</string>
     <string name="normal">Normal</string>
     <string name="donate" translatable="false">Pro</string>

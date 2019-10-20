@@ -40,8 +40,12 @@
     <string name="s2t">简转繁</string>
     <string name="t2s">繁转简</string>
 
+    <string name="small">小</string>
+    <string name="large">大</string>
+
     <string name="mode">转换模式</string>
     <string name="bubble_mode">泡泡转换模式</string>
+    <string name="bubble_size">泡泡大小</string>
     <string name="encode">编码</string>
     <string name="normal">一般</string>
     <string name="illegal_filename">文件名无效</string>

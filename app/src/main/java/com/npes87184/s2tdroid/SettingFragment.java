@@ -23,6 +23,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     private Preference mode;
     private Preference bubble_mode;
+    private Preference bubble_size;
     private SharedPreferences prefs;
     private Preference outEncodePreference;
     private Preference encoding;
@@ -63,6 +64,13 @@ public class SettingFragment extends PreferenceFragment implements
             bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
         }
 
+        bubble_size = findPreference(KeyCollection.KEY_BUBBLE_SIZE);
+        if(prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
+            bubble_size.setSummary(getActivity().getString(R.string.large));
+        } else {
+            bubble_size.setSummary(getActivity().getString(R.string.small));
+        }
+
         encoding = findPreference(KeyCollection.KEY_ENCODING);
         encoding.setSummary(prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")?
                 getResources().getString(R.string.auto_detect):prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8"));
@@ -95,13 +103,20 @@ public class SettingFragment extends PreferenceFragment implements
             } else {
                 mode.setSummary(getActivity().getString(R.string.auto_detect));
             }
-        } else if(key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
-            if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
+
+        } else if (key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
+            if (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
                 bubble_mode.setSummary(getActivity().getString(R.string.t2s));
-            } else if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
+            } else if (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
                 bubble_mode.setSummary(getActivity().getString(R.string.s2t));
             } else {
                 bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+            }
+        } else if (key.equals(KeyCollection.KEY_BUBBLE_SIZE)) {
+            if(prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
+                bubble_size.setSummary(getActivity().getString(R.string.large));
+            } else {
+                bubble_size.setSummary(getActivity().getString(R.string.small));
             }
         }
     }
