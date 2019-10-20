@@ -39,6 +39,16 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="bubble_size_entry">
+        <item>@string/small</item>
+        <item>@string/large</item>
+    </string-array>
+
+    <string-array name="bubble_size_value">
+        <item>small</item>
+        <item>large</item>
+    </string-array>
+
     <string-array name="file_order_entry">
         <item>@string/file_order_name_ascending</item>
         <item>@string/file_order_name_descending</item>

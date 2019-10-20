@@ -44,11 +44,18 @@ public class BubbleService extends Service implements FloatingViewListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        int bubbleSize;
+
         if (mFloatingViewManager != null) {
             return START_STICKY;
         }
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
+            bubbleSize = 96;
+        } else {
+            bubbleSize = 72;
+        }
         final DisplayMetrics metrics = new DisplayMetrics();
         final WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
@@ -100,13 +107,13 @@ public class BubbleService extends Service implements FloatingViewListener {
         });
 
         mFloatingViewManager = new FloatingViewManager(this, this);
-        mFloatingViewManager.setFixedTrashIconImage(resize(R.drawable.ic_trash_fixed, 96));
+        mFloatingViewManager.setFixedTrashIconImage(resize(R.drawable.ic_trash_fixed, bubbleSize));
         mFloatingViewManager.setActionTrashIconImage(resize(R.drawable.ic_trash_action, 200));
         final FloatingViewManager.Options options = new FloatingViewManager.Options();
         options.floatingViewX = (int) convertDpToPixel(512, this);
         options.floatingViewY = (int) convertDpToPixel(512, this);
-        options.floatingViewHeight = (int) convertDpToPixel(96, this);
-        options.floatingViewWidth = (int) convertDpToPixel(96, this);
+        options.floatingViewHeight = (int) convertDpToPixel(bubbleSize, this);
+        options.floatingViewWidth = (int) convertDpToPixel(bubbleSize, this);
         options.overMargin = (int) (16 * metrics.density);
         mFloatingViewManager.addViewToWindow(iconView, options);
 

@@ -8,6 +8,7 @@ public class KeyCollection {
     public static final String KEY_ENCODING = "encoding";
     public static final String KEY_MODE = "mode";
     public static final String KEY_BUBBLE_MODE = "bubble_mode";
+    public static final String KEY_BUBBLE_SIZE = "bubble_size";
     public static final String KEY_OUTPUT_ENCODING = "output_encoding";
     public static final String KEY_INPUT_FILE = "input_file";
     public static final String KEY_OUTPUT_FOLDER = "output_folder";

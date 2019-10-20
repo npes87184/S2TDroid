@@ -20,6 +20,14 @@
             android:icon="@drawable/outline_edit_black_48"
             android:title="@string/bubble_mode"/>
 
+        <ListPreference android:entries="@array/bubble_size_entry"
+            android:entryValues="@array/bubble_size_value"
+            android:dialogTitle="@string/bubble_size"
+            android:negativeButtonText="@string/cancel"
+            android:key="bubble_size"
+            android:icon="@drawable/outline_filter_center_focus_black_48"
+            android:title="@string/bubble_size"/>
+
         <ListPreference android:entries="@array/file_name_option_entry"
             android:entryValues="@array/file_name_option_value"
             android:dialogTitle="@string/filename"

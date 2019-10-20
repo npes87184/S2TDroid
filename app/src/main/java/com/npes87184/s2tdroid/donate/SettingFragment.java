@@ -15,6 +15,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     private Preference mode;
     private Preference bubble_mode;
+    private Preference bubble_size;
     private Preference file_name;
     private Preference file_sort;
     private SharedPreferences prefs;
@@ -53,6 +54,13 @@ public class SettingFragment extends PreferenceFragment implements
             bubble_mode.setSummary(getActivity().getString(R.string.s2t));
         } else {
             bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+        }
+
+        bubble_size = findPreference(KeyCollection.KEY_BUBBLE_SIZE);
+        if(prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
+            bubble_size.setSummary(getActivity().getString(R.string.large));
+        } else {
+            bubble_size.setSummary(getActivity().getString(R.string.small));
         }
 
         file_name = findPreference(KeyCollection.KEY_FILENAME);
@@ -105,12 +113,18 @@ public class SettingFragment extends PreferenceFragment implements
                 mode.setSummary(getActivity().getString(R.string.auto_detect));
             }
         } else if (key.equals(KeyCollection.KEY_BUBBLE_MODE)) {
-            if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
+            if (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("t2s")) {
                 bubble_mode.setSummary(getActivity().getString(R.string.t2s));
-            } else if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
+            } else if (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("s2t")) {
                 bubble_mode.setSummary(getActivity().getString(R.string.s2t));
             } else {
                 bubble_mode.setSummary(getActivity().getString(R.string.auto_detect));
+            }
+        } else if (key.equals(KeyCollection.KEY_BUBBLE_SIZE)) {
+            if(prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
+                bubble_size.setSummary(getActivity().getString(R.string.large));
+            } else {
+                bubble_size.setSummary(getActivity().getString(R.string.small));
             }
         } else if (key.equals(KeyCollection.KEY_FILENAME)) {
             if (prefs.getString(KeyCollection.KEY_FILENAME, getString(R.string.filename_manual_key)).equals(getString(R.string.filename_same_key))) {
