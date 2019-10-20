@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference android:title="@string/input_file" android:key="input_file" android:icon="@drawable/ic_perm_group_user_dictionary"/>
-    <Preference android:title="@string/output_folder" android:key="output_folder" android:icon="@drawable/ic_menu_archive"/>
-     <Preference android:title="@string/start" android:key="start" android:icon="@drawable/emo_im_laughing"/>
+    <Preference android:title="@string/input_file" android:key="input_file" android:icon="@drawable/outline_post_add_black_48"/>
+    <Preference android:title="@string/output_folder" android:key="output_folder" android:icon="@drawable/outline_folder_open_black_48"/>
+    <Preference android:title="@string/start" android:key="start" android:icon="@drawable/outline_adb_black_48"/>
 
 </PreferenceScreen>
