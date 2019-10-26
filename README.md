@@ -1,70 +1,33 @@
 S2TDroid
 ========
-An open source android app for transforming Simplified Chinese to Traditional Chinese
+An open source android app for transforming Simplified Chinese to Traditional Chinese and vice versa.
 
 <a href="https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate">
     <img src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" width="200">
 </a>
 
-Latest Version
-========
-1.8.0
+### Highlights
 
-Changelog
-========
-### 1.8.0
-* Compatible with Android P
-* Rewrite the bubble related logic to make it more stable.
-
-### 1.7.10
-* let bubble stick to wall more aggressive
-* add notification channel
-* Update dependent libraries to improve stability.
-
-### 1.7.9
-* Update dependent libraries to improve stability.
-* Refine navigation side bar.
-
-### 1.7.8
-* Fix the problem that the click bubble will flash back.
-* The bubble will stick to the wall as much as possible.
-
-Features
-========
-1. light weight and no AD transformer
-2. auto detect input languate, auto determine S to T or T to S
-3. support GBK, UTF-8, BIG5 and Unicode input encode
-4. auto detect encode
-5. support choose UTF-8 or Unicode to output file
-6. very fast, 1m txt only need some seconds
-7. auto detect bookname
-8. don't need internet
-9. support txt, trc, srt, ssa, ass, saa and lrc
-10. add a checkbox that can determine the output file name
-11. Material Design
-12. transform bubble, you can transform anywhere!
+1. Light weight
+2. Auto detect almost everything
+3. Support GBK, UTF-8, BIG5 and Unicode encoding
+4. Very fast
+5. Don't need internet
+6. Transformation bubble, you can transform anywhere!
 
 Pictures
 ========
-<img src="http://truth.bahamut.com.tw/s01/201505/161edda668b0d8bd1f0ca45808944f44.PNG">
+<img src="https://lh3.googleusercontent.com/LkKrxcEImSnGHa7ixWwTs2YUBTKLNmzix2_C05O8eWyRvBm_28CyB56w90xf7lMTNA=w1864-h947-rw">
 
-<img src="http://truth.bahamut.com.tw/s01/201512/3b6922ee762023f9c12d1f082541eeeb.PNG">
+<img src="https://lh3.googleusercontent.com/Ijahh401M_z1a7nsoNbXJdq1wxVL2r7lQvSuCHSBugWCON-wCp9evV2TRpsk1oo0IfI=w1864-h947-rw">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/c25f40b8d870e3c74f116d1a4935762a.PNG">
 
 <img src="http://truth.bahamut.com.tw/s01/201508/5e5f75926c11df8a03f940b26f794d51.PNG">
 
-<img src="http://truth.bahamut.com.tw/s01/201509/be4d5a98a3079584c38aeeb3474c9d47.PNG">
+<img src="https://lh3.googleusercontent.com/jq1MVoRoy2Jr2gAbyWn928XRo33inJoZweWmRociaRqGlv28YMGGGZ0TS4NG8b_zkak=w1864-h947-rw">
 
-<img src="http://truth.bahamut.com.tw/s01/201512/28b61e79c2bbd9916b6b7b6d177abadd.JPG">
-
-Thanks
-========
-* android-filepicker (Angads25)
-* JNovelDownloader (pupuliao)
-* sweet-alert-dialog (pedant)
-* Magnet (premnirmal)
-* Juniversalchardet (takscape)
+<img src="https://lh3.googleusercontent.com/dqE-AlHL-W-fnDq2Zeb-EyScFncQIy3KzEnztMpgtQzfUtM4EyCXGvjEOmNA_aviwbY=w1864-h947-rw">
 
 License
 ========
