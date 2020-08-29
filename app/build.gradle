@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
 
     defaultConfig {
@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.github.f0ris.sweetalert:library:1.5.2'
     implementation(name: 'filepicker-release', ext: 'aar')
     implementation 'com.github.recruit-lifestyle:FloatingView:2.4.0'
