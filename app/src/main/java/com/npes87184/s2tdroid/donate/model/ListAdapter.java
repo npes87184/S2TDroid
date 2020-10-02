@@ -3,7 +3,6 @@ package com.npes87184.s2tdroid.donate.model;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,8 +92,6 @@ public class ListAdapter extends BaseAdapter {
 
     private void setIcon(ImageView icon, @DrawableRes int iconRes) {
         icon.setImageResource(iconRes);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            icon.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ff424242")));
-        }
+        icon.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ff424242")));
     }
 }
