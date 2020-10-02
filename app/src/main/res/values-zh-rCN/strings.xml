@@ -32,8 +32,14 @@
 
     <string name="oops">错误</string>
     <string name="oops_file_does_not_exist">输入文件不存在！</string>
+    <string name ="oops_dir_does_not_exist">请选择输出目录。</string>
     <string name="oops_sdcard_detail">需要写入外部 SD 卡的权限</string>
-    <string name="oops_sdcard_kitkat_detail">很抱歉，在 Android 4.4，App 无法自由写入外接记忆卡。</string>
+    <string name="oops_general_err">发生非预期错误，请重新尝试一次。 </string>
+
+    <string name="selection_none_input">点击已选取文件</string>
+    <string name="selection_none_output">点击已选取目录</string>
+    <string name="selection_files">已选取 %d 文件</string>
+    <string name="selection_dir">目录已选取</string>
 
     <string name="word_count">转换字数：</string>
 
@@ -53,13 +59,6 @@
     <string name="version_tag">版本：\u0020</string>
     <string name="web_tag">个人网页</string>
     <string name="illegal_filename">文件名无效</string>
-
-    <!-- file order related. -->
-    <string name="file_sort">文件排序</string>
-    <string name="file_order_name_ascending">根据名称，升序。 </string>
-    <string name="file_order_name_descending">根据名称，降序。 </string>
-    <string name="file_order_date_ascending">根据修改时间，升序。 </string>
-    <string name="file_order_date_descending">根据修改时间，降序。 </string>
 
     <!-- file name related. -->
     <string name="filename">输出文件名</string>

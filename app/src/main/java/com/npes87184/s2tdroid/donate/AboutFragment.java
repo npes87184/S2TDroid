@@ -5,12 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AlertDialog;
 
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
@@ -22,6 +23,7 @@ import mehdi.sakout.aboutpage.Element;
 public class AboutFragment extends Fragment {
 
     private View v;
+
     public static AboutFragment newInstance() {
         AboutFragment aboutFragment = new AboutFragment();
         return aboutFragment;

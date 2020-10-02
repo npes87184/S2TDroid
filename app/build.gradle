@@ -32,7 +32,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.github.f0ris.sweetalert:library:1.5.2'
-    implementation(name: 'filepicker-release', ext: 'aar')
     implementation 'com.github.recruit-lifestyle:FloatingView:2.4.0'
     implementation 'com.facebook.rebound:rebound:0.3.8'
     implementation 'com.tumblr:backboard:0.1.2'

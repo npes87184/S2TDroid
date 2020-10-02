@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaScannerConnection;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,30 +13,22 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import androidx.annotation.NonNull;
-import androidx.documentfile.provider.DocumentFile;
-import androidx.appcompat.app.AlertDialog;
+import android.provider.DocumentsContract;
+import android.provider.OpenableColumns;
 import android.view.ContextThemeWrapper;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.github.angads25.filepicker.controller.DialogSelectionListener;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.npes87184.s2tdroid.donate.model.Transformer;
-import com.npes87184.s2tdroid.donate.model.FileUtil;
+import androidx.appcompat.app.AlertDialog;
+import androidx.documentfile.provider.DocumentFile;
+
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
+import com.npes87184.s2tdroid.donate.model.Transformer;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,16 +36,17 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by npes87184 on 2015/5/17.
  */
-public class HomeFragment extends PreferenceFragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public class HomeFragment extends PreferenceFragment {
 
-    private static final int REQUEST_CODE_STORAGE_ACCESS = 0;
+    private static final int REQUEST_CODE_INPUT_CHOOSE = 1;
+    private static final int REQUEST_CODE_OUTPUT_CHOOSE = 2;
 
     int wordNumber = 0;
     String booknameString = "S2TDroid";
@@ -63,9 +56,10 @@ public class HomeFragment extends PreferenceFragment implements
     private Preference startPreference;
     private SharedPreferences prefs;
     private SweetAlertDialog pDialog;
-    private String [] filter = { "txt", "lrc", "trc", "srt", "ssa", "ass", "saa", "ini" };
     private float progressNum = 0;
     private float lastProgressNum = 0;
+    private ArrayList<Uri> fileList = new ArrayList<Uri>();
+    Uri outputDirUri = null;
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -126,46 +120,39 @@ public class HomeFragment extends PreferenceFragment implements
                             .setConfirmText("OK")
                             .show();
                     break;
+                case 7:
+                    pDialog.hide();
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.oops))
+                            .setContentText(getString(R.string.oops_general_err))
+                            .show();
+                    break;
+                case 8:
+                    pDialog.hide();
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText(getString(R.string.oops))
+                            .setContentText(getString(R.string.oops_dir_does_not_exist))
+                            .show();
+                    break;
             }
             super.handleMessage(msg);
         }
     };
     private float roundProgress = 0;
-    private int fileOrder = 0;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
 
-    private boolean contain(String[] strings, String s) {
-        for(int i=0;i< strings.length;++i) {
-            if(strings[i].equals(s)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private Preference.OnPreferenceClickListener inputListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            Toast.makeText(getActivity(), getString(R.string.choose_tip), Toast.LENGTH_LONG).show();
-            DialogProperties properties = new DialogProperties();
-            properties.selection_mode = DialogConfigs.SINGLE_MODE;
-            properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
-            properties.root = new File("/");
-            properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-            properties.offset = new File(prefs.getString(KeyCollection.KEY_PATH, DialogConfigs.DEFAULT_DIR));
-            properties.extensions = filter;
-            properties.file_order = fileOrder;
-            showFilePickerDialog(properties, new DialogSelectionListener() {
-                @Override
-                public void onSelectedFilePaths(String[] files) {
-                    inputPreference.getEditor().putString(KeyCollection.KEY_INPUT_FILE, files[0] + "/").commit();
-                    prefs.edit().putString(KeyCollection.KEY_PATH, new File(files[0]).getParent()).apply();
-                }
-            });
+            fileList.clear();
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("text/*");
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.app_name)), REQUEST_CODE_INPUT_CHOOSE);
             return true;
         }
     };
@@ -173,84 +160,55 @@ public class HomeFragment extends PreferenceFragment implements
     private Preference.OnPreferenceClickListener outputListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            DialogProperties properties = new DialogProperties();
-            properties.selection_mode = DialogConfigs.SINGLE_MODE;
-            properties.selection_type = DialogConfigs.DIR_SELECT;
-            properties.root = new File("/");
-            properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-            properties.offset = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-            properties.file_order = fileOrder;
-            showFilePickerDialog(properties, new DialogSelectionListener() {
-                @Override
-                public void onSelectedFilePaths(String[] files) {
-                    outputPreference.getEditor().putString(KeyCollection.KEY_OUTPUT_FOLDER, files[0] + "/").commit();
-                }
-            });
+            outputDirUri = null;
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.app_name)), REQUEST_CODE_OUTPUT_CHOOSE);
             return true;
         }
     };
-
-    private void showFilePickerDialog(DialogProperties properties, DialogSelectionListener listener) {
-        FilePickerDialog dialog = new FilePickerDialog(getActivity(), properties);
-        WindowManager.LayoutParams lp = null;
-        Window window = dialog.getWindow();
-        if (window != null) {
-            lp = new WindowManager.LayoutParams();
-            lp.copyFrom(window.getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        }
-        dialog.setPositiveBtnName(getString(R.string.select));
-        dialog.setNegativeBtnName(getString(R.string.cancel));
-        dialog.setDialogSelectionListener(listener);
-        dialog.show();
-        if (lp != null) {
-            dialog.getWindow().setAttributes(lp);
-        }
-    }
 
     private Preference.OnPreferenceClickListener startListener = new Preference.OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(final Preference preference) {
             pDialog.show();
             pDialog.setCancelable(false);
-            final File testSDcardFolder = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+            if (fileList.isEmpty()) {
+                Message msg = new Message();
+                msg.what = 2;
+                mHandler.sendMessage(msg);
+                return true;
+            }
+            if (outputDirUri == null) {
+                Message msg = new Message();
+                msg.what = 8;
+                mHandler.sendMessage(msg);
+                return true;
+            }
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Message msg;
-                    if (checkFolder(testSDcardFolder)) {
-                        try {
-                            File testDirFile = new File(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
-                            if (!testDirFile.exists()) {
-                                msg = new Message();
-                                msg.what = 2;
-                                mHandler.sendMessage(msg);
-                                Thread.currentThread().interrupt();
-                                return;
+                    try {
+                        for (int i = 0; i < fileList.size(); ++i) {
+                            Uri uri = fileList.get(i);
+                            String encodeString = detectEncode(uri);
+                            int totalLine = countLines(uri, encodeString);
+
+                            int TorS = 0; // >0 means t2s
+                            if (encodeString.equals("GBK")) {
+                                TorS = -100;
+                            } else if (encodeString.equals("BIG5")) {
+                                TorS = 100;
                             }
-                            ArrayList<String> fileList = new ArrayList<String>();
-                            prepareFileList(testDirFile, fileList);
 
-                            for (int i = 0; i < fileList.size(); ++i) {
-                                File inFile = new File(fileList.get(i));
-                                // detect encode
-                                String encodeString = detectEncode(fileList.get(i));
-                                int totalLine = countLines(fileList.get(i), encodeString);
+                            String name = getFileName(uri);
+                            String file_extension = getFileExtension(name);
 
-                                int TorS = 0; // >0 means t2s
-                                if (encodeString.equals("GBK")) {
-                                    TorS = -100;
-                                } else if (encodeString.equals("BIG5")) {
-                                    TorS = 100;
-                                }
+                            String translatedName;
 
-                                String file_extension = getFileExtension(inFile);
-
-                                String name = getFileName(inFile);
-                                String translatedName;
-
-                                InputStream is = new FileInputStream(inFile);
+                            try (InputStream is =
+                                         getActivity().getContentResolver().openInputStream(uri)) {
                                 InputStreamReader isr = new InputStreamReader(is, encodeString);
                                 BufferedReader bReader = new BufferedReader(isr);
                                 String line;
@@ -287,19 +245,20 @@ public class HomeFragment extends PreferenceFragment implements
                                         return;
                                     }
                                 }
-                                // fix too large bookname
+                                // fix too large book name
                                 if (booknameString.length() > 100) {
                                     booknameString = booknameString.substring(0, 100);
                                 }
 
-                                File file = new File(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
-                                if (!file.exists() || !file.isDirectory()) {
-                                    file.mkdir();
+                                OutputStreamWriter osw = getOutputStreamWriter(booknameString + "." + file_extension);
+
+                                if (osw == null) {
+                                    Message errMsg = new Message();
+                                    errMsg.what = 7;
+                                    mHandler.sendMessage(errMsg);
+                                    Thread.currentThread().interrupt();
+                                    return;
                                 }
-
-                                File outFile = getOutFile(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR), booknameString, file_extension);
-
-                                OutputStreamWriter osw = getOutputStreamWriter(outFile);
 
                                 // doing transform
                                 BufferedWriter bw = new BufferedWriter(osw);
@@ -308,7 +267,7 @@ public class HomeFragment extends PreferenceFragment implements
 
                                 while ((line = bReader.readLine()) != null) {
                                     progressNum += ((1) / (float) fileList.size()) * (1 / (float) totalLine);
-                                    roundProgress = ((float) (int)(progressNum*100))/(float) 100;
+                                    roundProgress = ((float) (int) (progressNum * 100)) / (float) 100;
                                     if (roundProgress - lastProgressNum > 0.01) {
                                         lastProgressNum = roundProgress;
                                         msg = new Message();
@@ -345,56 +304,27 @@ public class HomeFragment extends PreferenceFragment implements
                                 osw.close();
                                 bReader.close();
                                 isr.close();
-                                is.close();
-
-                                //media rescan for correctly showing in pc
-                                MediaScannerConnection.scanFile(getActivity(), new String[]{outFile.getAbsolutePath()}, null, null);
 
                                 if (prefs.getBoolean(KeyCollection.KEY_DELETE_SOURCE, false)) {
-                                    deleteSourceFile(inFile);
+                                    deleteSourceFile(uri);
                                 }
                             }
-                        } catch (Exception e) {
-
                         }
-                        msg = new Message();
-                        msg.what = 1;
-                        mHandler.sendMessage(msg);
-                    } else {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                pDialog.hide();
-                                // trigger SAF or in kikat.
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                                    sdcardDialog.setTitleText(getString(R.string.oops))
-                                            .setContentText(getString(R.string.oops_sdcard_detail))
-                                            .setConfirmText("OK")
-                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                @Override
-                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                    triggerStorageAccessFramework();
-                                                    sdcardDialog.dismiss();
-                                                }
-                                            })
-                                            .show();
-                                } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-                                    final SweetAlertDialog sdcardDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                                    sdcardDialog.setTitleText(getString(R.string.oops))
-                                            .setContentText(getString(R.string.oops_sdcard_kitkat_detail))
-                                            .setConfirmText("OK")
-                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                @Override
-                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                    sdcardDialog.dismiss();
-                                                }
-                                            })
-                                            .show();
-                                }
-                            }
-                        });
+                    } catch (Exception e) {
+
                     }
+                    msg = new Message();
+                    msg.what = 1;
+                    mHandler.sendMessage(msg);
+                    fileList.clear();
+                    outputDirUri = null;
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            inputPreference.setSummary(getString(R.string.selection_none_input));
+                            outputPreference.setSummary(getString(R.string.selection_none_output));
+                        }
+                    });
                 }
             }).start();
             return true;
@@ -407,19 +337,16 @@ public class HomeFragment extends PreferenceFragment implements
         addPreferencesFromResource(R.xml.home);
 
         prefs = getPreferenceManager().getSharedPreferences();
-        prefs.registerOnSharedPreferenceChangeListener(this);
 
         pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE)
                 .setTitleText(getString(R.string.wait));
 
-        fileOrder = Integer.parseInt(prefs.getString(KeyCollection.KEY_FILE_SORT, "0"));
-
         inputPreference = findPreference(KeyCollection.KEY_INPUT_FILE);
-        inputPreference.setSummary(prefs.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
+        inputPreference.setSummary(getString(R.string.selection_none_input));
         inputPreference.setOnPreferenceClickListener(inputListener);
 
         outputPreference = findPreference(KeyCollection.KEY_OUTPUT_FOLDER);
-        outputPreference.setSummary(prefs.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+        outputPreference.setSummary(getString(R.string.selection_none_output));
         outputPreference.setOnPreferenceClickListener(outputListener);
 
         startPreference = findPreference(KeyCollection.KEY_START);
@@ -435,110 +362,106 @@ public class HomeFragment extends PreferenceFragment implements
     @Override
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_STORAGE_ACCESS) {
-            Uri treeUri = null;
-            if (resultCode == Activity.RESULT_OK) {
-                // Get Uri from Storage Access Framework.
-                treeUri = data.getData();
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
 
-                // Persist URI in shared preference so that you can use it later.
-                // Use your own framework here instead of PreferenceUtil.
-                prefs.edit().putString(KeyCollection.KEY_SDCARD_URI, treeUri.toString()).apply();
+        if (requestCode == REQUEST_CODE_INPUT_CHOOSE) {
+            if (data.getClipData() != null) {
+                for (int i = 0; i < data.getClipData().getItemCount(); ++i) {
+                    fileList.add(data.getClipData().getItemAt(i).getUri());
+                }
+            } else if (data.getData() != null) {
+                fileList.add(data.getData());
+            }
 
-                // Persist access permissions.
-                getActivity().getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            if (fileList.size() > 0) {
+                inputPreference.setSummary(String.format(getString(R.string.selection_files), fileList.size()));
+            } else {
+                inputPreference.setSummary(getString(R.string.selection_none_input));
+            }
+        } else if (requestCode == REQUEST_CODE_OUTPUT_CHOOSE) {
+            if (data.getData() != null) {
+                outputDirUri = data.getData();
+            }
+
+            if (outputDirUri == null) {
+                outputPreference.setSummary(getString(R.string.selection_none_output));
+            } else {
+                outputPreference.setSummary(getString(R.string.selection_dir));
             }
         }
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(KeyCollection.KEY_INPUT_FILE)) {
-            inputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_INPUT_FILE, DialogConfigs.DEFAULT_DIR));
-        } else if (key.equals(KeyCollection.KEY_OUTPUT_FOLDER)) {
-            outputPreference.setSummary(sharedPreferences.getString(KeyCollection.KEY_OUTPUT_FOLDER, DialogConfigs.DEFAULT_DIR));
+    private String getFileName(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
         }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
-    private OutputStreamWriter getOutputStreamWriter(File outFile) {
-        FileUtil fileUtil = new FileUtil(getActivity());
+    private OutputStreamWriter getOutputStreamWriter(String name) {
+        if (outputDirUri == null) {
+            return null;
+        }
+
+        DocumentFile dir = DocumentFile.fromTreeUri(getActivity(), outputDirUri);
+        DocumentFile target = dir.createFile("text/plain", name);
+
         OutputStreamWriter osw;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.getExtSdCardFolder(outFile)!=null) {
-            // in external sdcard
-            Uri uri;
-            try {
-                uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
-            } catch (Exception e) {
-                uri = null;
-            }
-            DocumentFile targetDocument = fileUtil.getDocumentFile(outFile, uri);
-            try {
-                OutputStream outStream = getActivity().getApplication().
-                        getContentResolver().openOutputStream(targetDocument.getUri());
-                osw = new OutputStreamWriter(outStream, prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-            } catch (Exception e) {
-                osw = null;
-            }
-        } else {
-            try {
-                osw = new OutputStreamWriter(new FileOutputStream(outFile), prefs.getString(KeyCollection.KEY_OUTPUT_ENCODING, "Unicode"));
-            } catch (Exception e) {
-                osw = null;
-            }
+
+        try {
+            OutputStream os = getActivity().getContentResolver().openOutputStream(target.getUri());
+            osw = new OutputStreamWriter(os);
+        } catch (Exception e) {
+            return null;
         }
+
         return osw;
     }
 
-    private File getOutFile(String strPath, String strName, String strExtention) {
-        File file = new File(strPath + strName + "." +strExtention);
-        for (int i = 1; file.exists(); ++i) {
-            file = new File(strPath + strName + "(" + i + ")." + strExtention);
+    private void deleteSourceFile(Uri uri) {
+        try {
+            DocumentsContract.deleteDocument(getActivity().getContentResolver(), uri);
+        } catch (Exception e) {
+
         }
-        return file;
     }
 
-    private boolean deleteSourceFile(File inFile) {
-        boolean blRet;
-        FileUtil fileUtil = new FileUtil(getActivity());
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.getExtSdCardFolder(inFile)!=null) {
-            // in external sdcard
-            Uri uri;
-            try {
-                uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
-            } catch (Exception e) {
-                uri = null;
-            }
-            DocumentFile targetDocument = fileUtil.getDocumentFile(inFile, uri);
-            blRet = targetDocument.delete();
-        } else {
-            blRet = inFile.delete();
-        }
-
-        return blRet;
-    }
-
-    private int countLines(String filename, String encodeString) throws IOException {
-        File inFile = new File(filename);
-        InputStream is = new FileInputStream(inFile);
-        InputStreamReader isr = new InputStreamReader(is, encodeString);
-        BufferedReader bReader = new BufferedReader(isr);
+    private int countLines(Uri uri, String encodeString) throws IOException {
         int count = 0;
-        while((bReader.readLine()) != null) {
-            ++count;
+
+        try (InputStream inputStream =
+                     getActivity().getContentResolver().openInputStream(uri);
+             BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(Objects.requireNonNull(inputStream), encodeString))) {
+            while ((reader.readLine()) != null) {
+                ++count;
+            }
         }
-        bReader.close();
-        isr.close();
-        is.close();
+
         return count;
     }
 
-    private String getFileExtension(File inFile) {
-        int startIndex = inFile.getName().lastIndexOf(46) + 1;
-        int endIndex = inFile.getName().length();
-        String file_extension = inFile.getName().substring(startIndex, endIndex);
-        return file_extension;
+    private String getFileExtension(String fileName) {
+        int startIndex = fileName.lastIndexOf(46) + 1;
+        int endIndex = fileName.length();
+        return fileName.substring(startIndex, endIndex);
     }
 
     private boolean isFilenameValid(String fileName) {
@@ -550,41 +473,28 @@ public class HomeFragment extends PreferenceFragment implements
         }
     }
 
-    private void prepareFileList(File testDirFile, ArrayList<String> fileList) {
-        if(testDirFile.isDirectory()) {
-            String[] filenames = testDirFile.list();
-            for (int i = 0 ; i < filenames.length ; ++i){
-                File tempFile = new File(testDirFile.getAbsolutePath() + "/" + filenames[i]);
-                String file_extension = getFileExtension(tempFile);
-                if(!tempFile.isDirectory() && contain(filter, file_extension)){
-                    fileList.add(tempFile.getAbsolutePath());
-                }
-            }
-        } else {
-            fileList.add(testDirFile.getAbsolutePath());
-        }
-    }
-
-    private String detectEncode(String testFileName) {
+    private String detectEncode(Uri uri) {
         String encodeString;
 
         try {
             if (prefs.getString(KeyCollection.KEY_ENCODING, "0").equals("0")) {
-                FileInputStream fis = new FileInputStream(testFileName);
                 byte[] buf = new byte[4096];
                 UniversalDetector detector = new UniversalDetector(null);
                 int nread;
-                while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-                    detector.handleData(buf, 0, nread);
-                }
-                detector.dataEnd();
 
+                try (InputStream inputStream =
+                             getActivity().getContentResolver().openInputStream(uri)) {
+                    while ((nread = inputStream.read(buf)) > 0 && !detector.isDone()) {
+                        detector.handleData(buf, 0, nread);
+                    }
+                }
+
+                detector.dataEnd();
                 encodeString = detector.getDetectedCharset();
                 if (encodeString == null) {
                     encodeString = "Unicode";
                 }
                 detector.reset();
-                fis.close();
             } else {
                 encodeString = prefs.getString(KeyCollection.KEY_ENCODING, "UTF-8");
             }
@@ -594,57 +504,4 @@ public class HomeFragment extends PreferenceFragment implements
 
         return encodeString;
     }
-
-    private String getFileName(File inFile) {
-        String name = inFile.getName();
-
-        int pos = name.lastIndexOf(".");
-        if (pos > 0) {
-            name = name.substring(0, pos);
-        }
-
-        return name;
-    }
-
-    /**
-     * Check the folder for writeability. If not, then on Android 5 retrieve Uri for extsdcard via Storage
-     * Access Framework.
-     *
-     * @param folder The folder to be checked.
-     * @return true if the check was successful or if SAF has been triggered.
-     *         false trigger SAF or in kikat.
-     */
-    private boolean checkFolder(@NonNull final File folder) {
-        FileUtil fileUtil = new FileUtil(getActivity().getApplicationContext());
-        Uri uri;
-        try {
-            uri = Uri.parse(prefs.getString(KeyCollection.KEY_SDCARD_URI, null));
-        } catch (Exception e) {
-            uri = null;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && fileUtil.isOnExtSdCard(folder)) {
-            // On Android 5, trigger storage access framework.
-            if (!fileUtil.isWritableNormalOrSaf(folder, uri)) {
-                return false;
-            }
-            // Only accept after SAF stuff is done.
-            return true;
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            return !(fileUtil.isOnExtSdCard(folder) && !FileUtil.isWritableNormal(folder));
-        } else {
-            // some unknown error
-            return FileUtil.isWritable(new File(folder, "DummyFile"));
-        }
-    }
-
-    /**
-     * Trigger the storage access framework to access the base folder of the ext sd card.
-     */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void triggerStorageAccessFramework() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        startActivityForResult(intent, REQUEST_CODE_STORAGE_ACCESS);
-    }
-
 }

@@ -41,13 +41,6 @@
             android:summary="@string/auto_delete_detail"
             android:title="@string/auto_delete" android:defaultValue="false"/>
 
-        <ListPreference android:entries="@array/file_order_entry"
-            android:entryValues="@array/file_order_value"
-            android:dialogTitle="@string/file_sort"
-            android:negativeButtonText="@string/cancel"
-            android:key="file_sort"
-            android:icon="@drawable/outline_sort_black_48"
-            android:title="@string/file_sort"/>
     </PreferenceCategory>
 
     <PreferenceCategory

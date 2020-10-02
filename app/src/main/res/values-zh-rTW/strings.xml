@@ -32,8 +32,14 @@
 
     <string name="oops">錯誤</string>
     <string name="oops_file_does_not_exist">輸入檔案不存在！</string>
+    <string name="oops_dir_does_not_exist">請選擇輸出目錄。</string>
     <string name="oops_sdcard_detail">需要寫入外部 SD 卡的權限</string>
-    <string name="oops_sdcard_kitkat_detail">很抱歉，在 Android 4.4，App 無法自由寫入外接記憶卡。</string>
+    <string name="oops_general_err">發生非預期錯誤，請重新嘗試一次。</string>
+
+    <string name="selection_none_input">點擊已選取檔案</string>
+    <string name="selection_none_output">點擊已選取目錄</string>
+    <string name="selection_files">已選取 %d 檔案</string>
+    <string name="selection_dir">目錄已選取</string>
 
     <string name="word_count">轉換字數：</string>
 
@@ -53,13 +59,6 @@
     <string name="version_tag">版本：\u0020</string>
     <string name="web_tag">個人網頁</string>
     <string name="illegal_filename">檔名無效</string>
-
-    <!-- file order related. -->
-    <string name="file_sort">檔案排序</string>
-    <string name="file_order_name_ascending">根據名稱，升序。</string>
-    <string name="file_order_name_descending">根據名稱，降序。</string>
-    <string name="file_order_date_ascending">根據修改時間，升序。</string>
-    <string name="file_order_date_descending">根據修改時間，降序。</string>
 
     <!-- file name related. -->
     <string name="filename">輸出檔名</string>

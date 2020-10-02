@@ -17,9 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import androidx.core.app.NotificationCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +24,12 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.npes87184.s2tdroid.donate.model.Transformer;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.app.NotificationCompat;
+
 import com.npes87184.s2tdroid.donate.model.KeyCollection;
+import com.npes87184.s2tdroid.donate.model.Transformer;
 
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener;
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewManager;
@@ -51,7 +52,7 @@ public class BubbleService extends Service implements FloatingViewListener {
         }
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
+        if (prefs.getString(KeyCollection.KEY_BUBBLE_SIZE, "large").equals("large")) {
             bubbleSize = 96;
         } else {
             bubbleSize = 72;
@@ -66,12 +67,12 @@ public class BubbleService extends Service implements FloatingViewListener {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getApplicationContext(), R.style.AppCompatAlertDialogStyle));
                 String mode;
-                if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
+                if (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
                     mode = getString(R.string.auto_detect);
                 } else {
-                    mode = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t")?getString(R.string.s2t):getString(R.string.t2s);
+                    mode = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? getString(R.string.s2t) : getString(R.string.t2s);
                 }
-                builder.setTitle("S2TDroid"+'-'+ mode);
+                builder.setTitle("S2TDroid" + '-' + mode);
 
                 // Set up the input
                 final EditText input = new EditText(getApplicationContext());
@@ -85,18 +86,18 @@ public class BubbleService extends Service implements FloatingViewListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String out = input.getText().toString();
-                        if(prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
-                            out = Transformer.isTraditional(out)>=0 ? Transformer.TtoS(out): Transformer.StoT(out);
+                        if (prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "0").equals("0")) {
+                            out = Transformer.isTraditional(out) >= 0 ? Transformer.TtoS(out) : Transformer.StoT(out);
                         } else {
-                            out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Transformer.StoT(out): Transformer.TtoS(out);
+                            out = prefs.getString(KeyCollection.KEY_BUBBLE_MODE, "s2t").equals("s2t") ? Transformer.StoT(out) : Transformer.TtoS(out);
                         }
                         copyToClipboard(out);
                     }
                 });
                 AlertDialog alert = builder.create();
                 // in Lollipop the dialog will be covered by input...
-                int size = (int)(150 * getResources().getDisplayMetrics().density);
-                alert.getWindow().getAttributes().y = -1*size;
+                int size = (int) (150 * getResources().getDisplayMetrics().density);
+                alert.getWindow().getAttributes().y = -1 * size;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
                 } else {
@@ -150,10 +151,10 @@ public class BubbleService extends Service implements FloatingViewListener {
         }
     }
 
-    public static float convertDpToPixel(float dp, Context context){
+    public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
     }
 

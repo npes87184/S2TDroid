@@ -43,7 +43,7 @@ public class BubbleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                if(Build.VERSION.SDK_INT >= 23) {
+                if (Build.VERSION.SDK_INT >= 23) {
                     // Marshmallow+
                     if (!Settings.canDrawOverlays(getActivity())) {
                         new SweetAlertDialog(getActivity())
@@ -73,7 +73,7 @@ public class BubbleFragment extends Fragment {
         });
         TextView textView = v.findViewById(R.id.textView2);
         final float scale = getResources().getDisplayMetrics().density;
-        int size = (int)(7 * scale);
+        int size = (int) (7 * scale);
         textView.setTextSize(size);
 
         return v;
@@ -82,7 +82,7 @@ public class BubbleFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OVERLAY_PERMISSION_REQ_CODE) {
-            if(Build.VERSION.SDK_INT >= 23) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 if (!Settings.canDrawOverlays(getActivity())) {
                     // SYSTEM_ALERT_WINDOW permission not granted...
                     /* there is a bug in android O, which is canDrawOverlays always return false.

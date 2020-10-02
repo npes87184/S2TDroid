@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import androidx.annotation.DrawableRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
 
 import com.npes87184.s2tdroid.donate.R;
 
@@ -24,7 +25,7 @@ public class ListAdapter extends BaseAdapter {
     private LayoutInflater myInflater;
     private List<String> list;
 
-    public ListAdapter(Context context,List<String> list){
+    public ListAdapter(Context context, List<String> list) {
         myInflater = LayoutInflater.from(context);
         this.list = list;
     }
@@ -47,6 +48,7 @@ public class ListAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView value;
         ImageView icon;
+
         public ViewHolder(TextView value, ImageView icon) {
             this.value = value;
             this.icon = icon;
@@ -56,20 +58,20 @@ public class ListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        if(convertView==null){
+        if (convertView == null) {
             convertView = myInflater.inflate(R.layout.list_item, null);
             holder = new ViewHolder(
                     (TextView) convertView.findViewById(R.id.textView),
                     (ImageView) convertView.findViewById(R.id.imageView)
             );
             convertView.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         holder.value.setText(list.get(position));
         @DrawableRes int iconRes;
-        switch(position) {
+        switch (position) {
             case 0:
                 iconRes = R.drawable.ic_star_border_black_24dp;
                 break;

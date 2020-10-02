@@ -37,8 +37,14 @@
 
     <string name="oops">Oops...</string>
     <string name="oops_file_does_not_exist">Input file doesn\'t exist.</string>
+    <string name ="oops_dir_does_not_exist">Please select an output folder.</string>
     <string name="oops_sdcard_detail">We need external sd card writing permission.</string>
-    <string name="oops_sdcard_kitkat_detail">Can\'t write file to external sdcard in KITKAT.</string>
+    <string name="oops_general_err">General error, please try again.</string>
+
+    <string name="selection_none_input">Click to select files</string>
+    <string name="selection_none_output">Click to select folder</string>
+    <string name="selection_files">%d files selected</string>
+    <string name="selection_dir">Folder selected</string>
 
     <string name="word_count">Word Count:</string>
 
@@ -61,13 +67,6 @@
     <string name="author_tag">Author:\u0020</string>
     <string name="web_tag">Visit my website</string>
     <string name="illegal_filename">Illegal filename</string>
-
-    <!-- file order related. -->
-    <string name="file_sort">File sort</string>
-    <string name="file_order_name_ascending">By name, ascending</string>
-    <string name="file_order_name_descending">By name, descending</string>
-    <string name="file_order_date_ascending">By date, ascending</string>
-    <string name="file_order_date_descending">By date, descending</string>
 
     <!-- file name related. -->
     <string name="filename">Output File Name</string>
