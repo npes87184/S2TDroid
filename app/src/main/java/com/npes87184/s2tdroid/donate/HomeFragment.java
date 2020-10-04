@@ -176,7 +176,7 @@ public class HomeFragment extends PreferenceFragment {
                 mHandler.sendMessage(msg);
                 return true;
             }
-            if (outputDirUri == null) {
+            if (outputDirUri == null && (outputDirUri = readOutputDirUriFromCache()) == null) {
                 Message msg = new Message();
                 msg.what = 8;
                 mHandler.sendMessage(msg);
@@ -380,6 +380,13 @@ public class HomeFragment extends PreferenceFragment {
         } else if (requestCode == REQUEST_CODE_OUTPUT_CHOOSE) {
             if (data.getData() != null) {
                 outputDirUri = data.getData();
+                try {
+                    int modeFlags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    getActivity().getContentResolver().takePersistableUriPermission(outputDirUri, modeFlags);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+                prefs.edit().putString(KeyCollection.KEY_OUTPUT_DIR_URI, outputDirUri.toString()).apply();
             }
 
             if (outputDirUri == null) {
@@ -413,7 +420,7 @@ public class HomeFragment extends PreferenceFragment {
     }
 
     private OutputStreamWriter getOutputStreamWriter(String name) {
-        if (outputDirUri == null) {
+        if (outputDirUri == null && (outputDirUri = readOutputDirUriFromCache()) == null) {
             return null;
         }
 
@@ -500,5 +507,11 @@ public class HomeFragment extends PreferenceFragment {
         }
 
         return encodeString;
+    }
+
+    private Uri readOutputDirUriFromCache() {
+        String outputDirUriString = prefs.getString(KeyCollection.KEY_OUTPUT_DIR_URI, null);
+        Uri newOutputDirUri = outputDirUriString != null ? Uri.parse(outputDirUriString) : null;
+        return newOutputDirUri;
     }
 }
