@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="blue" type="color">#3f51b5</item>
-    <item name="bluegray" type="color">#78909C</item>
-    <item name="darkblue" type="color">#303f9f</item>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
 </resources>

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/S2TDroid.iml" filepath="$PROJECT_DIR$/S2TDroid.iml" group="S2TDroid" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="S2TDroid/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/S2TDroid.iml" filepath="$PROJECT_DIR$/.idea/modules/S2TDroid.iml" group="S2TDroid" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="S2TDroid/app" />
     </modules>
   </component>
 </project>

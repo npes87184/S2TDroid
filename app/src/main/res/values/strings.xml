@@ -1,80 +1,13 @@
 <resources>
+    <string name="app_name">S2TDroid</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
-    <string name="app_name" translatable="false">S2TDroid Pro</string>
-    <string name="author_name" translatable="false">npes87184</string>
-    <string name="version_name" translatable="false">1.7.6</string>
-
-    <string name="output_folder">Output Folder</string>
-    <string name="input_file">Input File</string>
-    <string name="cancel">Cancel</string>
-    <string name="select">Select</string>
-    <string name="encoding_title">Input encode</string>
-    <string name="start">Start</string>
-    <string name="home">Home</string>
-    <string name="transformBubble">Transform Bubble</string>
-    <string name="setting">Setting</string>
-    <string name="about">About</string>
-    <string name="wait">Transforming...</string>
-    <string name="output_encoding_title">Output encode</string>
-    <string name="auto_detect">Auto Detect</string>
-    <string name="subject">S2TDroid</string>
-    <string name="mail_body">My problem is:\nMy phone is: \nMy android version is:\nOther:</string>
-    <string name="bookname">filename</string>
-    <string name="contact">Contact Me</string>
-    <string name="rate">Rate</string>
-    <string name="dialogHint">You can change mode in setting.</string>
-    <string name="copy">Copy</string>
-    <string name="startBubble">Start Bubble</string>
-    <string name="bubbleDetail">Transform bubble is a very special function.\n It can transform anywhere.</string>
-
-    <string name="floatingPermission">We need floating window permission to use bubble.</string>
-    <string name="filePermission">We need the permission of file access to work perfectly.</string>
-
-    <string name="auto_delete_detail">Auto delete source file(s) after transforming.</string>
-    <string name="auto_delete">Auto delete</string>
-
-    <string name="notification">S2TDroid transform bubble is acting.</string>
-
-    <string name="oops">Oops...</string>
-    <string name="oops_file_does_not_exist">Input file doesn\'t exist.</string>
-    <string name ="oops_dir_does_not_exist">Please select an output folder.</string>
-    <string name="oops_sdcard_detail">We need external sd card writing permission.</string>
-    <string name="oops_general_err">General error, please try again.</string>
-
-    <string name="selection_none_input">Click to select files</string>
-    <string name="selection_none_output">Click to select folder</string>
-    <string name="selection_files">%d files selected</string>
-    <string name="selection_dir">Folder selected</string>
-
-    <string name="word_count">Word Count:</string>
-
-    <string name="open" translatable="false">open</string>
-    <string name="close" translatable="false">close</string>
-
-    <string name="s2t">Simple to Traditional</string>
-    <string name="t2s">Traditional to Simple</string>
-
-    <string name="small">Small</string>
-    <string name="large">Large</string>
-
-    <string name="mode">Mode</string>
-    <string name="bubble_mode">Bubble Mode</string>
-    <string name="bubble_size">Bubble Size</string>
-    <string name="encode">Encode</string>
-    <string name="normal">Normal</string>
-    <string name="choose_tip">Now, it can choose a directory to transform each file in that directory.</string>
-    <string name="version_tag">Version:\u0020</string>
-    <string name="author_tag">Author:\u0020</string>
-    <string name="web_tag">Visit my website</string>
-    <string name="illegal_filename">Illegal filename</string>
-
-    <!-- file name related. -->
-    <string name="filename">Output File Name</string>
-    <string name="filename_same">The same with original file.</string>
-    <string name="filename_same_transformed">The same with original file but translated.</string>
-    <string name="filename_manual">Manual input with some tip.</string>
-    <string name="filename_same_key" translatable="false">same</string>
-    <string name="filename_same_transformed_key" translatable="false">same_transalted</string>
-    <string name="filename_manual_key" translatable="false">manual</string>
-
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
 </resources>
