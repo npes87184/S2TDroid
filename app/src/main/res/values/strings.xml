@@ -10,4 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <!-- Home Page -->
+    <string name="home_select_file_title">Select files</string>
+    <string name="home_file_selected">%d files selected</string>
+    <string name="home_select_output_folder_title">Select output folder</string>
 </resources>
