@@ -1,0 +1,11 @@
+An open source android app for transforming Simplified Chinese to Traditional Chinese and vice versa.
+
+<h3>Highlights</h3>
+<ol>
+<li>Light weight</li>
+<li>Auto detect almost everything</li>
+<li>Support GBK, UTF-8, BIG5 and Unicode encoding</li>
+<li>Very fast</li>
+<li>Don't need internet</li>
+<li>Transformation bubble, you can transform anywhere!</li>
+</ol>
