@@ -2,6 +2,9 @@ S2TDroid
 ========
 An open source android app for transforming Simplified Chinese to Traditional Chinese and vice versa.
 
+<a href="https://f-droid.org/packages/com.npes87184.s2tdroid.donate">
+    <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" width="200">
+</a>
 <a href="https://play.google.com/store/apps/details?id=com.npes87184.s2tdroid.donate">
     <img src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" width="200">
 </a>
