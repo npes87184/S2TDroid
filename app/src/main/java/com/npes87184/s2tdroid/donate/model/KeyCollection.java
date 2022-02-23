@@ -18,5 +18,6 @@ public class KeyCollection {
     public static final String KEY_SDCARD_URI = "sdcard_uri";
     public static final String KEY_DELETE_SOURCE = "delete_source";
     public static final String KEY_FILE_SORT = "file_sort";
+    public static final String KEY_OUTPUT_DIR_URI = "output_dir_uri";
 
 }
